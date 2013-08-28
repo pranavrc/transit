@@ -80,3 +80,24 @@ var layout = (function () {
         }
     };
 })();
+
+var processRoute = (function () {
+    return {
+        parseXml : function (xmlUrl) {
+            $.ajax({
+                url: xmlUrl,
+                dataType: 'xml',
+                success : function (data) {
+                    var xmlNode = $('Document', data);
+                    var lines = new Array();
+                    xmlNode.find('Placemark > LineString > coordinates').each(function () {
+                        lines.push($(this).text());
+                    });
+                },
+                error : function (data) {
+                    console.log('Error');
+                }
+            });
+        }
+    };
+})();
