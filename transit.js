@@ -67,10 +67,18 @@ var transit = (function () {
             return markerSet;
         },
 
+        overlayKml : function (kmlUrl) {
+            var kmlOptions = {
+                map: map
+            };
+            var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
+        },
+
         init : function (centerCoords, zoom, markerList, interval) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         map = transit.initMap(centerCoords, zoom);
+                        transit.overlayKml("https://raw.github.com/pranavrc/transit.js/master/sample.kml");
                         var markerSet = transit.constructMarkerSet(markerList);
                         transit.moveMarkers(markerSet, interval);
                     });
