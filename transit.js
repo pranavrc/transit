@@ -93,18 +93,35 @@ var processRoute = (function () {
                     var points = {};
 
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
-                        lines.push($(this).text());
+                        simPts = utils.trim($(this).text()).split(' ');
+                        grpPts = new Array();
+                        for (eachPt in simPts) {
+                            grpPts.push(utils.strip(simPts[eachPt]).split(','));
+                        }
+                        lines.push(grpPts);
                     });
 
                     xmlNode.find('Point').each(function () {
                         parentTag = $(this).closest('Placemark');
-                        points[parentTag.find('name').text()] = parentTag.find('Point').text();
+                        points[parentTag.find('name').text()] = utils.strip(parentTag.find('Point').text()).split(',');
                     });
                 },
                 error : function (data) {
                     console.log('Error');
                 }
             });
+        }
+    };
+})();
+
+var utils = (function () {
+    return {
+        strip : function (string) {
+            return string.replace(/\s+/g, '').replace(/\n/g, '');
+        },
+
+        trim : function (string) {
+            return string.replace(/^\s+|\s+$/g, '');
         }
     };
 })();
