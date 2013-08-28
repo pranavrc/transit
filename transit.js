@@ -90,8 +90,15 @@ var processRoute = (function () {
                 success : function (data) {
                     var xmlNode = $('Document', data);
                     var lines = new Array();
+                    var points = {};
+
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
                         lines.push($(this).text());
+                    });
+
+                    xmlNode.find('Point').each(function () {
+                        parentTag = $(this).closest('Placemark');
+                        points[parentTag.find('name').text()] = parentTag.find('Point').text();
                     });
                 },
                 error : function (data) {
