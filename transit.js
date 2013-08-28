@@ -1,14 +1,9 @@
-var transit = (function () {
+var layout = (function () {
     var map = null;
 
     return {
-        initMap : function (coords, mapZoom) {
-            mapZoom = (typeof mapZoom == 'undefined') ? 1 : mapZoom;
-            var mapCenter = new google.maps.LatLng(coords[0], coords[1]);
-
+        initMap : function () {
             var mapDet = {
-                center: mapCenter,
-                zoom: mapZoom,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
@@ -56,7 +51,7 @@ var transit = (function () {
         constructMarkerSet : function (markers) {
             var markerSet = new Array();
             for (var counter = 0; counter < markers.length; counter++) {
-                markerObj = transit.initMarker(markers[counter].coords[0], markers[counter].hoverText);
+                markerObj = layout.initMarker(markers[counter].coords[0], markers[counter].hoverText);
                 coordList = markers[counter].coords.slice(1);
 
                 markerSet.push({
@@ -74,13 +69,13 @@ var transit = (function () {
             var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
         },
 
-        init : function (centerCoords, zoom, markerList, interval) {
+        init : function (kmlUrl, markerList, interval) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
-                        map = transit.initMap(centerCoords, zoom);
-                        transit.overlayKml("https://raw.github.com/pranavrc/transit.js/master/sample.kml");
-                        var markerSet = transit.constructMarkerSet(markerList);
-                        transit.moveMarkers(markerSet, interval);
+                        map = layout.initMap();
+                        layout.overlayKml(kmlUrl);
+                        var markerSet = layout.constructMarkerSet(markerList);
+                        layout.moveMarkers(markerSet, interval);
                     });
         }
     };
