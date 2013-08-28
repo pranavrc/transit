@@ -1,8 +1,8 @@
 var transit = (function () {
-	map = new google.maps.Map();
+	var map = null;
 
 	return {
-		setMap : function (coords, mapZoom) {
+		initMap : function (coords, mapZoom) {
 			mapZoom = (typeof mapZoom == 'undefined') ? 1 : mapZoom;
 			var mapCenter = new google.maps.LatLng(coords[0], coords[1]);
 
@@ -16,7 +16,7 @@ var transit = (function () {
 			return map;
 		},
 
-		setMarker : function (coords, hoverText) {
+		initMarker : function (coords, hoverText) {
 			hoverText = (typeof hoverText == 'undefined') ? 'Marker' : hoverText;
 			var markerPos = new google.maps.LatLng(coords[0], coords[1]);
 
@@ -29,7 +29,7 @@ var transit = (function () {
 
 			var marker = {
 				position: markerPos,
-				title: hoverText
+				title: hoverText,
 				icon: markerIcon
 			};
 
@@ -37,29 +37,31 @@ var transit = (function () {
 			return marker;
 		},
 
-		moveMarkers : function (map, markerSet, interval) {
-			var counter = 0;
+		moveMarkers : function (markerSet, interval) {
 			interval = (typeof interval == 'undefined') ? 1000 : interval;
-			setInterval(
+			var transition = setInterval(
 					function () {
-						for (let i = 0; i < markerSet.length; i++) {
-							let curPos = new google.maps.LatLng(markerSet[counter].coordSet[0],
-								markerSet[counter].coordSet[1]);
-							markerSet[i].marker.position = curPos;
-							markerSet[i].marker.setMap(map);
+						for (var counter = 0; counter < markerSet.length; counter++) {
+							for (var i = 0; i < markerSet.length; i++) {
+								var curPos = new google.maps.LatLng(markerSet[i].coordSet[counter][0],
+									markerSet[i].coordSet[counter][1]);
+								markerSet[i].marker.position = curPos;
+								markerSet[i].marker.setMap(map);
+							}
 						}
-						counter++;
 					},
 				    interval);
 		},
 
-		constructMarkerSet : function (markers, coordsList) {
+		constructMarkerSet : function (markers) {
 			var markerSet = new Array();
-			for (let counter = 0; counter < markers.length; counter++) {
-				markerObj = this.setMarker(markers[counter].coords, markers[counter].hoverText);
+			for (var counter = 0; counter < markers.length; counter++) {
+				markerObj = transit.initMarker(markers[counter].coords[0], markers[counter].hoverText);
+				coordList = markers[counter].coords.slice(1);
+
 				markerSet.push({
 					marker: markerObj,
-					coordSet: coordsList[counter]
+					coordSet: coordList
 				});
 			}
 			return markerSet;
@@ -68,9 +70,9 @@ var transit = (function () {
 		init : function (centerCoords, zoom, markerList, interval) {
 			google.maps.event.addDomListener(window, 'load',
 					function () {
-						this.map = this.setMap(centerCoords, zoom);
-						var markerSet = this.constructMarkerSet(markerList, coordsList);
-						this.moveMarkers(this.map, markerSet, interval);
+						map = transit.initMap(centerCoords, zoom);
+						var markerSet = transit.constructMarkerSet(markerList);
+						transit.moveMarkers(markerSet, interval);
 					});
 		}
 	};
