@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>Foo</title>
+		<meta charset="utf-8" />
+
+		<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false"></script>
+		<script src="transit.js"></script>
+	</head>
+
+	<body>
+		<div id="transitMap" style="width:500px;height:380px;"></div>
+
+		<script>
+			transit.init([51.50, -0.12], 4,
+			[{ coords:[[51.50, -0.12], [52.50, -0.13], [53.50, -0.14], [54.50, -0.15]], hoverText:"#1" },
+			 { coords:[[47.50, -0.15], [48.50, -0.16], [49.50, -0.17], [50.50, -0.18]], hoverText:"#2" }], 3000);
+		</script>
+	</body>
+</html>
