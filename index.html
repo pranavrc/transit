@@ -10,12 +10,12 @@
     </head>
 
     <body>
-        <div id="transitMap" style="width:500px;height:380px;"></div>
+        <div id="transitMap" style="width:800px;height:800px;"></div>
 
         <script>
-            transit.init([51.50, -0.12], 1,
+            layout.init("https://raw.github.com/pranavrc/transit.js/master/sample.kml",
             [{ coords:[[51.50, -0.12], [52.50, -0.13], [53.50, -0.14], [54.50, -0.15]], hoverText:"#1" },
-             { coords:[[47.50, -0.15], [48.50, -0.16], [49.50, -0.17], [50.50, -0.18]], hoverText:"#2" }], 3000);
+            { coords:[[47.50, -0.15], [48.50, -0.16], [49.50, -0.17], [50.50, -0.18]], hoverText:"#2" }], 3000);
         </script>
     </body>
 </html>
