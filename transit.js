@@ -147,8 +147,12 @@ var utils = (function () {
             return newCoords;
         },
 
-        timePercent : function (lower, upper, target) {
+        PercentRange : function (lower, upper, target) {
             return ((target - lower) / (upper - lower)) * 100;
+        },
+
+        pointsBetweenStops: function (route, start, end) {
+            return route.slice(route.indexOf(start), route.indexOf(end));
         }
     };
 })();
