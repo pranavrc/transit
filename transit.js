@@ -122,6 +122,21 @@ var utils = (function () {
 
         trim : function (string) {
             return string.replace(/^\s+|\s+$/g, '');
+        },
+
+        // Reimplemented from http://www.movable-type.co.uk/scripts/latlong.html
+        haversine: function (sourceCoords, targetCoords) {
+            var R = 6371; // km
+            var dLat = (targetCoords[0] - sourceCoords[0]).toRad();
+            var dLon = (targetCoords[1] - sourceCoords[1]).toRad();
+            var lat1 = sourceCoords[0].toRad();
+            var lat2 = targetCoords[0].toRad();
+
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            var d = R * c;
+            return d;
         }
     };
 })();
