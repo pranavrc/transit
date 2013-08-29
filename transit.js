@@ -170,11 +170,16 @@ var utils = (function () {
             var distanceHash = {
                 0 : points[0]
             };
+            var distances = new Array();
             var totalDist = 0;
 
             for (var x = 0; x < routeLength - 1; x++) {
                 totalDist += utils.haversine(points[x], points[x + 1]);
-                distanceHash[totalDist] = points[x + 1];
+                distances.push(totalDist);
+            }
+
+            for (var x = 0; x < distances.length; x++) {
+                distanceHash[utils.percentInRange(0, totalDist, distances[x])] = points[x + 1];
             }
 
             return distanceHash;
