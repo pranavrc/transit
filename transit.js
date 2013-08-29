@@ -137,7 +137,7 @@ var utils = (function () {
             var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             var d = R * c;
             return d;
-        }
+        },
 
         percentDist : function (sourceCoords, targetCoords, percentage) {
             newCoords = new Array();
@@ -145,6 +145,10 @@ var utils = (function () {
             newCoords[0] = (1 - ratio) * sourceCoords[0] + ratio * targetCoords[0];
             newCoords[1] = (1 - ratio) * sourceCoords[1] + ratio * targetCoords[1];
             return newCoords;
+        },
+
+        timePercent : function (lower, upper, target) {
+            return ((target - lower) / (upper - lower)) * 100;
         }
     };
 })();
