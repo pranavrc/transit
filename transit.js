@@ -138,5 +138,13 @@ var utils = (function () {
             var d = R * c;
             return d;
         }
+
+        percentDist : function (sourceCoords, targetCoords, percentage) {
+            newCoords = new Array();
+            ratio = percentage / 100;
+            newCoords[0] = (1 - ratio) * sourceCoords[0] + ratio * targetCoords[0];
+            newCoords[1] = (1 - ratio) * sourceCoords[1] + ratio * targetCoords[1];
+            return newCoords;
+        }
     };
 })();
