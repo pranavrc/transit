@@ -51,8 +51,8 @@ var layout = (function () {
         constructMarkerSet : function (markers) {
             var markerSet = new Array();
             for (var counter = 0; counter < markers.length; counter++) {
-                markerObj = layout.initMarker(markers[counter].coords[0], markers[counter].hoverText);
-                coordList = markers[counter].coords.slice(1);
+                var markerObj = layout.initMarker(markers[counter].coords[0], markers[counter].hoverText);
+                var coordList = markers[counter].coords.slice(1);
 
                 markerSet.push({
                     marker: markerObj,
@@ -93,8 +93,8 @@ var processRoute = (function () {
                     var points = {};
 
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
-                        simPts = utils.trim($(this).text()).split(' ');
-                        grpPts = new Array();
+                        var simPts = utils.trim($(this).text()).split(' ');
+                        var grpPts = new Array();
                         for (eachPt in simPts) {
                             grpPts.push(utils.strip(simPts[eachPt]).split(','));
                         }
@@ -102,7 +102,7 @@ var processRoute = (function () {
                     });
 
                     xmlNode.find('Point').each(function () {
-                        parentTag = $(this).closest('Placemark');
+                        var parentTag = $(this).closest('Placemark');
                         points[parentTag.find('name').text()] = utils.strip(parentTag.find('Point').text()).split(',');
                     });
                 },
@@ -127,6 +127,14 @@ var utils = (function () {
         // Reimplemented from http://www.movable-type.co.uk/scripts/latlong.html
         haversine : function (sourceCoords, targetCoords) {
             var R = 6371; // km
+
+            /** Converts numeric degrees to radians */
+            if (typeof(Number.prototype.toRad) === "undefined") {
+              Number.prototype.toRad = function() {
+                return this * Math.PI / 180;
+              }
+            }
+
             var dLat = (targetCoords[0] - sourceCoords[0]).toRad();
             var dLon = (targetCoords[1] - sourceCoords[1]).toRad();
             var lat1 = sourceCoords[0].toRad();
@@ -140,19 +148,36 @@ var utils = (function () {
         },
 
         percentDist : function (sourceCoords, targetCoords, percentage) {
-            newCoords = new Array();
-            ratio = percentage / 100;
+            var newCoords = new Array();
+            var ratio = percentage / 100;
             newCoords[0] = (1 - ratio) * sourceCoords[0] + ratio * targetCoords[0];
             newCoords[1] = (1 - ratio) * sourceCoords[1] + ratio * targetCoords[1];
             return newCoords;
         },
 
-        PercentRange : function (lower, upper, target) {
+        percentInRange : function (lower, upper, target) {
             return ((target - lower) / (upper - lower)) * 100;
         },
 
         pointsBetweenStops: function (route, start, end) {
             return route.slice(route.indexOf(start), route.indexOf(end));
+        },
+
+        hashOfPercentDists : function (points) {
+            var start = points[0];
+            var routeLength = points.length;
+            var end = points[routeLength - 1];
+            var distanceHash = {
+                0 : points[0]
+            };
+            var totalDist = 0;
+
+            for (var x = 0; x < routeLength - 1; x++) {
+                totalDist += utils.haversine(points[x], points[x + 1]);
+                distanceHash[totalDist] = points[x + 1];
+            }
+
+            return distanceHash;
         }
     };
 })();
