@@ -125,7 +125,7 @@ var utils = (function () {
         },
 
         // Reimplemented from http://www.movable-type.co.uk/scripts/latlong.html
-        haversine: function (sourceCoords, targetCoords) {
+        haversine : function (sourceCoords, targetCoords) {
             var R = 6371; // km
             var dLat = (targetCoords[0] - sourceCoords[0]).toRad();
             var dLon = (targetCoords[1] - sourceCoords[1]).toRad();
