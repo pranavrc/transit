@@ -117,7 +117,8 @@ var processRoute = (function () {
 
                     xmlNode.find('Point').each(function () {
                         var parentTag = $(this).closest('Placemark');
-                        points[parentTag.find('name').text()] = utils.strip(parentTag.find('Point').text()).split(',');
+                        points[parentTag.find('name').text().toLowerCase()] =
+                            utils.strip(parentTag.find('Point').text()).split(',');
                     });
                 },
                 error : function (data) {
