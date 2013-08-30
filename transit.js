@@ -11,8 +11,8 @@ var layout = (function () {
             return map;
         },
 
-        initMarker : function (coords, hoverText) {
-            hoverText = (typeof hoverText == 'undefined') ? 'Marker' : hoverText;
+        initMarker : function (coords, mouseoverText) {
+            mouseoverText = (typeof mouseoverText == 'undefined') ? 'Marker' : mouseoverText;
             var markerPos = new google.maps.LatLng(coords[0], coords[1]);
 
             var markerIcon = {
@@ -22,13 +22,27 @@ var layout = (function () {
                 scale: 4
             };
 
+            var mouseoverInfo = new google.maps.InfoWindow({
+                content: mouseoverText,
+                map: map
+            });
+
             var marker = {
                 position: markerPos,
-                title: hoverText,
+                title: mouseoverText,
                 icon: markerIcon
             };
 
             marker = new google.maps.Marker(marker);
+
+            google.maps.event.addListener(marker, 'mouseover', function() {
+            	mouseoverInfo.open(map, this);
+            });
+
+            google.maps.event.addListener(marker, 'mouseout', function() {
+            	mouseoverInfo.close();
+            });
+
             return marker;
         },
 
@@ -51,7 +65,7 @@ var layout = (function () {
         constructMarkerSet : function (markers) {
             var markerSet = new Array();
             for (var counter = 0; counter < markers.length; counter++) {
-                var markerObj = layout.initMarker(markers[counter].coords[0], markers[counter].hoverText);
+                var markerObj = layout.initMarker(markers[counter].coords[0], markers[counter].title);
                 var coordList = markers[counter].coords.slice(1);
 
                 markerSet.push({
