@@ -1,0 +1,96 @@
+{
+    "transit":
+    [
+        {
+            "name": "Sub #1",
+            "info": "EMU",
+            "stops": [
+            {
+                "name": "Beach",
+                "departure":
+            },
+            {
+                "name": "Fort",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Park",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Egmore",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Chetpet",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Nungambakkam",
+                "arrival": ,
+                "departure":
+            }
+            ]
+        },
+        {
+            "name": "Sub #2",
+            "info": "EMU",
+            "stops": [
+            {
+                "name": "Central",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Basin Bridge",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Vyasarpadi Jeeva",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Perambur",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Perambur Carriage Works",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Perambur Loco Works",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Villivakkam",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Korattur",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Pattaravakkam",
+                "arrival": ,
+                "departure":
+            },
+            {
+                "name": "Ambattur",
+                "arrival": ,
+                "departure":
+            }
+            ]
+        }
+    ]
+}
