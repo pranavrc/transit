@@ -110,15 +110,17 @@ var processRoute = (function () {
                         var simPts = utils.trim($(this).text()).split(' ');
                         var grpPts = new Array();
                         for (eachPt in simPts) {
-                            grpPts.push(utils.strip(simPts[eachPt]).split(','));
+                            var xy = utils.strip(simPts[eachPt]).split(',');
+                            grpPts.push({ x: xy[0], y: xy[1] });
                         }
                         lines.push(grpPts);
                     });
 
                     xmlNode.find('Point').each(function () {
                         var parentTag = $(this).closest('Placemark');
-                        points[parentTag.find('name').text().toLowerCase()] =
-                            utils.strip(parentTag.find('Point').text()).split(',');
+
+                        var xy = utils.strip(parentTag.find('Point').text()).split(',');
+                        points[parentTag.find('name').text().toLowerCase()] = { x: xy[0], y: xy[1] };
                     });
                 },
                 error : function (data) {
@@ -175,7 +177,7 @@ var utils = (function () {
         },
 
         pointsBetweenStops: function (route, start, end) {
-            return route.slice(route.indexOf(start), route.indexOf(end));
+            return route.slice(route.indexOf(start), route.indexOf(end) + 1);
         },
 
         hashOfPercentDists : function (points) {
