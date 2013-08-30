@@ -183,6 +183,43 @@ var utils = (function () {
             }
 
             return distanceHash;
+        },
+
+        // Variant of binary search that returns enclosing elements of searchElement in array.
+        enclosure : function (searchElement) {
+            'use strict';
+
+            var minIndex = 0;
+            var maxIndex = this.length - 1;
+            var currentIndex;
+            var currentElement;
+
+            while (minIndex <= maxIndex) {
+                currentIndex = (minIndex + maxIndex) / 2 | 0;
+                currentElement = this[currentIndex];
+
+                if (currentElement < searchElement) {
+                    minIndex = currentIndex + 1;
+                }
+                else if (currentElement > searchElement) {
+                    maxIndex = currentIndex - 1;
+                }
+                else {
+                    return currentIndex;
+                }
+            }
+
+            if (searchElement > this[currentIndex]) {
+                if (typeof this[currentIndex + 1] != 'undefined')
+                    return [currentIndex, currentIndex + 1];
+                else
+                    return currentIndex;
+            } else {
+                if (typeof this[currentIndex - 1] !=  'undefined')
+                    return [currentIndex - 1, currentIndex];
+                else
+                    return 0;
+            }
         }
     };
 })();
