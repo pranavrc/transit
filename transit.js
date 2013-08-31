@@ -164,6 +164,11 @@ var utils = (function () {
             return d;
         },
 
+        linearDist : function (sourceCoords, targetCoords) {
+            return Math.sqrt(Math.pow((targetCoords.x - sourceCoords.x), 2),
+                    Math.pow((targetCoords.y - sourceCoords.y), 2));
+        },
+
         percentDist : function (sourceCoords, targetCoords, percentage) {
             var newCoords = {};
             var ratio = percentage / 100;
