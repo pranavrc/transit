@@ -5,88 +5,106 @@
         {
             "name": "Sub #1",
             "info": "EMU",
+            "route": "Egmore Line",
             "stops": [
             {
                 "name": "Beach",
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Fort",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Park",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Egmore",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Chetpet",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Nungambakkam",
                 "arrival": ,
+                "day": 1
             }
             ]
         },
         {
             "name": "Sub #2",
             "info": "EMU",
+            "route": "Central Line",
             "stops": [
             {
                 "name": "Central",
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Basin Bridge",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Vyasarpadi Jeeva",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Perambur",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Perambur Carriage Works",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Perambur Loco Works",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Villivakkam",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Korattur",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Pattaravakkam",
                 "arrival": ,
-                "departure":
+                "departure": ,
+                "day": 1
             },
             {
                 "name": "Ambattur",
                 "arrival": ,
+                "day": 1
             }
             ]
         }
