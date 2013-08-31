@@ -152,10 +152,10 @@ var utils = (function () {
               }
             }
 
-            var dLat = (targetCoords[0] - sourceCoords[0]).toRad();
-            var dLon = (targetCoords[1] - sourceCoords[1]).toRad();
-            var lat1 = sourceCoords[0].toRad();
-            var lat2 = targetCoords[0].toRad();
+            var dLat = (targetCoords.x - sourceCoords.x).toRad();
+            var dLon = (targetCoords.y - sourceCoords.y).toRad();
+            var lat1 = sourceCoords.x.toRad();
+            var lat2 = targetCoords.x.toRad();
 
             var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
             Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
@@ -165,10 +165,10 @@ var utils = (function () {
         },
 
         percentDist : function (sourceCoords, targetCoords, percentage) {
-            var newCoords = new Array();
+            var newCoords = {};
             var ratio = percentage / 100;
-            newCoords[0] = (1 - ratio) * sourceCoords[0] + ratio * targetCoords[0];
-            newCoords[1] = (1 - ratio) * sourceCoords[1] + ratio * targetCoords[1];
+            newCoords.x = (1 - ratio) * sourceCoords.x + ratio * targetCoords.x;
+            newCoords.y = (1 - ratio) * sourceCoords.y + ratio * targetCoords.y;
             return newCoords;
         },
 
