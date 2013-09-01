@@ -5,7 +5,7 @@ var transit = (function () {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
+            var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
             return map;
         },
 
@@ -17,7 +17,7 @@ var transit = (function () {
                 path: google.maps.SymbolPath.CIRCLE,
                 fillColor: 'red',
                 fillOpacity: 0.8,
-                scale: 5 
+                scale: 5
             };
 
             var mouseoverInfo = new google.maps.InfoWindow({
@@ -44,7 +44,7 @@ var transit = (function () {
             return marker;
         },
 
-        moveMarkers : function (markerSet, interval) {
+        moveMarkers : function (markerSet, interval, map) {
             interval = (typeof interval == 'undefined') ? 1000 : interval;
             var transition = setInterval(
                     function () {
@@ -74,7 +74,7 @@ var transit = (function () {
             return markerSet;
         },
 
-        overlayKml : function (kmlUrl) {
+        overlayKml : function (kmlUrl, map) {
             var kmlOptions = {
                 map: map
             };
@@ -84,10 +84,10 @@ var transit = (function () {
         init : function (kmlUrl, markerList, interval) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
-                        map = transit.initMap();
-                        transit.overlayKml(kmlUrl);
+                        var map = transit.initMap();
+                        transit.overlayKml(kmlUrl, map);
                         var markerSet = transit.constructMarkerSet(markerList);
-                        transit.moveMarkers(markerSet, interval);
+                        transit.moveMarkers(markerSet, interval, map);
                     });
         },
 
@@ -97,6 +97,8 @@ var transit = (function () {
                 dataType: 'xml',
                 success : function (data) {
                     var xmlNode = $('Document', data);
+                    var lines = {};
+                    var points = {};
 
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
                         var simPts = transit.trim($(this).text()).split(' ');
@@ -136,7 +138,7 @@ var transit = (function () {
             });
         },
 
-        schedule : function(vehicleObj) {
+        schedule : function(vehicleObj, lines) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = [];
