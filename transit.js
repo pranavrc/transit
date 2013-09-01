@@ -348,7 +348,7 @@ var transit = (function () {
                     var timeRange = transit.enclosure.call(ppoints, timePercentArray[i]);
                     var percent = transit.percentInRange(ppoints[timeRange[0]],
                                                          ppoints[timeRange[1]], timePercentArray[i]);
-                    coords.push(transit.percentDist(ppoints[timeRange[0], ppoints[timeRange[1]], percent));
+                    coords.push(transit.percentDist(ppoints[timeRange[0]], ppoints[timeRange[1]], percent));
                 }
             } else {
                 if (typeof range[1] != 'undefined')
