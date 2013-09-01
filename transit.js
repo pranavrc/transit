@@ -312,6 +312,47 @@ var transit = (function () {
             return t.getHours().toString() + ":" +
                    t.getMinutes().toString() + ":" +
                    t.getSeconds().toString();
+        },
+
+        estimateCurrentPosition : function (vehicleObj, timezone) {
+            var arrivals = vehicleObj.arrivals;
+            var departures = vehicleObj.departures;
+            var travelTimes = vehicleObj.traveltimes;
+            var noOfDays = vehicleObj.days;
+            var ppoints = vehicleObj.ppoints;
+
+            var route = vehicleObj.route;
+            var stops = vehicleObj.stops;
+            var percentDists = transit.hashOfPercentDists(stops);
+
+            var time = transit.currTime();
+            var range = transit.enclosure.call(travelTimes, time);
+            var coords = {};
+
+            if (range[0] % 2 == 0 && range.length == 2) {
+                var leavingStop = departures[range[0]];
+                var approachingStop = arrivals[range[1]];
+                var leavingStopCoords = stops[leavingStop];
+                var approachingStop = stops[approachingStop];
+                var timePercentArray = new Array();
+
+                for (var i = 1; i <= noOfDays + 1; i++) {
+                    timePercentArray.push(transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
+                                                                 transit.parseTime(currTime, i, timezone)));
+                }
+
+                for (var i = 0; i < timePercentArray.length; i++) {
+                    var timeRange = transit.enclosure.call(ppoints, timePercentArray[i]);
+                    var percent = transit.percentInRange(ppoints[timeRange[0]],
+                                                         ppoints[timeRange[1]], timePercentArray[i]);
+                    coords.push(transit.percentDist(ppoints[timeRange[0], ppoints[timeRange[1]], percent));
+                }
+            } else {
+                if (typeof range[1] != 'undefined')
+                    coords.push(stops[departures[range[1]]]);
+            }
+
+            return coords;
         }
     };
 })();
