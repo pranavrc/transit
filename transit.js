@@ -95,25 +95,29 @@ var layout = (function () {
     };
 })();
 
-var processRoute = (function () {
+var processInputs = (function () {
+    var lines = {};
+    var points = {};
+    var timezone = null;
+    var vehicles = new Array();
+
     return {
-        parseXml : function (xmlUrl) {
+        routeParser : function (xmlUrl) {
             $.ajax({
                 url: xmlUrl,
                 dataType: 'xml',
                 success : function (data) {
                     var xmlNode = $('Document', data);
-                    var lines = new Array();
-                    var points = {};
 
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
                         var simPts = utils.trim($(this).text()).split(' ');
                         var grpPts = new Array();
+                        var routeName = $(this).closest('Placemark').find('name').text().toLowerCase();
                         for (eachPt in simPts) {
                             var xy = utils.strip(simPts[eachPt]).split(',');
                             grpPts.push({ x: xy[0], y: xy[1] });
                         }
-                        lines.push(grpPts);
+                        lines[routeName] = grpPts;
                     });
 
                     xmlNode.find('Point').each(function () {
@@ -126,6 +130,13 @@ var processRoute = (function () {
                 error : function (data) {
                     console.log('Error');
                 }
+            });
+        },
+
+        vehicleParser : function(jsonUrl) {
+            $.getJSON(jsonUrl).success(function (data) {
+                timezone = data.timezone;
+                vehicles = data.vehicles;
             });
         }
     };
@@ -242,6 +253,16 @@ var utils = (function () {
                 else
                     return 0;
             }
+        },
+
+        convertTimeStringToTimeInt : function (timeString) {
+            var hms = timeString.split(':');
+            hms = hms.map(function (x) { return parseInt(x, 10); });
+
+            if (hms.length < 3)
+                hms[2] = 0;
+
+            return hms;
         }
     };
 })();
