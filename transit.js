@@ -128,11 +128,44 @@ var transit = (function () {
             });
         },
 
-        vehicleParser : function(jsonUrl) {
+        vehicleParser : function (jsonUrl) {
             $.getJSON(jsonUrl).success(function (data) {
                 timezone = data.timezone;
                 vehicles = data.vehicles;
             });
+        },
+
+        schedule : function(vehicleObj) {
+            var vehicleArrivals = {};
+            var vehicleDepartures = {};
+            var vehicleTravelTimes = [];
+            var stopsObj = vehicleObj.stops;
+            var noOfStops = vehicleObj.stops.length;
+            var startTime = transit.parseTime(stopsObj[0].departure);
+
+            vehicleDepartures[stopsObj[0].name] = startTime;
+            vehicleTravelTimes.push(startTime);
+
+            for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
+                var temp = stopsObj[eachStop];
+                vehicleArrivals[temp.name] = transit.parseTime(temp.arrival) - startTime;
+                vehicleDepartures[temp.name] = transit.parseTime(temp.departure) - startTime;
+                vehicleTravelTimes.push(transit.parseTime(temp.arrival) - startTime,
+                                        transit.parseTime(temp.departure) - startTime);
+            }
+
+            var endTime = transit.parseTime(stopsObj[noOfStops].arrival) - startTime;
+            vehicleArrivals[stopsObj[noOfStops].name] = endTime;
+            vehicleTravelTimes.push(endTime);
+
+            return {
+                "name": vehicleObj.name,
+                "info": vehicleObj.info,
+                "route": lines[vehicleObj.route],
+                "arrivals": vehicleArrivals,
+                "departures": vehicleDepartures,
+                "traveltimes": vehicleTravelTimes
+            };
         },
 
         strip : function (string) {
@@ -168,7 +201,7 @@ var transit = (function () {
 
         linearDist : function (sourceCoords, targetCoords) {
             return Math.sqrt(Math.pow((targetCoords.x - sourceCoords.x), 2),
-                    Math.pow((targetCoords.y - sourceCoords.y), 2));
+                             Math.pow((targetCoords.y - sourceCoords.y), 2));
         },
 
         percentDist : function (sourceCoords, targetCoords, percentage) {
