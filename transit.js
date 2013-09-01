@@ -294,6 +294,13 @@ var transit = (function () {
                 hms[2] = 0;
 
             return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400 + timezone * 60;
+        },
+
+        currTime : function () {
+            var t = new Date();
+            return t.getHours().toString() + ":" +
+                   t.getMinutes().toString() + ":" +
+                   t.getSeconds().toString();
         }
     };
 })();
