@@ -138,16 +138,21 @@ var transit = (function () {
             });
         },
 
-        schedule : function(vehicleObj, lines, timezone) {
+        schedule : function (vehicleObj, routes, timezone) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = [];
+            var vehicleRoute = vehicleObj.route;
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
             var startTime = transit.parseTime(stopsObj[0].departure, stopsObj[0].day, timezone);
+            var vehicleStopCoords = {};
+            var points = routes.points;
+            var firstStop = stopsObj[0];
 
-            vehicleDepartures[startTime] = stopsObj[0].name;
+            vehicleDepartures[startTime] = firstStop.name;
             vehicleTravelTimes.push(startTime);
+            vehicleStopCoords[stopsObj[0].name] = points[firstStop.name];
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
@@ -156,18 +161,25 @@ var transit = (function () {
                 vehicleArrivals[currArrivalTime] = temp.name;
                 vehicleDepartures[currDepartureTime] = temp.name;
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
+                vehicleStopCoords[temp.name] = points[temp.name];
             }
 
-            var endTime = transit.parseTime(stopsObj[noOfStops].arrival,
-                                            stopsObj[noOfStops].day, timezone) - startTime;
-            vehicleArrivals[endTime] = stopsObj[noOfStops].name;
+            var lastStop = stopsObj[noOfStops];
+            var endTime = transit.parseTime(lastStop.arrival, lastStop.day, timezone) - startTime;
+            vehicleArrivals[endTime] = lastStop.name;
             vehicleTravelTimes.push(endTime);
+            vehicleStopCoords[lastStop.name] = points[lastStop.name];
+            var line = transit.pointsBetweenStops(routes.lines[vehicleRoute], points[firstStop.name],
+                                                  points[lastStop.name]);
+            var percentStopDists = transit.hashOfPercentDists(line);
 
             return {
                 "name": vehicleObj.name,
                 "info": vehicleObj.info,
-                "route": lines[vehicleObj.route],
-                "days": stopsObj[noOfStops].day - stopsObj[0].day,
+                "route": line,
+                "stops": vehicleStopCoords,
+                "ppoints": percentStopDists,
+                "days": lastStop.day - stopsObj[0].day,
                 "arrivals": vehicleArrivals,
                 "departures": vehicleDepartures,
                 "traveltimes": vehicleTravelTimes
