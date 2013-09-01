@@ -1,5 +1,9 @@
-var layout = (function () {
+var transit = (function () {
     var map = null;
+    var lines = {};
+    var points = {};
+    var timezone = null;
+    var vehicles = new Array();
 
     return {
         initMap : function () {
@@ -65,7 +69,7 @@ var layout = (function () {
         constructMarkerSet : function (markers) {
             var markerSet = new Array();
             for (var counter = 0; counter < markers.length; counter++) {
-                var markerObj = layout.initMarker(markers[counter].coords[0], markers[counter].title);
+                var markerObj = transit.initMarker(markers[counter].coords[0], markers[counter].title);
                 var coordList = markers[counter].coords.slice(1);
 
                 markerSet.push({
@@ -86,22 +90,13 @@ var layout = (function () {
         init : function (kmlUrl, markerList, interval) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
-                        map = layout.initMap();
-                        layout.overlayKml(kmlUrl);
-                        var markerSet = layout.constructMarkerSet(markerList);
-                        layout.moveMarkers(markerSet, interval);
+                        map = transit.initMap();
+                        transit.overlayKml(kmlUrl);
+                        var markerSet = transit.constructMarkerSet(markerList);
+                        transit.moveMarkers(markerSet, interval);
                     });
-        }
-    };
-})();
+        },
 
-var processInputs = (function () {
-    var lines = {};
-    var points = {};
-    var timezone = null;
-    var vehicles = new Array();
-
-    return {
         routeParser : function (xmlUrl) {
             $.ajax({
                 url: xmlUrl,
@@ -110,11 +105,11 @@ var processInputs = (function () {
                     var xmlNode = $('Document', data);
 
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
-                        var simPts = utils.trim($(this).text()).split(' ');
+                        var simPts = transit.trim($(this).text()).split(' ');
                         var grpPts = new Array();
                         var routeName = $(this).closest('Placemark').find('name').text().toLowerCase();
                         for (eachPt in simPts) {
-                            var xy = utils.strip(simPts[eachPt]).split(',');
+                            var xy = transit.strip(simPts[eachPt]).split(',');
                             grpPts.push({ x: xy[0], y: xy[1] });
                         }
                         lines[routeName] = grpPts;
@@ -123,7 +118,7 @@ var processInputs = (function () {
                     xmlNode.find('Point').each(function () {
                         var parentTag = $(this).closest('Placemark');
 
-                        var xy = utils.strip(parentTag.find('Point').text()).split(',');
+                        var xy = transit.strip(parentTag.find('Point').text()).split(',');
                         points[parentTag.find('name').text().toLowerCase()] = { x: xy[0], y: xy[1] };
                     });
                 },
@@ -138,12 +133,8 @@ var processInputs = (function () {
                 timezone = data.timezone;
                 vehicles = data.vehicles;
             });
-        }
-    };
-})();
+        },
 
-var utils = (function () {
-    return {
         strip : function (string) {
             return string.replace(/\s+/g, '').replace(/\n/g, '');
         },
@@ -207,12 +198,12 @@ var utils = (function () {
             var totalDist = 0;
 
             for (var x = 0; x < routeLength - 1; x++) {
-                totalDist += utils.haversine(points[x], points[x + 1]);
+                totalDist += transit.haversine(points[x], points[x + 1]);
                 distances.push(totalDist);
             }
 
             for (var x = 0; x < distances.length; x++) {
-                distanceHash[utils.percentInRange(0, totalDist, distances[x])] = points[x + 1];
+                distanceHash[transit.percentInRange(0, totalDist, distances[x])] = points[x + 1];
             }
 
             return distanceHash;
