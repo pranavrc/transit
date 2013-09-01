@@ -255,14 +255,14 @@ var utils = (function () {
             }
         },
 
-        convertTimeStringToTimeInt : function (timeString) {
+        parseTime : function (timeString, day) {
             var hms = timeString.split(':');
             hms = hms.map(function (x) { return parseInt(x, 10); });
 
             if (hms.length < 3)
                 hms[2] = 0;
 
-            return hms;
+            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400;
         }
     };
 })();
