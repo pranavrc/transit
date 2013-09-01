@@ -146,22 +146,21 @@ var transit = (function () {
             var noOfStops = vehicleObj.stops.length;
             var startTime = transit.parseTime(stopsObj[0].departure, stopsObj[0].day, timezone);
 
-            vehicleDepartures[stopsObj[0].name] = startTime;
+            vehicleDepartures[startTime] = stopsObj[0].name;
             vehicleTravelTimes.push(startTime);
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
-                vehicleArrivals[temp.name] = transit.parseTime(temp.arrival,
-                                                               temp.day, timezone) - startTime;
-                vehicleDepartures[temp.name] = transit.parseTime(temp.departure,
-                                                                 temp.day, timezone) - startTime;
-                vehicleTravelTimes.push(transit.parseTime(temp.arrival, temp.day, timezone) - startTime,
-                                        transit.parseTime(temp.departure, temp.day, timezone) - startTime);
+                var currArrivalTime = transit.parseTime(temp.arrival, temp.day, timezone) - startTime;
+                var currDepartureTime = transit.parseTime(temp.departure, temp.day, timezone) - startTime;
+                vehicleArrivals[currArrivalTime] = temp.name;
+                vehicleDepartures[currDepartureTime] = temp.name;
+                vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
             }
 
             var endTime = transit.parseTime(stopsObj[noOfStops].arrival,
                                             stopsObj[noOfStops].day, timezone) - startTime;
-            vehicleArrivals[stopsObj[noOfStops].name] = endTime;
+            vehicleArrivals[endTime] = stopsObj[noOfStops].name;
             vehicleTravelTimes.push(endTime);
 
             return {
