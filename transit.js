@@ -138,26 +138,29 @@ var transit = (function () {
             });
         },
 
-        schedule : function(vehicleObj, lines) {
+        schedule : function(vehicleObj, lines, timezone) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = [];
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
-            var startTime = transit.parseTime(stopsObj[0].departure, stopsObj[0].day);
+            var startTime = transit.parseTime(stopsObj[0].departure, stopsObj[0].day, timezone);
 
             vehicleDepartures[stopsObj[0].name] = startTime;
             vehicleTravelTimes.push(startTime);
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
-                vehicleArrivals[temp.name] = transit.parseTime(temp.arrival, temp.day) - startTime;
-                vehicleDepartures[temp.name] = transit.parseTime(temp.departure, temp.day) - startTime;
-                vehicleTravelTimes.push(transit.parseTime(temp.arrival, temp.day) - startTime,
-                                        transit.parseTime(temp.departure, temp.day) - startTime);
+                vehicleArrivals[temp.name] = transit.parseTime(temp.arrival,
+                                                               temp.day, timezone) - startTime;
+                vehicleDepartures[temp.name] = transit.parseTime(temp.departure,
+                                                                 temp.day, timezone) - startTime;
+                vehicleTravelTimes.push(transit.parseTime(temp.arrival, temp.day, timezone) - startTime,
+                                        transit.parseTime(temp.departure, temp.day, timezone) - startTime);
             }
 
-            var endTime = transit.parseTime(stopsObj[noOfStops].arrival, stopsObj[noOfStops].day) - startTime;
+            var endTime = transit.parseTime(stopsObj[noOfStops].arrival,
+                                            stopsObj[noOfStops].day, timezone) - startTime;
             vehicleArrivals[stopsObj[noOfStops].name] = endTime;
             vehicleTravelTimes.push(endTime);
 
@@ -283,14 +286,14 @@ var transit = (function () {
             }
         },
 
-        parseTime : function (timeString, day) {
+        parseTime : function (timeString, day, timezone) {
             var hms = timeString.split(':');
             hms = hms.map(function (x) { return parseInt(x, 10); });
 
             if (hms.length < 3)
                 hms[2] = 0;
 
-            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400;
+            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400 + timezone * 60;
         }
     };
 })();
