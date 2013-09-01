@@ -1,10 +1,4 @@
 var transit = (function () {
-    var map = null;
-    var lines = {};
-    var points = {};
-    var timezone = null;
-    var vehicles = new Array();
-
     return {
         initMap : function () {
             var mapDet = {
@@ -15,15 +9,15 @@ var transit = (function () {
             return map;
         },
 
-        initMarker : function (coords, mouseoverText) {
+        initMarker : function (coords, mouseoverText, map) {
             mouseoverText = (typeof mouseoverText == 'undefined') ? 'Marker' : mouseoverText;
             var markerPos = new google.maps.LatLng(coords[0], coords[1]);
 
             var markerIcon = {
                 path: google.maps.SymbolPath.CIRCLE,
-                fillColor: 'black',
+                fillColor: 'red',
                 fillOpacity: 0.8,
-                scale: 4
+                scale: 5 
             };
 
             var mouseoverInfo = new google.maps.InfoWindow({
@@ -121,6 +115,11 @@ var transit = (function () {
                         var xy = transit.strip(parentTag.find('Point').text()).split(',');
                         points[parentTag.find('name').text().toLowerCase()] = { x: xy[0], y: xy[1] };
                     });
+
+                    return {
+                        "lines": lines,
+                        "points": points
+                    };
                 },
                 error : function (data) {
                     console.log('Error');
@@ -130,8 +129,10 @@ var transit = (function () {
 
         vehicleParser : function (jsonUrl) {
             $.getJSON(jsonUrl).success(function (data) {
-                timezone = data.timezone;
-                vehicles = data.vehicles;
+                return {
+                    "timezone": data.timezone,
+                    "vehicles": data.vehicles
+                };
             });
         },
 
@@ -141,20 +142,20 @@ var transit = (function () {
             var vehicleTravelTimes = [];
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
-            var startTime = transit.parseTime(stopsObj[0].departure);
+            var startTime = transit.parseTime(stopsObj[0].departure, stopsObj[0].day);
 
             vehicleDepartures[stopsObj[0].name] = startTime;
             vehicleTravelTimes.push(startTime);
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
-                vehicleArrivals[temp.name] = transit.parseTime(temp.arrival) - startTime;
-                vehicleDepartures[temp.name] = transit.parseTime(temp.departure) - startTime;
-                vehicleTravelTimes.push(transit.parseTime(temp.arrival) - startTime,
-                                        transit.parseTime(temp.departure) - startTime);
+                vehicleArrivals[temp.name] = transit.parseTime(temp.arrival, temp.day) - startTime;
+                vehicleDepartures[temp.name] = transit.parseTime(temp.departure, temp.day) - startTime;
+                vehicleTravelTimes.push(transit.parseTime(temp.arrival, temp.day) - startTime,
+                                        transit.parseTime(temp.departure, temp.day) - startTime);
             }
 
-            var endTime = transit.parseTime(stopsObj[noOfStops].arrival) - startTime;
+            var endTime = transit.parseTime(stopsObj[noOfStops].arrival, stopsObj[noOfStops].day) - startTime;
             vehicleArrivals[stopsObj[noOfStops].name] = endTime;
             vehicleTravelTimes.push(endTime);
 
@@ -162,6 +163,7 @@ var transit = (function () {
                 "name": vehicleObj.name,
                 "info": vehicleObj.info,
                 "route": lines[vehicleObj.route],
+                "days": stopsObj[noOfStops].day - stopsObj[0].day,
                 "arrivals": vehicleArrivals,
                 "departures": vehicleDepartures,
                 "traveltimes": vehicleTravelTimes
