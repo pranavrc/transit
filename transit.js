@@ -343,7 +343,7 @@ var transit = (function () {
                     currPos.approaching = approachingStop;
 
                     var timePercent = transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
-                                                             transit.parseTime(currTime, i, timezone)));
+                                                             transit.parseTime(currTime, i, timezone));
                     var timeRange = transit.enclosure.call(ppoints, timePercent);
                     var percent = transit.percentInRange(ppoints[timeRange[0]],
                                                          ppoints[timeRange[1]], timePercentArray[i]);
@@ -384,7 +384,7 @@ var transit = (function () {
             var vehicleObj = transit.vehicleParser(jsonFile);
             var timezone = vehicleObj.timezone;
             var vehicles = vehicleObj.vehicles;
-            var noOfVehicles = vehicleList.length
+            var noOfVehicles = vehicleList.length;
 
             for (var count = 0; count < noOfVehicles; count++) {
                 vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
