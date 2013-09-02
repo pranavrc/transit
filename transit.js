@@ -385,7 +385,7 @@ var transit = (function () {
             var vehicleObj = transit.vehicleParser(jsonFile);
             var timezone = vehicleObj.timezone;
             var vehicles = vehicleObj.vehicles;
-            var noOfVehicles = vehicleList.length;
+            var noOfVehicles = vehicles.length;
 
             for (var count = 0; count < noOfVehicles; count++) {
                 vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
