@@ -419,36 +419,39 @@ var transit = (function () {
                 vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
             }
 
-            for (var count = 0; count < noOfVehicles; count++) {
-                var vehicle = vehicles[count];
+            var transition = setInterval(
+                    function() {
+                        for (var count = 0; count < noOfVehicles; count++) {
+                            var vehicle = vehicles[count];
 
-                if (typeof vehicle.markers == "undefined") {
-                    vehicle.markers = new Array();
-                } else {
-                    for (var i = 0; i < vehicle.markers.length; i++) {
-                        vehicle.markers[i].setMap(null);
-                    }
-                }
+                            if (typeof vehicle.markers == "undefined") {
+                                vehicle.markers = new Array();
+                            } else {
+                                for (var i = 0; i < vehicle.markers.length; i++) {
+                                    vehicle.markers[i].setMap(null);
+                                }
+                            }
 
-                var currPositions = transit.estimateCurrentPosition(vehicle, timezone);
+                            var currPositions = transit.estimateCurrentPosition(vehicle, timezone);
 
-                for (var i = 0; i < currPositions.length; i++) {
-                    var currPosition = currPositions[0];
+                            for (var i = 0; i < currPositions.length; i++) {
+                                var currPosition = currPositions[0];
 
-                    if (!currPosition.currentCoords) continue;
+                                if (!currPosition.currentCoords) continue;
 
-                    var mouseOverInfo = transit.mouseOverInfo(vehicle.name, vehicle.info,
-                                                              currPosition.stationaryAt,
-                                                              currPosition.departureTime,
-                                                              currPosition.leaving,
-                                                              currPosition.approaching,
-                                                              currPosition.leftTime,
-                                                              currPosition.approachTime);
-                    var currMarker = transit.initMarker(currCoords[i], mouseOverInfo, map);
-                    currMarker.setMap(map);
-                    vehicle.markers[i] = currMarker;
-                }
-            }
+                                var mouseOverInfo = transit.mouseOverInfo(vehicle.name, vehicle.info,
+                                                                          currPosition.stationaryAt,
+                                                                          currPosition.departureTime,
+                                                                          currPosition.leaving,
+                                                                          currPosition.approaching,
+                                                                          currPosition.leftTime,
+                                                                          currPosition.approachTime);
+                                var currMarker = transit.initMarker(currCoords[i], mouseOverInfo, map);
+                                currMarker.setMap(map);
+                                vehicle.markers[i] = currMarker;
+                            }
+                        }
+                    }, 0);
         },
 
         initialize : function (localKmlFile, remoteKmlFile, jsonFile) {
