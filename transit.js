@@ -82,13 +82,14 @@ var transit = (function () {
         },
 
         routeParser : function (xmlUrl) {
+            var lines = {};
+            var points = {};
+
             $.ajax({
                 url: xmlUrl,
                 dataType: 'xml',
                 success : function (data) {
                     var xmlNode = $('Document', data);
-                    var lines = {};
-                    var points = {};
 
                     xmlNode.find('Placemark > LineString > coordinates').each(function () {
                         var simPts = transit.trim($(this).text()).split(' ');
@@ -107,16 +108,16 @@ var transit = (function () {
                         var xy = transit.strip(parentTag.find('Point').text()).split(',');
                         points[parentTag.find('name').text().toLowerCase()] = { x: xy[0], y: xy[1] };
                     });
-
-                    return {
-                        "lines": lines,
-                        "points": points
-                    };
                 },
                 error : function (data) {
                     console.log('Error');
                 }
             });
+            
+            return {
+                "lines": lines,
+                "points": points
+            };
         },
 
         vehicleParser : function (jsonUrl) {
@@ -393,8 +394,8 @@ var transit = (function () {
             for (var count = 0; count < noOfVehicles; count++) {
                 var vehicle = vehicles[count];
 
-                if (typeof vehicle.markers == 'undefined') {
-                    var vehicle.markers = new Array();
+                if (typeof vehicle.markers == "undefined") {
+                    vehicle.markers = new Array();
                 } else {
                     for (var i = 0; i < vehicle.markers.length; i++) {
                         vehicle.markers[i].setMap(null);
