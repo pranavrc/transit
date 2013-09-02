@@ -394,7 +394,7 @@ var transit = (function () {
         },
 
         mouseOverInfo : function (name, info, stationary, departTime, l, a, lT, aT) {
-            var base = "Vehicle: " + name + "\n" + info + "\n"
+            var base = "Vehicle: " + name + "\n" + info + "\n";
             if (stationary) {
                 return base + "\n" + "At: " + stationary + "\n" + "Departs: " + departTime;
             } else {
