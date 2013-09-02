@@ -100,14 +100,17 @@ var transit = (function () {
                             var xy = transit.strip(simPts[eachPt]).split(',');
                             grpPts.push({ x: xy[0], y: xy[1] });
                         }
-                        lines[routeName] = grpPts;
+                        lines[transit.trim(routeName)] = grpPts;
                     });
 
                     xmlNode.find('Point').each(function () {
                         var parentTag = $(this).closest('Placemark');
 
                         var xy = transit.strip(parentTag.find('Point').text()).split(',');
-                        points[parentTag.find('name').text().toLowerCase()] = { x: xy[0], y: xy[1] };
+                        points[transit.trim(parentTag.find('name').text()).toLowerCase()] = {
+                            x: xy[0],
+                            y: xy[1]
+                        };
                     });
                 },
                 error : function (data) {
@@ -153,8 +156,8 @@ var transit = (function () {
             var vehicleStopCoords = {};
             var points = routes.points;
 
-            vehicleDepartures[startTime] = firstStopName;
-            vehicleTravelTimes.push(startTime);
+            vehicleDepartures[startTime - startTime] = firstStopName;
+            vehicleTravelTimes.push(startTime - startTime);
             vehicleStopCoords[firstStopName] = points[firstStopName];
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
@@ -174,8 +177,9 @@ var transit = (function () {
             vehicleArrivals[endTime] = lastStopName;
             vehicleTravelTimes.push(endTime);
             vehicleStopCoords[lastStopName] = points[lastStopName];
-            var line = transit.pointsBetweenStops(routes.lines[vehicleRoute], points[firstStopName],
-                                                  points[lastStopName]);
+            var line = transit.pointsBetweenStops(routes.lines[vehicleRoute.toLowerCase()],
+                                                  points[firstStopName.toLowerCase()],
+                                                  points[lastStopName.toLowerCase()]);
             var percentStopDists = transit.hashOfPercentDists(line);
 
             return {
