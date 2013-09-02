@@ -356,6 +356,12 @@ var transit = (function () {
             }
 
             return coords;
+        },
+
+        mouseOverInfo : function (name, info, leaving, approaching, leftTime, approachTime) {
+            return "Vehicle: " + name + "\n" + info + "\n" +
+                   "Leaving: " + leaving + "\n" + " (" + leftTime + ")" +
+                   "Approaching: " + approaching + " (" + approachTime + ")";
         }
     };
 })();
