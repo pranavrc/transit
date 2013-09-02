@@ -81,16 +81,6 @@ var transit = (function () {
             var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
         },
 
-        init : function (kmlUrl, markerList, interval) {
-            google.maps.event.addDomListener(window, 'load',
-                    function () {
-                        var map = transit.initMap();
-                        transit.overlayKml(kmlUrl, map);
-                        var markerSet = transit.constructMarkerSet(markerList);
-                        transit.moveMarkers(markerSet, interval, map);
-                    });
-        },
-
         routeParser : function (xmlUrl) {
             $.ajax({
                 url: xmlUrl,
@@ -383,6 +373,60 @@ var transit = (function () {
                        "Leaving: " + l + "\n" + " (" + lT + ")" +
                        "Approaching: " + a + " (" + aT + ")";
             }
+        },
+
+        main : function (localKmlFile, remoteKmlFile, jsonFile) {
+            var map = transit.initMap();
+            transit.overlayKml(remoteKmlFile, map);
+            var routeObj = transit.routeParser(localKmlFile);
+            var routeLines = routeObj.lines;
+            var routePoints = routeObj.points;
+            var vehicleObj = transit.vehicleParser(jsonFile);
+            var timezone = vehicleObj.timezone;
+            var vehicles = vehicleObj.vehicles;
+            var noOfVehicles = vehicleList.length
+
+            for (var count = 0; count < noOfVehicles; count++) {
+                vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
+            }
+
+            for (var count = 0; count < noOfVehicles; count++) {
+                var vehicle = vehicles[count];
+
+                if (typeof vehicle.markers == 'undefined') {
+                    var vehicle.markers = new Array();
+                } else {
+                    for (var i = 0; i < vehicle.markers.length; i++) {
+                        vehicle.markers[i].setMap(null);
+                    }
+                }
+
+                var currPositions = transit.estimateCurrentPosition(vehicle, timezone);
+
+                for (var i = 0; i < currPositions.length; i++) {
+                    var currPosition = currPositions[0];
+
+                    if (!currPosition.currentCoords) continue;
+
+                    var mouseOverInfo = transit.mouseOverInfo(vehicle.name, vehicle.info,
+                                                              currPosition.stationaryAt,
+                                                              currPosition.departureTime,
+                                                              currPosition.leaving,
+                                                              currPosition.approaching,
+                                                              currPosition.leftTime,
+                                                              currPosition.approachTime);
+                    var currMarker = transit.initMarker(currCoords[i], mouseOverInfo, map);
+                    currMarker.setMap(map);
+                    vehicle.markers[i] = currMarker;
+                }
+            }
+        },
+
+        initialize : function (localKmlFile, remoteKmlFile, jsonFile) {
+            google.maps.event.addDomListener(window, 'load',
+                    function () {
+                        transit.main(localKmlFile, remoteKmlFile, jsonFile);
+                    });
         }
     };
 })();
