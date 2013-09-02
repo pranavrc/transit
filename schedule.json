@@ -1,5 +1,5 @@
 {
-    "timezone": +330,
+    "timezone": 330,
     "vehicles":
     [
         {
@@ -9,36 +9,36 @@
             "stops": [
             {
                 "name": "Beach",
-                "departure": ,
+                "departure": "12:45",
                 "day": 1
             },
             {
                 "name": "Fort",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:46",
+                "departure": "12:46:30",
                 "day": 1
             },
             {
                 "name": "Park",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:47:00",
+                "departure": "12:47:30",
                 "day": 1
             },
             {
                 "name": "Egmore",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:48:00",
+                "departure": "12:48:30",
                 "day": 1
             },
             {
                 "name": "Chetpet",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:49:00",
+                "departure": "12:49:30",
                 "day": 1
             },
             {
                 "name": "Nungambakkam",
-                "arrival": ,
+                "arrival": "12:50:00",
                 "day": 1
             }
             ]
@@ -50,60 +50,60 @@
             "stops": [
             {
                 "name": "Central",
-                "departure": ,
+                "departure": "12:49",
                 "day": 1
             },
             {
                 "name": "Basin Bridge",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:50",
+                "departure": "12:50:30",
                 "day": 1
             },
             {
                 "name": "Vyasarpadi Jeeva",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:51",
+                "departure": "12:51:30",
                 "day": 1
             },
             {
                 "name": "Perambur",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:53",
+                "departure": "12:53:30",
                 "day": 1
             },
             {
                 "name": "Perambur Carriage Works",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:54",
+                "departure": "12:54:30",
                 "day": 1
             },
             {
                 "name": "Perambur Loco Works",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:56",
+                "departure": "12:56:30",
                 "day": 1
             },
             {
                 "name": "Villivakkam",
-                "arrival": ,
-                "departure": ,
+                "arrival": "12:58",
+                "departure": "12:58:30",
                 "day": 1
             },
             {
                 "name": "Korattur",
-                "arrival": ,
-                "departure": ,
+                "arrival": "13:00",
+                "departure": "13:00:30",
                 "day": 1
             },
             {
                 "name": "Pattaravakkam",
-                "arrival": ,
-                "departure": ,
+                "arrival": "13:02",
+                "departure": "13:02:30",
                 "day": 1
             },
             {
                 "name": "Ambattur",
-                "arrival": ,
+                "arrival": "13:03",
                 "day": 1
             }
             ]
