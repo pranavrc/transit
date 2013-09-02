@@ -369,7 +369,7 @@ var transit = (function () {
                 positions.push(currPos);
             }
 
-            return coords;
+            return positions;
         },
 
         mouseOverInfo : function (name, info, leaving, approaching, leftTime, approachTime) {
