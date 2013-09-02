@@ -183,12 +183,17 @@ var transit = (function () {
                                                   vehicleStopCoords[lastStopName]);
             var percentStopDists = transit.hashOfPercentDists(line);
 
+            var percentDists = new Array();
+            for (var x in percentStopDists) percentDists.push(x);
+
             return {
                 "name": vehicleObj.name,
                 "info": vehicleObj.info,
+                "starts": startTime,
                 "route": line,
                 "stops": vehicleStopCoords,
                 "ppoints": percentStopDists,
+                "ppercents": percentDists,
                 "days": lastStop.day - firstStop.day,
                 "arrivals": vehicleArrivals,
                 "departures": vehicleDepartures,
@@ -342,7 +347,8 @@ var transit = (function () {
             var travelTimes = vehicleObj.traveltimes;
             var noOfDays = vehicleObj.days;
             var ppoints = vehicleObj.ppoints;
-
+            var ppercents = vehicleObj.ppercents;
+            var starts = vehicleObj.starts;
             var route = vehicleObj.route;
             var stops = vehicleObj.stops;
             var positions = new Array();
@@ -360,7 +366,7 @@ var transit = (function () {
             var time = transit.currTime();
 
             for (var i = 1; i <= noOfDays + 1; i++) {
-                var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i, timezone));
+                var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i, timezone) - starts);
 
                 if (range[0] % 2 == 0 && range.length == 2) {
                     currPos.leftTime = travelTimes[range[0]];
@@ -371,12 +377,10 @@ var transit = (function () {
                     currPos.approaching = approachingStop;
 
                     var timePercent = transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
-                                                             transit.parseTime(currTime, i, timezone));
-                    var timeRange = transit.enclosure.call(ppoints, timePercent);
-                    var percent = transit.percentInRange(ppoints[timeRange[0]],
-                                                         ppoints[timeRange[1]], timePercentArray[i]);
-                    currPos.currentCoords = transit.percentDist(ppoints[timeRange[0]],
-                                                                ppoints[timeRange[1]], percent);
+                                                             transit.parseTime(time, i, timezone) - starts);
+                    var timeRange = transit.enclosure.call(ppercents, timePercent);
+                    currPos.currentCoords = transit.percentDist(ppoints[ppercents[timeRange[0]]],
+                                                                ppoints[ppercents[timeRange[1]]], timePercent);
                 } else {
                     if (typeof range[1] != 'undefined' && range[0] != 0) {
                         var currentStop = travelTimes[range[1]];
@@ -434,7 +438,7 @@ var transit = (function () {
                             var currPositions = transit.estimateCurrentPosition(vehicle, timezone);
 
                             for (var i = 0; i < currPositions.length; i++) {
-                                var currPosition = currPositions[0];
+                                var currPosition = currPositions[i];
 
                                 if (!currPosition.currentCoords) continue;
 
@@ -445,7 +449,7 @@ var transit = (function () {
                                                                           currPosition.approaching,
                                                                           currPosition.leftTime,
                                                                           currPosition.approachTime);
-                                var currMarker = transit.initMarker(currCoords[i], mouseOverInfo, map);
+                                var currMarker = transit.initMarker(currPosition, mouseOverInfo, map);
                                 currMarker.setMap(map);
                                 vehicle.markers[i] = currMarker;
                             }
