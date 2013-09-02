@@ -271,7 +271,7 @@ var transit = (function () {
             var totalDist = 0;
 
             for (var x = 0; x < routeLength - 1; x++) {
-                totalDist += transit.haversine(points[x], points[x + 1]);
+                totalDist += transit.linearDist(points[x], points[x + 1]);
                 distances.push(totalDist);
             }
 
