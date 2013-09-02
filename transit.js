@@ -113,7 +113,7 @@ var transit = (function () {
                     console.log('Error');
                 }
             });
-            
+
             return {
                 "lines": lines,
                 "points": points
