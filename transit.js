@@ -331,6 +331,7 @@ var transit = (function () {
 
             var currPos = {
                 "stationaryAt": "",
+                "departureTime": 0,
                 "leaving": "",
                 "approaching": "",
                 "leftTime": 0,
@@ -360,8 +361,9 @@ var transit = (function () {
                                                                 ppoints[timeRange[1]], percent);
                 } else {
                     if (typeof range[1] != 'undefined' && range[0] != 0) {
-                        currPos.currentStop = travelTimes[range[1]];
+                        var currentStop = travelTimes[range[1]];
                         currPos.stationaryAt = departures[currentStop];
+                        currPos.departureTime = currentStop;
                         currPos.currentCoords = stops[currentStop];
                     }
                 }
@@ -372,10 +374,15 @@ var transit = (function () {
             return positions;
         },
 
-        mouseOverInfo : function (name, info, leaving, approaching, leftTime, approachTime) {
-            return "Vehicle: " + name + "\n" + info + "\n" +
-                   "Leaving: " + leaving + "\n" + " (" + leftTime + ")" +
-                   "Approaching: " + approaching + " (" + approachTime + ")";
+        mouseOverInfo : function (name, info, stationary, departTime, l, a, lT, aT) {
+            var base = "Vehicle: " + name + "\n" + info + "\n"
+            if (stationary) {
+                return base + "\n" + "At: " + stationary + "\n" + "Departs: " + departTime;
+            } else {
+                return base +
+                       "Leaving: " + l + "\n" + " (" + lT + ")" +
+                       "Approaching: " + a + " (" + aT + ")";
+            }
         }
     };
 })();
