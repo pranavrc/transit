@@ -146,7 +146,7 @@ var transit = (function () {
         schedule : function (vehicleObj, routes, timezone) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
-            var vehicleTravelTimes = [];
+            var vehicleTravelTimes = new Array();
             var vehicleRoute = vehicleObj.route;
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
@@ -345,7 +345,6 @@ var transit = (function () {
 
             var route = vehicleObj.route;
             var stops = vehicleObj.stops;
-            var percentDists = transit.hashOfPercentDists(stops);
             var positions = new Array();
 
             var currPos = {
