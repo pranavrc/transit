@@ -14,10 +14,7 @@
         <div id="transitMap" style="width:800px;height:800px;"></div>
 
         <script>
-            transit.routeParser("sample.kml");
-            transit.init("https://raw.github.com/pranavrc/transit.js/master/sample.kml",
-            [{ coords:[[51.50, -0.12], [52.50, -0.13], [53.50, -0.14], [54.50, -0.15]], title:"#1" },
-            { coords:[[47.50, -0.15], [48.50, -0.16], [49.50, -0.17], [50.50, -0.18]], title:"#2" }], 3000);
+            transit.initialize("sample.kml", "https://raw.github.com/pranavrc/transit.js/master/sample.kml", "schedule.json");
         </script>
     </body>
 </html>
