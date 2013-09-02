@@ -327,32 +327,46 @@ var transit = (function () {
             var route = vehicleObj.route;
             var stops = vehicleObj.stops;
             var percentDists = transit.hashOfPercentDists(stops);
+            var positions = new Array();
 
-            var coords = new Array();
+            var currPos = {
+                "stationaryAt": "",
+                "leaving": "",
+                "approaching": "",
+                "leftTime": 0,
+                "approachTime": 0,
+                "currentCoords": null
+            };
+
             var time = transit.currTime();
-            var range = transit.enclosure.call(travelTimes, time);
 
-            if (range[0] % 2 == 0 && range.length == 2) {
-                var leavingStop = departures[range[0]];
-                var approachingStop = arrivals[range[1]];
-                var leavingStopCoords = stops[leavingStop];
-                var approachingStop = stops[approachingStop];
-                var timePercentArray = new Array();
+            for (var i = 1; i <= noOfDays + 1; i++) {
+                var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i, timezone));
 
-                for (var i = 1; i <= noOfDays + 1; i++) {
-                    timePercentArray.push(transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
-                                                                 transit.parseTime(currTime, i, timezone)));
-                }
+                if (range[0] % 2 == 0 && range.length == 2) {
+                    currPos.leftTime = travelTimes[range[0]];
+                    currPos.approachTime = travelTimes[range[1]];
+                    var leavingStop = departures[currPos.leftTime];
+                    var approachingStop = arrivals[currPos.approachTime];
+                    currPos.leaving = leavingStop;
+                    currPos.approaching = approachingStop;
 
-                for (var i = 0; i < timePercentArray.length; i++) {
-                    var timeRange = transit.enclosure.call(ppoints, timePercentArray[i]);
+                    var timePercent = transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
+                                                             transit.parseTime(currTime, i, timezone)));
+                    var timeRange = transit.enclosure.call(ppoints, timePercent);
                     var percent = transit.percentInRange(ppoints[timeRange[0]],
                                                          ppoints[timeRange[1]], timePercentArray[i]);
-                    coords.push(transit.percentDist(ppoints[timeRange[0]], ppoints[timeRange[1]], percent));
+                    currPos.currentCoords = transit.percentDist(ppoints[timeRange[0]],
+                                                                ppoints[timeRange[1]], percent);
+                } else {
+                    if (typeof range[1] != 'undefined' && range[0] != 0) {
+                        currPos.currentStop = travelTimes[range[1]];
+                        currPos.stationaryAt = departures[currentStop];
+                        currPos.currentCoords = stops[currentStop];
+                    }
                 }
-            } else {
-                if (typeof range[1] != 'undefined')
-                    coords.push(stops[departures[range[1]]]);
+
+                positions.push(currPos);
             }
 
             return coords;
