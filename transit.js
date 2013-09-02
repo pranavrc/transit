@@ -330,7 +330,7 @@ var transit = (function () {
 
             var time = transit.currTime();
             var range = transit.enclosure.call(travelTimes, time);
-            var coords = {};
+            var coords = new Array();
 
             if (range[0] % 2 == 0 && range.length == 2) {
                 var leavingStop = departures[range[0]];
