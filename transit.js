@@ -155,10 +155,11 @@ var transit = (function () {
             var startTime = transit.parseTime(firstStop.departure, firstStop.day, timezone);
             var vehicleStopCoords = {};
             var points = routes.points;
+            var opLine = routes.lines[vehicleRoute.toLowerCase()];
 
             vehicleDepartures[startTime - startTime] = firstStopName;
             vehicleTravelTimes.push(startTime - startTime);
-            vehicleStopCoords[firstStopName] = points[firstStopName];
+            vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine, points[firstStopName]);
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
@@ -168,7 +169,7 @@ var transit = (function () {
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
-                vehicleStopCoords[tempName] = points[tempName];
+                vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName]);
             }
 
             var lastStop = stopsObj[noOfStops - 1];
@@ -176,10 +177,10 @@ var transit = (function () {
             var endTime = transit.parseTime(lastStop.arrival, lastStop.day, timezone) - startTime;
             vehicleArrivals[endTime] = lastStopName;
             vehicleTravelTimes.push(endTime);
-            vehicleStopCoords[lastStopName] = points[lastStopName];
-            var line = transit.pointsBetweenStops(routes.lines[vehicleRoute.toLowerCase()],
-                                                  points[firstStopName.toLowerCase()],
-                                                  points[lastStopName.toLowerCase()]);
+            vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName]);
+            var line = transit.pointsBetweenStops(opLine,
+                                                  vehicleStopCoords[firstStopName],
+                                                  vehicleStopCoords[lastStopName]);
             var percentStopDists = transit.hashOfPercentDists(line);
 
             return {
@@ -201,6 +202,18 @@ var transit = (function () {
 
         trim : function (string) {
             return string.replace(/^\s+|\s+$/g, '');
+        },
+
+        resolvePointToLine : function (line, point) {
+            var closestDist = transit.linearDist(line[0], point);
+            var currPt = line[0]
+            for (var count = 1; count < line.length; count++) {
+                var currDist = transit.linearDist(line[count], point);
+                if (closestDist > currDist)
+                    currPt = line[count];
+            }
+
+            return currPt;
         },
 
         // Reimplemented from http://www.movable-type.co.uk/scripts/latlong.html
