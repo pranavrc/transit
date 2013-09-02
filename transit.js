@@ -88,6 +88,7 @@ var transit = (function () {
             $.ajax({
                 url: xmlUrl,
                 dataType: 'xml',
+                async: false,
                 success : function (data) {
                     var xmlNode = $('Document', data);
 
@@ -121,12 +122,22 @@ var transit = (function () {
         },
 
         vehicleParser : function (jsonUrl) {
-            $.getJSON(jsonUrl).success(function (data) {
-                return {
-                    "timezone": data.timezone,
-                    "vehicles": data.vehicles
-                };
+            var vehicleObj = {};
+
+            $.ajax({
+                url: jsonUrl,
+                dataType: 'json',
+                async: false,
+                success : function (data) {
+                    vehicleObj.timezone = data.timezone;
+                    vehicleObj.vehicles = data.vehicles;
+                },
+                error : function (data) {
+                    console.log('Error');
+                }
             });
+
+            return vehicleObj;
         },
 
         schedule : function (vehicleObj, routes, timezone) {
@@ -157,7 +168,7 @@ var transit = (function () {
                 vehicleStopCoords[tempName] = points[tempName];
             }
 
-            var lastStop = stopsObj[noOfStops];
+            var lastStop = stopsObj[noOfStops - 1];
             var lastStopName = lastStop.name.toLowerCase();
             var endTime = transit.parseTime(lastStop.arrival, lastStop.day, timezone) - startTime;
             vehicleArrivals[endTime] = lastStopName;
