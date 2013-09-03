@@ -97,7 +97,7 @@ var transit = (function () {
                         var routeName = $(this).closest('Placemark').find('name').text().toLowerCase();
                         for (eachPt in simPts) {
                             var xy = transit.strip(simPts[eachPt]).split(',');
-                            grpPts.push({ x: parseFloat(xy[0], 10), y: parseFloat(xy[1], 10) });
+                            grpPts.push({ x: parseFloat(xy[1], 10), y: parseFloat(xy[0], 10) });
                         }
                         lines[transit.trim(routeName)] = grpPts;
                     });
@@ -107,8 +107,8 @@ var transit = (function () {
 
                         var xy = transit.strip(parentTag.find('Point').text()).split(',');
                         points[transit.trim(parentTag.find('name').text()).toLowerCase()] = {
-                            x: parseFloat(xy[0], 10),
-                            y: parseFloat(xy[1], 10)
+                            x: parseFloat(xy[1], 10),
+                            y: parseFloat(xy[0], 10)
                         };
                     });
                 },
