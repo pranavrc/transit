@@ -49,13 +49,13 @@ var transit = (function () {
             return map;
         },
 
-        initMarker : function (coords, mouseoverText, map) {
+        initMarker : function (coords, mouseoverText, map, color) {
             mouseoverText = (typeof mouseoverText == 'undefined') ? 'Marker' : mouseoverText;
             var markerPos = new google.maps.LatLng(coords.x, coords.y);
 
             var markerIcon = {
                 path: google.maps.SymbolPath.CIRCLE,
-                fillColor: 'red',
+                fillColor: color,
                 fillOpacity: 0.8,
                 scale: 7
             };
@@ -225,9 +225,13 @@ var transit = (function () {
             var percentStopDists = ps.hash;
             var percentDists = ps.percentages;
 
+            var colors = ['red', 'blue', 'yellow', 'white', 'green', 'orange'];
+            vehicleObj.color = colors[Math.floor(Math.random() * colors.length)];
+
             return {
                 "name": vehicleObj.name,
                 "info": vehicleObj.info,
+                "color": vehicleObj.color,
                 "starts": startTime,
                 "route": line,
                 "stops": vehicleStopCoords,
@@ -532,7 +536,7 @@ var transit = (function () {
                                                                           currPosition.leftTime,
                                                                           currPosition.approachTime);
                                 var currMarker = transit.initMarker(currPosition.currentCoords,
-                                                                    mouseOverInfo, map);
+                                                                    mouseOverInfo, map, vehicle.color);
                                 currMarker.setMap(map);
                                 vehicle.markers[i] = currMarker;
                             }
