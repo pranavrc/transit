@@ -6,7 +6,7 @@ var transit = (function () {
             };
 
             $("#map").append("<div id=\"status\"></div>")
-                     .append("<div id=\"timezone\">timezone</div>")
+                     .append("<div id=\"timezone\"></div>")
                      .append("<div id=\"transitMap\"></div");
 
             $("#map").css('position', 'relative');
@@ -390,7 +390,10 @@ var transit = (function () {
             if (hms.length < 3)
                 hms[2] = 0;
 
-            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400 + timezone * 60;
+            var tzS = timezone.split(':');
+            tzS = tzS.map(function (x) { return parseInt(x, 10); });
+
+            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400 + tzS[0] * 3600 + tzS[1] * 60;
         },
 
         currTime : function () {
@@ -486,6 +489,8 @@ var transit = (function () {
             var timezone = vehicleObj.timezone;
             var vehicles = vehicleObj.vehicles;
             var noOfVehicles = vehicles.length;
+
+            $('#timezone').append("UTC" + timezone);
 
             for (var count = 0; count < noOfVehicles; count++) {
                 vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
