@@ -11,7 +11,7 @@ var transit = (function () {
 
         initMarker : function (coords, mouseoverText, map) {
             mouseoverText = (typeof mouseoverText == 'undefined') ? 'Marker' : mouseoverText;
-            var markerPos = new google.maps.LatLng(coords[0], coords[1]);
+            var markerPos = new google.maps.LatLng(coords.x, coords.y);
 
             var markerIcon = {
                 path: google.maps.SymbolPath.CIRCLE,
@@ -449,7 +449,8 @@ var transit = (function () {
                                                                           currPosition.approaching,
                                                                           currPosition.leftTime,
                                                                           currPosition.approachTime);
-                                var currMarker = transit.initMarker(currPosition, mouseOverInfo, map);
+                                var currMarker = transit.initMarker(currPosition.currentCoords,
+                                                                    mouseOverInfo, map);
                                 currMarker.setMap(map);
                                 vehicle.markers[i] = currMarker;
                             }
