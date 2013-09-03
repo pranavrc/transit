@@ -5,14 +5,22 @@ var transit = (function () {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            $("#transitMap").wrap("<div id=\"mapDiv\"></div>");
-            $("#mapDiv").append("<div id=\"status\">Hover over a marker.</div>");
+            $("#map").append("<div id=\"status\"></div>")
+                     .append("<div id=\"timezone\">timezone</div>")
+                     .append("<div id=\"transitMap\"></div");
 
-            $("#mapDiv").css('position', 'relative');
+            $("#map").css('position', 'relative');
+
+            $("#transitMap").css({
+                'position': 'absolute',
+                'width': '100%',
+                'height': '100%',
+            });
+
             $("#status").css({
                 'position': 'absolute',
-                'top': '10px',
-                'left': '75px',
+                'bottom': '3%',
+                'right': '1%',
                 'z-index': '99',
                 'background-color': 'hsl(0, 0%, 90%)',
                 'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
