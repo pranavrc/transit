@@ -57,7 +57,7 @@ var transit = (function () {
                 path: google.maps.SymbolPath.CIRCLE,
                 fillColor: 'red',
                 fillOpacity: 0.8,
-                scale: 5
+                scale: 7
             };
 
             var marker = {
