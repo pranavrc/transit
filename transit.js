@@ -182,6 +182,7 @@ var transit = (function () {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = new Array();
+            var vehicleTravelTimesAsStrings = new Array();
             var vehicleRoute = vehicleObj.route;
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
@@ -192,6 +193,7 @@ var transit = (function () {
             var points = routes.points;
             var opLine = routes.lines[vehicleRoute.toLowerCase()];
 
+            vehicleTravelTimesAsStrings.push(firstStop.departure);
             vehicleDepartures[startTime - startTime] = firstStopName;
             vehicleTravelTimes.push(startTime - startTime);
             vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine, points[firstStopName.toLowerCase()]);
@@ -203,6 +205,7 @@ var transit = (function () {
                 var currDepartureTime = transit.parseTime(temp.departure, temp.day, timezone) - startTime;
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
+                vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
                 vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName.toLowerCase()]);
             }
@@ -211,6 +214,7 @@ var transit = (function () {
             var lastStopName = lastStop.name;
             var endTime = transit.parseTime(lastStop.arrival, lastStop.day, timezone) - startTime;
             vehicleArrivals[endTime] = lastStopName;
+            vehicleTravelTimesAsStrings.push(lastStop.arrival);
             vehicleTravelTimes.push(endTime);
             vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName.toLowerCase()]);
             var line = transit.pointsBetweenStops(opLine,
@@ -232,7 +236,8 @@ var transit = (function () {
                 "days": lastStop.day - firstStop.day,
                 "arrivals": vehicleArrivals,
                 "departures": vehicleDepartures,
-                "traveltimes": vehicleTravelTimes
+                "traveltimes": vehicleTravelTimes,
+                "traveltimesasstrings": vehicleTravelTimesAsStrings
             };
         },
 
@@ -407,6 +412,7 @@ var transit = (function () {
             var arrivals = vehicleObj.arrivals;
             var departures = vehicleObj.departures;
             var travelTimes = vehicleObj.traveltimes;
+            var travelTimesAsStrings = vehicleObj.traveltimesasstrings;
             var noOfDays = vehicleObj.days;
             var ppoints = vehicleObj.ppoints;
             var ppercents = vehicleObj.ppercents;
@@ -431,10 +437,12 @@ var transit = (function () {
                 var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i, timezone) - starts);
 
                 if (range[0] % 2 == 0 && range.length == 2) {
-                    currPos.leftTime = travelTimes[range[0]];
-                    currPos.approachTime = travelTimes[range[1]];
-                    var leavingStop = departures[currPos.leftTime];
-                    var approachingStop = arrivals[currPos.approachTime];
+                    var leftTime = travelTimes[range[0]];
+                    var approachTime = travelTimes[range[1]];
+                    currPos.leftTime = travelTimesAsStrings[range[0]];
+                    currPos.approachTime = travelTimesAsStrings[range[1]];
+                    var leavingStop = departures[leftTime];
+                    var approachingStop = arrivals[approachTime];
                     currPos.leaving = leavingStop;
                     currPos.approaching = approachingStop;
                     var leavingStopCoords = stops[leavingStop];
