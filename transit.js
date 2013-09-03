@@ -208,12 +208,14 @@ var transit = (function () {
         },
 
         resolvePointToLine : function (line, point) {
-            var closestDist = transit.linearDist(line[0], point);
-            var currPt = line[0]
+            var closestDist = transit.linearDist(line[0], point).toFixed(20);
+            var currPt = line[0];
             for (var count = 1; count < line.length; count++) {
-                var currDist = transit.linearDist(line[count], point);
-                if (closestDist > currDist)
+                var currDist = transit.linearDist(line[count], point).toFixed(20);
+                if (closestDist > currDist) {
                     currPt = line[count];
+                    closestDist = currDist;
+                }
             }
 
             return currPt;
