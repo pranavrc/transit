@@ -478,8 +478,8 @@ var transit = (function () {
             var base = "<strong>Vehicle: </strong>" + name + "<br />" +
                        "<strong>Info: </strong>" + info + "<br />";
             if (stationary) {
-                return base + "<br />" + "<strong>At: </strong>" + stationary +
-                       "<br />" + "<strong>Departs: </strong>" + departTime;
+                return base + "<strong>At: </strong>" + stationary +
+                       "<br />" + "<strong>Departure: </strong>" + departTime;
             } else {
                 return base +
                        "<strong>Left: </strong>" + l + " (" + lT + ")" + "<br />" +
