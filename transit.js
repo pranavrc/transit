@@ -396,13 +396,14 @@ var transit = (function () {
         },
 
         mouseOverInfo : function (name, info, stationary, departTime, l, a, lT, aT) {
-            var base = "Vehicle: " + name + "\n" + info + "\n";
+            var base = "<strong>Vehicle: </strong>" + name + "<br />" + info + "<br />";
             if (stationary) {
-                return base + "\n" + "At: " + stationary + "\n" + "Departs: " + departTime;
+                return base + "<br />" + "<strong>At: </strong>" + stationary +
+                       "<br />" + "<strong>Departs: </strong>" + departTime;
             } else {
                 return base +
-                       "Leaving: " + l + "\n" + " (" + lT + ")" +
-                       "Approaching: " + a + " (" + aT + ")";
+                       "<strong>Leaving: </strong>" + l + " (" + lT + ")" + "<br />" +
+                       "<strong>Approaching: </strong>" + a + " (" + aT + ")";
             }
         },
 
