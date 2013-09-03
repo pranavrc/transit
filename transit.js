@@ -454,7 +454,7 @@ var transit = (function () {
                         var currentStop = travelTimes[range[1]];
                         currPos.stationaryAt = departures[currentStop];
                         currPos.departureTime = currentStop;
-                        currPos.currentCoords = stops[currentStop];
+                        currPos.currentCoords = stops[currPos.stationaryAt];
                     }
                 }
 
