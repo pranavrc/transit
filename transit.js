@@ -179,10 +179,10 @@ var transit = (function () {
             var line = transit.pointsBetweenStops(opLine,
                                                   vehicleStopCoords[firstStopName],
                                                   vehicleStopCoords[lastStopName]);
-            var percentStopDists = transit.hashOfPercentDists(line);
+            var ps = transit.hashOfPercentDists(line);
 
-            var percentDists = new Array();
-            for (var x in percentStopDists) percentDists.push(x);
+            var percentStopDists = ps.hash;
+            var percentDists = ps.percentages;
 
             return {
                 "name": vehicleObj.name,
@@ -288,19 +288,25 @@ var transit = (function () {
             var distanceHash = {
                 0 : points[0]
             };
-            var distances = new Array();
+            var distances = [0];
             var totalDist = 0;
+            var percentages = new Array();
 
             for (var x = 0; x < routeLength - 1; x++) {
-                totalDist += transit.linearDist(points[x], points[x + 1]);
+                totalDist += transit.haversine(points[x], points[x + 1]);
                 distances.push(totalDist);
             }
 
             for (var x = 0; x < distances.length; x++) {
-                distanceHash[transit.percentInRange(0, totalDist, distances[x])] = points[x + 1];
+                var percentage = transit.percentInRange(0, totalDist, distances[x]);
+                percentages.push(percentage);
+                distanceHash[percentage] = points[x];
             }
 
-            return distanceHash;
+            return {
+                "percentages": percentages,
+                "hash": distanceHash
+            };
         },
 
         // Variant of binary search that returns enclosing elements of searchElement in array.
