@@ -455,7 +455,7 @@ var transit = (function () {
                                 vehicle.markers[i] = currMarker;
                             }
                         }
-                    }, 0);
+                    }, 1000);
         },
 
         initialize : function (localKmlFile, remoteKmlFile, jsonFile) {
