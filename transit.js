@@ -22,7 +22,6 @@ var transit = (function () {
 
             var mouseoverInfo = new google.maps.InfoWindow({
                 content: mouseoverText,
-                map: map
             });
 
             var marker = {
