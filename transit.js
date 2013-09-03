@@ -267,8 +267,18 @@ var transit = (function () {
             return ((target - lower) / (upper - lower)) * 100;
         },
 
-        pointsBetweenStops: function (route, start, end) {
-            return route.slice(route.indexOf(start), route.indexOf(end) + 1);
+        pointsBetweenStops : function (route, start, end) {
+            return route.slice(transit.indexOfCoordsObjInList(route, start),
+                               transit.indexOfCoordsObjInList(route, end) + 1);
+        },
+
+        indexOfCoordsObjInList : function (list, coords) {
+            for (var i = 0; i < list.length; i++) {
+                if (coords.x == list[i].x && coords.y == list[i].y)
+                    return i;
+            }
+
+            return -1;
         },
 
         hashOfPercentDists : function (points) {
