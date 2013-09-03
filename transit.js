@@ -5,6 +5,26 @@ var transit = (function () {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
+            $("#transitMap").wrap("<div id=\"mapDiv\"></div>");
+            $("#mapDiv").append("<div id=\"status\">Hover over a marker.</div>");
+
+            $("#mapDiv").css('position', 'relative');
+            $("#status").css({
+                'position': 'absolute',
+                'top': '10px',
+                'left': '75px',
+                'z-index': '99',
+                'background-color': 'hsl(0, 0%, 90%)',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
+                'font-size': '12px',
+                '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+	            '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+            	'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'border-radius': '5px',
+                'padding': '10px',
+                'display': 'none'
+            });
+
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
             return map;
         },
@@ -20,10 +40,6 @@ var transit = (function () {
                 scale: 5
             };
 
-            var mouseoverInfo = new google.maps.InfoWindow({
-                content: mouseoverText,
-            });
-
             var marker = {
                 position: markerPos,
                 icon: markerIcon
@@ -31,12 +47,13 @@ var transit = (function () {
 
             marker = new google.maps.Marker(marker);
 
-            google.maps.event.addListener(marker, 'mouseover', function() {
-            	mouseoverInfo.open(map, this);
+            google.maps.event.addListener(marker, 'mouseover', function () {
+                $('#status').css('display', 'inline');
+                $('#status').html(mouseoverText);
             });
 
-            google.maps.event.addListener(marker, 'mouseout', function() {
-            	mouseoverInfo.close();
+            google.maps.event.addListener(marker, 'mouseout', function () {
+                $('#status').css('display', 'none');
             });
 
             return marker;
