@@ -18,8 +18,8 @@ var transit = (function () {
                 'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
                 'font-size': '12px',
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-	            '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-            	'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'border-radius': '5px',
                 'padding': '10px',
                 'display': 'none'
