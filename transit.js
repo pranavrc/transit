@@ -28,9 +28,21 @@ var transit = (function () {
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
                 'border-radius': '5px',
                 'padding': '10px',
                 'display': 'none'
+            });
+
+            $("#timezone").css({
+                'position': 'absolute',
+                'bottom': '4%',
+                'left': '1%',
+                'z-index': '99',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
+                'font-weight': 'bold',
+                'font-size': '14px',
+                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
             });
 
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
