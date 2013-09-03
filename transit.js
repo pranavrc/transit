@@ -397,12 +397,21 @@ var transit = (function () {
                     var approachingStop = arrivals[currPos.approachTime];
                     currPos.leaving = leavingStop;
                     currPos.approaching = approachingStop;
-
+                    var leavingStopCoords = stops[leavingStop];
+                    var approachingStopCoords = stops[approachingStop];
                     var timePercent = transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
                                                              transit.parseTime(time, i, timezone) - starts);
-                    var timeRange = transit.enclosure.call(ppercents, timePercent);
-                    currPos.currentCoords = transit.percentDist(ppoints[ppercents[timeRange[0]]],
-                                                                ppoints[ppercents[timeRange[1]]], timePercent);
+                    var pointsFromLtoA = transit.pointsBetweenStops(route, leavingStopCoords,
+                                                                    approachingStopCoords);
+                    var ps = transit.hashOfPercentDists(pointsFromLtoA);
+                    var distHash = ps.hash;
+
+                    var distList = ps.percentages;
+                    var timeRange = transit.enclosure.call(distList, timePercent);
+                    var bef = distList[timeRange[0]];
+                    var af = distList[timeRange[1]];
+                    var percent = transit.percentInRange(bef, af, timePercent);
+                    currPos.currentCoords = transit.percentDist(distHash[bef], distHash[af], percent);
                 } else {
                     if (typeof range[1] != 'undefined' && range[0] != 0) {
                         var currentStop = travelTimes[range[1]];
