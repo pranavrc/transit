@@ -186,7 +186,7 @@ var transit = (function () {
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
             var firstStop = stopsObj[0];
-            var firstStopName = firstStop.name.toLowerCase();
+            var firstStopName = firstStop.name;
             var startTime = transit.parseTime(firstStop.departure, firstStop.day, timezone);
             var vehicleStopCoords = {};
             var points = routes.points;
@@ -194,25 +194,25 @@ var transit = (function () {
 
             vehicleDepartures[startTime - startTime] = firstStopName;
             vehicleTravelTimes.push(startTime - startTime);
-            vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine, points[firstStopName]);
+            vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine, points[firstStopName.toLowerCase()]);
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
-                var tempName = temp.name.toLowerCase();
+                var tempName = temp.name;
                 var currArrivalTime = transit.parseTime(temp.arrival, temp.day, timezone) - startTime;
                 var currDepartureTime = transit.parseTime(temp.departure, temp.day, timezone) - startTime;
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
-                vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName]);
+                vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName.toLowerCase()]);
             }
 
             var lastStop = stopsObj[noOfStops - 1];
-            var lastStopName = lastStop.name.toLowerCase();
+            var lastStopName = lastStop.name;
             var endTime = transit.parseTime(lastStop.arrival, lastStop.day, timezone) - startTime;
             vehicleArrivals[endTime] = lastStopName;
             vehicleTravelTimes.push(endTime);
-            vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName]);
+            vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName.toLowerCase()]);
             var line = transit.pointsBetweenStops(opLine,
                                                   vehicleStopCoords[firstStopName],
                                                   vehicleStopCoords[lastStopName]);
