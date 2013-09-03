@@ -462,9 +462,8 @@ var transit = (function () {
                     currPos.currentCoords = transit.percentDist(distHash[bef], distHash[af], percent);
                 } else {
                     if (typeof range[1] != 'undefined' && range[0] != 0) {
-                        var currentStop = travelTimes[range[1]];
-                        currPos.stationaryAt = departures[currentStop];
-                        currPos.departureTime = currentStop;
+                        currPos.stationaryAt = departures[travelTimes[range[1]]];
+                        currPos.departureTime = travelTimesAsStrings[range[1]];
                         currPos.currentCoords = stops[currPos.stationaryAt];
                     }
                 }
@@ -476,13 +475,14 @@ var transit = (function () {
         },
 
         mouseOverInfo : function (name, info, stationary, departTime, l, a, lT, aT) {
-            var base = "<strong>Vehicle: </strong>" + name + "<br />" + info + "<br />";
+            var base = "<strong>Vehicle: </strong>" + name + "<br />" +
+                       "<strong>Info: </strong>" + info + "<br />";
             if (stationary) {
                 return base + "<br />" + "<strong>At: </strong>" + stationary +
                        "<br />" + "<strong>Departs: </strong>" + departTime;
             } else {
                 return base +
-                       "<strong>Leaving: </strong>" + l + " (" + lT + ")" + "<br />" +
+                       "<strong>Left: </strong>" + l + " (" + lT + ")" + "<br />" +
                        "<strong>Approaching: </strong>" + a + " (" + aT + ")";
             }
         },
