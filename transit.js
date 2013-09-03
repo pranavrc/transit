@@ -27,7 +27,6 @@ var transit = (function () {
 
             var marker = {
                 position: markerPos,
-                title: mouseoverText,
                 icon: markerIcon
             };
 
