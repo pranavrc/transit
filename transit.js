@@ -1,15 +1,15 @@
 var transit = (function () {
     return {
-        initMap : function () {
+        initMap : function (div) {
             var mapDet = {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            $("#map").append("<div id=\"status\"></div>")
-                     .append("<div id=\"timezone\"></div>")
-                     .append("<div id=\"transitMap\"></div");
+            $("#" + div).append("<div id=\"status\"></div>")
+                        .append("<div id=\"timezone\"></div>")
+                        .append("<div id=\"transitMap\"></div");
 
-            $("#map").css('position', 'relative');
+            $("#" + div).css('position', 'relative');
 
             $("#transitMap").css({
                 'position': 'absolute',
@@ -506,8 +506,8 @@ var transit = (function () {
             }
         },
 
-        main : function (localKmlFile, remoteKmlFile, jsonFile) {
-            var map = transit.initMap();
+        main : function (div, localKmlFile, remoteKmlFile, jsonFile) {
+            var map = transit.initMap(div);
             transit.overlayKml(remoteKmlFile, map);
             var routeObj = transit.routeParser(localKmlFile);
             var routeLines = routeObj.lines;
@@ -577,10 +577,10 @@ var transit = (function () {
                     }, 1000);
         },
 
-        initialize : function (localKmlFile, remoteKmlFile, jsonFile) {
+        initialize : function (div, localKmlFile, remoteKmlFile, jsonFile) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
-                        transit.main(localKmlFile, remoteKmlFile, jsonFile);
+                        transit.main(div, localKmlFile, remoteKmlFile, jsonFile);
                     });
         }
     };
