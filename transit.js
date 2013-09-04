@@ -432,6 +432,7 @@ var transit = (function () {
                 "approaching": "",
                 "leftTime": 0,
                 "approachTime": 0,
+                "justReached": false,
                 "currentCoords": null
             };
 
@@ -470,6 +471,7 @@ var transit = (function () {
                         currPos.departureTime = travelTimesAsStrings[range[1]];
                         currPos.currentCoords = stops[currPos.stationaryAt];
                     } else if (range > 0 && range < travelTimes.length - 1) {
+                        currPos.justReached = true;
                         currPos.stationaryAt = departures[travelTimes[range + 1]];
                         currPos.departureTime = travelTimesAsStrings[range + 1];
                         currPos.currentCoords = stops[currPos.stationaryAt];
@@ -531,6 +533,14 @@ var transit = (function () {
                                 var currPosition = currPositions[i];
 
                                 if (!currPosition.currentCoords) continue;
+
+                                if (currPosition.justReached) {
+                                    $('#status').css('display', 'inline');
+                                    $('#status').html("<strong>" + vehicle.name +
+                                                      "</strong> just reached <strong>" +
+                                                      currPosition.stationaryAt + "</strong>.");
+                                    $('#status').fadeOut(5000);
+                                }
 
                                 var mouseOverInfo = transit.mouseOverInfo(vehicle.name, vehicle.info,
                                                                           currPosition.stationaryAt,
