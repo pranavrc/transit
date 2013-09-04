@@ -563,7 +563,8 @@ var transit = (function () {
             var vehicles = vehicleObj.vehicles;
             var noOfVehicles = vehicles.length;
 
-            $('#timezone').append("UTC" + timezone);
+            $('#timezone').append("UTC" + timezone + ". Local+" +
+                                  transit.secondsToHours(transit.parseTimeZone(timezone)));
 
             for (var count = 0; count < noOfVehicles; count++) {
                 vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
