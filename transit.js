@@ -117,41 +117,46 @@ var transit = (function () {
             var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
         },
 
-        routeParser : function (xmlUrl) {
+        kmlPromise : function (kmlUrl) {
+            return $.ajax({
+                url: kmlUrl,
+                dataType: 'xml',
+                async: true
+            });
+        },
+
+        jsonPromise : function (jsonUrl) {
+            return $.ajax({
+                url: jsonUrl,
+                dataType: 'json',
+                async: true
+            });
+        },
+
+        routeParser : function (data) {
             var lines = {};
             var points = {};
+            var xmlNode = $('Document', data);
 
-            $.ajax({
-                url: xmlUrl,
-                dataType: 'xml',
-                async: false,
-                success : function (data) {
-                    var xmlNode = $('Document', data);
-
-                    xmlNode.find('Placemark > LineString > coordinates').each(function () {
-                        var simPts = transit.trim($(this).text()).split(' ');
-                        var grpPts = new Array();
-                        var routeName = $(this).closest('Placemark').find('name').text().toLowerCase();
-                        for (eachPt in simPts) {
-                            var xy = transit.strip(simPts[eachPt]).split(',');
-                            grpPts.push({ x: parseFloat(xy[1], 10), y: parseFloat(xy[0], 10) });
-                        }
-                        lines[transit.trim(routeName)] = grpPts;
-                    });
-
-                    xmlNode.find('Point').each(function () {
-                        var parentTag = $(this).closest('Placemark');
-
-                        var xy = transit.strip(parentTag.find('Point').text()).split(',');
-                        points[transit.trim(parentTag.find('name').text()).toLowerCase()] = {
-                            x: parseFloat(xy[1], 10),
-                            y: parseFloat(xy[0], 10)
-                        };
-                    });
-                },
-                error : function (data) {
-                    console.log('Error');
+            xmlNode.find('Placemark > LineString > coordinates').each(function () {
+                var simPts = transit.trim($(this).text()).split(' ');
+                var grpPts = new Array();
+                var routeName = $(this).closest('Placemark').find('name').text().toLowerCase();
+                for (eachPt in simPts) {
+                    var xy = transit.strip(simPts[eachPt]).split(',');
+                    grpPts.push({ x: parseFloat(xy[1], 10), y: parseFloat(xy[0], 10) });
                 }
+                lines[transit.trim(routeName)] = grpPts;
+            });
+
+            xmlNode.find('Point').each(function () {
+                var parentTag = $(this).closest('Placemark');
+
+                var xy = transit.strip(parentTag.find('Point').text()).split(',');
+                points[transit.trim(parentTag.find('name').text()).toLowerCase()] = {
+                    x: parseFloat(xy[1], 10),
+                    y: parseFloat(xy[0], 10)
+                };
             });
 
             return {
@@ -160,21 +165,11 @@ var transit = (function () {
             };
         },
 
-        vehicleParser : function (jsonUrl) {
+        vehicleParser : function (data) {
             var vehicleObj = {};
 
-            $.ajax({
-                url: jsonUrl,
-                dataType: 'json',
-                async: false,
-                success : function (data) {
-                    vehicleObj.timezone = data.timezone;
-                    vehicleObj.vehicles = data.vehicles;
-                },
-                error : function (data) {
-                    console.log('Error');
-                }
-            });
+            vehicleObj.timezone = data.timezone;
+            vehicleObj.vehicles = data.vehicles;
 
             return vehicleObj;
         },
