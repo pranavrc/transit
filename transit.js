@@ -184,7 +184,7 @@ var transit = (function () {
             var noOfStops = vehicleObj.stops.length;
             var firstStop = stopsObj[0];
             var firstStopName = firstStop.name;
-            var startTime = transit.parseTime(firstStop.departure, firstStop.day, timezone);
+            var startTime = transit.parseTime(firstStop.departure, firstStop.day);
             var vehicleStopCoords = {};
             var points = routes.points;
             var opLine = routes.lines[vehicleRoute.toLowerCase()];
@@ -198,8 +198,8 @@ var transit = (function () {
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
                 var tempName = temp.name;
-                var currArrivalTime = transit.parseTime(temp.arrival, temp.day, timezone) - startTime;
-                var currDepartureTime = transit.parseTime(temp.departure, temp.day, timezone) - startTime;
+                var currArrivalTime = transit.parseTime(temp.arrival, temp.day) - startTime;
+                var currDepartureTime = transit.parseTime(temp.departure, temp.day) - startTime;
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
                 vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
@@ -212,7 +212,7 @@ var transit = (function () {
 
             var lastStop = stopsObj[noOfStops - 1];
             var lastStopName = lastStop.name;
-            var endTime = transit.parseTime(lastStop.arrival, lastStop.day, timezone) - startTime;
+            var endTime = transit.parseTime(lastStop.arrival, lastStop.day) - startTime;
             vehicleArrivals[endTime] = lastStopName;
             vehicleTravelTimesAsStrings.push(lastStop.arrival);
             vehicleTravelTimes.push(endTime);
@@ -434,10 +434,12 @@ var transit = (function () {
             var stops = vehicleObj.stops;
             var positions = new Array();
 
+            var timeOffset = new Date().getTimezoneOffset() * 60;
             var time = transit.currTime();
 
             for (var i = 1; i <= noOfDays + 1; i++) {
-                var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i, timezone) - starts);
+                var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i) +
+                                                   transit.parseTimeZone(timezone) - starts);
 
                 var currPos = {
                     "stationaryAt": "",
@@ -465,7 +467,8 @@ var transit = (function () {
                     var leavingStopCoords = stops[leavingStop];
                     var approachingStopCoords = stops[approachingStop];
                     var timePercent = transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
-                                                             transit.parseTime(time, i, timezone) - starts);
+                                                             transit.parseTime(time, i) +
+                                                             transit.parseTimeZone(timezone) - starts);
                     var pointsFromLtoA = transit.pointsBetweenStops(route, leavingStopCoords,
                                                                     approachingStopCoords);
                     var ps = transit.hashOfPercentDists(pointsFromLtoA);
