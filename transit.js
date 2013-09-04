@@ -1,13 +1,13 @@
 var transit = (function () {
     return {
-        initMap : function (div) {
+        initMap : function (div, stopsList, routePoints) {
             var mapDet = {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
             $("#" + div).append("<div id=\"status\"></div>")
                         .append("<div id=\"timezone\"></div>")
-                        .append("<div id=\"transitMap\"></div");
+                        .append("<div id=\"transitMap\"></div>");
 
             $("#" + div).css('position', 'relative');
 
@@ -46,7 +46,42 @@ var transit = (function () {
             });
 
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
+            transit.initSearch(div, stopsList, routePoints, map);
+
             return map;
+        },
+
+        initSearch : function (div, stopsList, routePoints, map) {
+            $('head').append('<link rel="stylesheet" ' +
+                             'href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />');
+
+            $.getScript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js", function () {
+                $("#" + div).append("<input type=\"text\" id=\"search\" placeholder=\"Search stops.\">");
+
+                $("#search").css({
+                    'position': 'absolute',
+                    'width': '50%',
+                    'height': '6px',
+                    'top': '1%',
+                    'left': '20%',
+                    'z-index': '99',
+                    'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana,' +
+                                   'Arial, Helvetica, sans-serif',
+                    'font-size': '12px',
+                    'border-radius': '5px',
+                    'padding': '10px',
+                });
+
+                $("#search").autocomplete({
+                    source: stopsList,
+                    select: function (event, ui) {
+                        var coordsOfItem = routePoints[ui.item.value];
+                        var zeroIn = new google.maps.LatLng(coordsOfItem.x, coordsOfItem.y);
+                        map.setZoom(15);
+                        map.setCenter(zeroIn);
+                    }
+                });
+            });
         },
 
         initMarker : function (coords, mouseoverText, map, color) {
