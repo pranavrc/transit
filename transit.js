@@ -395,17 +395,23 @@ var transit = (function () {
             }
         },
 
-        parseTime : function (timeString, day, timezone) {
+        parseTimeZone : function (timezone) {
+            var timeOffset = new Date().getTimezoneOffset();
+
+            var tzS = timezone.split(':');
+            tzS = tzS.map(function (x) { return parseInt(x, 10); });
+
+            return tzS[0] * 3600 + tzS[1] * 60 + timeOffset * 60;
+        },
+
+        parseTime : function (timeString, day) {
             var hms = timeString.split(':');
             hms = hms.map(function (x) { return parseInt(x, 10); });
 
             if (hms.length < 3)
                 hms[2] = 0;
 
-            var tzS = timezone.split(':');
-            tzS = tzS.map(function (x) { return parseInt(x, 10); });
-
-            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400 + tzS[0] * 3600 + tzS[1] * 60;
+            return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400;
         },
 
         currTime : function () {
