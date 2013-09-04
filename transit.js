@@ -558,24 +558,25 @@ var transit = (function () {
                                 if (!currPosition.currentCoords) continue;
 
                                 if (currPosition.justReached) {
-                                    $('#status').stop(true, true);
-                                    $('#status').css('display', 'inline');
-                                    $('#status').html("<strong>" + vehicle.name +
-                                                      "</strong> just reached <strong>" +
-                                                      currPosition.stationaryAt + "</strong>. " +
-                                                      "Departs at: <strong>" + currPosition.departureTime +
-                                                      "</strong>." );
-                                    $('#status').fadeOut(5000);
+                                    transit.writeStatus('status',
+                                                        "<strong>" + vehicle.name +
+                                                        "</strong> just reached <strong>" +
+                                                        currPosition.stationaryAt + "</strong>. " +
+                                                        "Departs at: <strong>" + currPosition.departureTime +
+                                                        "</strong>." );
                                 } else if (currPosition.justLeft) {
-                                    $('#status').stop(true, true);
-                                    $('#status').css('display', 'inline');
-                                    $('#status').html("<strong>" + vehicle.name +
-                                                      "</strong> just left <strong>" +
-                                                      currPosition.stationaryAt + "</strong>. " +
-                                                      "Next Stop: <strong>" + currPosition.approachingStop +
-                                                      "</strong> at <strong>" + currPosition.approachTime +
-                                                      "</strong>.");
-                                    $('#status').fadeOut(5000);
+                                    transit.writeStatus('status',
+                                                        "<strong>" + vehicle.name +
+                                                        "</strong> just left <strong>" +
+                                                        currPosition.stationaryAt + "</strong>. " +
+                                                        "Next Stop: <strong>" + currPosition.approachingStop +
+                                                        "</strong> at <strong>" + currPosition.approachTime +
+                                                        "</strong>.");
+                                } else if (currPosition.completed) {
+                                    transit.writeStatus('status',
+                                                        "<strong>" + vehicle.name +
+                                                        "</strong> just reached its destination at <strong>" +
+                                                        currPosition.stationaryAt + "</strong>.");
                                 }
 
                                 var mouseOverInfo = transit.mouseOverInfo(vehicle.name, vehicle.info,
