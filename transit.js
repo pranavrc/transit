@@ -389,7 +389,7 @@ var transit = (function () {
                 if (typeof this[currentIndex - 1] !=  'undefined')
                     return [currentIndex - 1, currentIndex];
                 else
-                    return 0;
+                    return -1;
             }
         },
 
