@@ -434,6 +434,7 @@ var transit = (function () {
                 "leftTime": 0,
                 "approachTime": 0,
                 "justReached": false,
+                "justLeft": false,
                 "currentCoords": null
             };
 
@@ -472,10 +473,17 @@ var transit = (function () {
                         currPos.departureTime = travelTimesAsStrings[range[1]];
                         currPos.currentCoords = stops[currPos.stationaryAt];
                     } else if (range > 0 && range < travelTimes.length - 1) {
-                        currPos.justReached = true;
-                        currPos.stationaryAt = departures[travelTimes[range + 1]];
-                        currPos.departureTime = travelTimesAsStrings[range + 1];
-                        currPos.currentCoords = stops[currPos.stationaryAt];
+                        if (range % 2 != 0) {
+                            currPos.justReached = true;
+                            currPos.stationaryAt = departures[travelTimes[range + 1]];
+                            currPos.departureTime = travelTimesAsStrings[range + 1];
+                            currPos.currentCoords = stops[currPos.stationaryAt];
+                        } else {
+                            currPos.justLeft = true;
+                            currPos.stationaryAt = departures[travelTimes[range]];
+                            currPos.departureTime = travelTimesAsStrings[range];
+                            currPos.currentCoords = stops[currPos.stationaryAt];
+                        }
                     }
                 }
 
