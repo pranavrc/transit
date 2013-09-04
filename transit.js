@@ -595,7 +595,7 @@ var transit = (function () {
         },
 
         main : function (div, localKmlFile, remoteKmlFile, jsonFile, routeObj, vehicleObj) {
-            var map = transit.initMap(div);
+            var map = transit.initMap(div, routeObj.stopnames, routeObj.points);
             transit.overlayKml(remoteKmlFile, map);
             var routeLines = routeObj.lines;
             var routePoints = routeObj.points;
