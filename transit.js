@@ -513,6 +513,13 @@ var transit = (function () {
             }
         },
 
+        writeStatus : function (statusDiv, htmlContent) {
+            $('#' + statusDiv).stop(true, true);
+            $('#' + statusDiv).css('display', 'inline');
+            $('#' + statusDiv).html(htmlContent);
+            $('#' + statusDiv).fadeOut(5000);
+        },
+
         main : function (div, localKmlFile, remoteKmlFile, jsonFile) {
             var map = transit.initMap(div);
             transit.overlayKml(remoteKmlFile, map);
