@@ -522,13 +522,11 @@ var transit = (function () {
             $('#' + statusDiv).fadeOut(5000);
         },
 
-        main : function (div, localKmlFile, remoteKmlFile, jsonFile) {
+        main : function (div, localKmlFile, remoteKmlFile, jsonFile, routeObj, vehicleObj) {
             var map = transit.initMap(div);
             transit.overlayKml(remoteKmlFile, map);
-            var routeObj = transit.routeParser(localKmlFile);
             var routeLines = routeObj.lines;
             var routePoints = routeObj.points;
-            var vehicleObj = transit.vehicleParser(jsonFile);
             var timezone = vehicleObj.timezone;
             var vehicles = vehicleObj.vehicles;
             var noOfVehicles = vehicles.length;
