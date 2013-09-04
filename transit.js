@@ -384,7 +384,7 @@ var transit = (function () {
                 if (typeof this[currentIndex + 1] != 'undefined')
                     return [currentIndex, currentIndex + 1];
                 else
-                    return currentIndex;
+                    return -1;
             } else {
                 if (typeof this[currentIndex - 1] !=  'undefined')
                     return [currentIndex - 1, currentIndex];
