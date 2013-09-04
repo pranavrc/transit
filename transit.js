@@ -556,9 +556,7 @@ var transit = (function () {
                                                       "Departs at: <strong>" + currPosition.departureTime +
                                                       "</strong>." );
                                     $('#status').fadeOut(5000);
-                                }
-
-                                if (currPosition.justLeft) {
+                                } else if (currPosition.justLeft) {
                                     $('#status').stop(true, true);
                                     $('#status').css('display', 'inline');
                                     $('#status').html("<strong>" + vehicle.name +
