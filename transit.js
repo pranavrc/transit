@@ -479,7 +479,6 @@ var transit = (function () {
                             currPos.stationaryAt = departures[travelTimes[range + 1]];
                             currPos.departureTime = travelTimesAsStrings[range + 1];
                             currPos.currentCoords = stops[currPos.stationaryAt];
-                            console.log(JSON.stringify(currPos));
                         } else {
                             currPos.justLeft = true;
                             currPos.stationaryAt = departures[travelTimes[range]];
