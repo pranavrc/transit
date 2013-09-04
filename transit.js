@@ -421,24 +421,24 @@ var transit = (function () {
             var stops = vehicleObj.stops;
             var positions = new Array();
 
-            var currPos = {
-                "stationaryAt": "",
-                "departureTime": 0,
-                "leaving": "",
-                "approaching": "",
-                "leftTime": 0,
-                "approachTime": 0,
-                "started": false,
-                "completed": false,
-                "justReached": false,
-                "justLeft": false,
-                "currentCoords": null
-            };
-
             var time = transit.currTime();
 
             for (var i = 1; i <= noOfDays + 1; i++) {
                 var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i, timezone) - starts);
+
+                var currPos = {
+                    "stationaryAt": "",
+                    "departureTime": 0,
+                    "leaving": "",
+                    "approaching": "",
+                    "leftTime": 0,
+                    "approachTime": 0,
+                    "started": false,
+                    "completed": false,
+                    "justReached": false,
+                    "justLeft": false,
+                    "currentCoords": null
+                };
 
                 if (range[0] % 2 == 0 && range.length == 2) {
                     var leftTime = travelTimes[range[0]];
