@@ -433,6 +433,7 @@ var transit = (function () {
                 "approaching": "",
                 "leftTime": 0,
                 "approachTime": 0,
+                "started": false,
                 "completed": false,
                 "justReached": false,
                 "justLeft": false,
@@ -490,6 +491,12 @@ var transit = (function () {
                     } else if (range == travelTimes.length - 1) {
                         currPos.completed = true;
                         currPos.stationaryAt = arrivals[travelTimes[range]];
+                        currPos.currentCoords = stops[currPos.stationaryAt];
+                    } else if (range == 0) {
+                        currPos.started = true;
+                        currPos.stationaryAt = departures[travelTimes[range]];
+                        currPos.approachingStop = arrivals[travelTimes[range + 1]];
+                        currPos.approachTime = travelTimesAsStrings[range + 1];
                         currPos.currentCoords = stops[currPos.stationaryAt];
                     }
                 }
@@ -564,10 +571,11 @@ var transit = (function () {
                                                         currPosition.stationaryAt + "</strong>. " +
                                                         "Departs at: <strong>" + currPosition.departureTime +
                                                         "</strong>." );
-                                } else if (currPosition.justLeft) {
+                                } else if (currPosition.justLeft || currPosition.started) {
+                                    var sOrL = currPosition.started ? 'just started from' : 'just left';
                                     transit.writeStatus('status',
                                                         "<strong>" + vehicle.name +
-                                                        "</strong> just left <strong>" +
+                                                        "</strong> " + sOrL + " <strong>" +
                                                         currPosition.stationaryAt + "</strong>. " +
                                                         "Next Stop: <strong>" + currPosition.approachingStop +
                                                         "</strong> at <strong>" + currPosition.approachTime +
