@@ -465,9 +465,13 @@ var transit = (function () {
                     var percent = transit.percentInRange(bef, af, timePercent);
                     currPos.currentCoords = transit.percentDist(distHash[bef], distHash[af], percent);
                 } else {
-                    if (typeof range[1] != 'undefined' && range[0] != 0) {
+                    if (range[0] % 2 != 0 && range.length == 2) {
                         currPos.stationaryAt = departures[travelTimes[range[1]]];
                         currPos.departureTime = travelTimesAsStrings[range[1]];
+                        currPos.currentCoords = stops[currPos.stationaryAt];
+                    } else if (range > 0 && range < travelTimes.length - 1) {
+                        currPos.stationaryAt = departures[travelTimes[range + 1]];
+                        currPos.departureTime = travelTimesAsStrings[range + 1];
                         currPos.currentCoords = stops[currPos.stationaryAt];
                     }
                 }
