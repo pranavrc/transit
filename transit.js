@@ -599,7 +599,20 @@ var transit = (function () {
         initialize : function (div, localKmlFile, remoteKmlFile, jsonFile) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
-                        transit.main(div, localKmlFile, remoteKmlFile, jsonFile);
+                        var kml = transit.kmlPromise(localKmlFile);
+                        var json = transit.jsonPromise(jsonFile);
+
+                        kml.success(function (kmlData) {
+                            json.success(function (jsonData) {
+                                var routes = transit.routeParser(kmlData);
+                                var vehicles = transit.vehicleParser(jsonData);
+                                transit.main(div, localKmlFile, remoteKmlFile, jsonFile, routes, vehicles);
+                            }).fail(function () {
+                                console.log("Error");
+                            });
+                        }).fail(function () {
+                            console.log("Error");
+                        });
                     });
         }
     };
