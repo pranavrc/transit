@@ -188,6 +188,7 @@ var transit = (function () {
             var vehicleStopCoords = {};
             var points = routes.points;
             var opLine = routes.lines[vehicleRoute.toLowerCase()];
+            var line = new Array();
 
             vehicleTravelTimesAsStrings.push(firstStop.departure);
             vehicleDepartures[startTime - startTime] = firstStopName;
@@ -204,6 +205,9 @@ var transit = (function () {
                 vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
                 vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName.toLowerCase()]);
+                var prevStopName = vehicleStopCoords[stopsObj[eachStop - 1].name];
+                line = line.concat(transit.pointsBetweenStops(opLine, prevStopName,
+                                                              vehicleStopCoords[tempName]).slice(0, -1));
             }
 
             var lastStop = stopsObj[noOfStops - 1];
@@ -213,9 +217,7 @@ var transit = (function () {
             vehicleTravelTimesAsStrings.push(lastStop.arrival);
             vehicleTravelTimes.push(endTime);
             vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName.toLowerCase()]);
-            var line = transit.pointsBetweenStops(opLine,
-                                                  vehicleStopCoords[firstStopName],
-                                                  vehicleStopCoords[lastStopName]);
+            var line = line.concat(transit.pointsBetweenStops(opLine, vehicleStopCoords[lastStopName], tempName));
             var ps = transit.hashOfPercentDists(line);
 
             var percentStopDists = ps.hash;
