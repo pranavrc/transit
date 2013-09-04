@@ -68,6 +68,7 @@ var transit = (function () {
             marker = new google.maps.Marker(marker);
 
             google.maps.event.addListener(marker, 'mouseover', function () {
+                $('#status').stop(true, true);
                 $('#status').css('display', 'inline');
                 $('#status').html(mouseoverText);
             });
