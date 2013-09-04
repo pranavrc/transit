@@ -312,8 +312,13 @@ var transit = (function () {
         },
 
         pointsBetweenStops : function (route, start, end) {
-            return route.slice(transit.indexOfCoordsObjInList(route, start),
-                               transit.indexOfCoordsObjInList(route, end) + 1);
+            var startingAt = transit.indexOfCoordsObjInList(route, start);
+            var endingAt = transit.indexOfCoordsObjInList(route, end);
+
+            if (startingAt > endingAt)
+                return route.slice(endingAt, startingAt + 1).reverse();
+            else
+                return route.slice(startingAt, endingAt + 1);
         },
 
         indexOfCoordsObjInList : function (list, coords) {
