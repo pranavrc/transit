@@ -544,9 +544,19 @@ var transit = (function () {
                                 if (!currPosition.currentCoords) continue;
 
                                 if (currPosition.justReached) {
+                                    $('#status').stop(true, true);
                                     $('#status').css('display', 'inline');
                                     $('#status').html("<strong>" + vehicle.name +
                                                       "</strong> just reached <strong>" +
+                                                      currPosition.stationaryAt + "</strong>.");
+                                    $('#status').fadeOut(5000);
+                                }
+
+                                if (currPosition.justLeft) {
+                                    $('#status').stop(true, true);
+                                    $('#status').css('display', 'inline');
+                                    $('#status').html("<strong>" + vehicle.name +
+                                                      "</strong> just left <strong>" +
                                                       currPosition.stationaryAt + "</strong>.");
                                     $('#status').fadeOut(5000);
                                 }
