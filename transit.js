@@ -478,11 +478,15 @@ var transit = (function () {
                             currPos.stationaryAt = departures[travelTimes[range + 1]];
                             currPos.departureTime = travelTimesAsStrings[range + 1];
                             currPos.currentCoords = stops[currPos.stationaryAt];
+                            console.log(JSON.stringify(currPos));
                         } else {
                             currPos.justLeft = true;
                             currPos.stationaryAt = departures[travelTimes[range]];
+                            currPos.approachingStop = arrivals[travelTimes[range + 1]];
                             currPos.departureTime = travelTimesAsStrings[range];
+                            currPos.approachTime = travelTimesAsStrings[range + 1];
                             currPos.currentCoords = stops[currPos.stationaryAt];
+                            console.log(JSON.stringify(currPos));
                         }
                     }
                 }
@@ -548,7 +552,9 @@ var transit = (function () {
                                     $('#status').css('display', 'inline');
                                     $('#status').html("<strong>" + vehicle.name +
                                                       "</strong> just reached <strong>" +
-                                                      currPosition.stationaryAt + "</strong>.");
+                                                      currPosition.stationaryAt + "</strong>. " +
+                                                      "Departs at: <strong>" + currPosition.departureTime +
+                                                      "</strong>." );
                                     $('#status').fadeOut(5000);
                                 }
 
@@ -557,7 +563,10 @@ var transit = (function () {
                                     $('#status').css('display', 'inline');
                                     $('#status').html("<strong>" + vehicle.name +
                                                       "</strong> just left <strong>" +
-                                                      currPosition.stationaryAt + "</strong>.");
+                                                      currPosition.stationaryAt + "</strong>. " +
+                                                      "Next Stop: <strong>" + currPosition.approachingStop +
+                                                      "</strong> at <strong>" + currPosition.approachTime +
+                                                      "</strong>.");
                                     $('#status').fadeOut(5000);
                                 }
 
