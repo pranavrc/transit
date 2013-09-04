@@ -171,6 +171,7 @@ var transit = (function () {
         routeParser : function (data) {
             var lines = {};
             var points = {};
+            var stopNames = new Array();
             var xmlNode = $('Document', data);
 
             xmlNode.find('Placemark > LineString > coordinates').each(function () {
@@ -188,7 +189,10 @@ var transit = (function () {
                 var parentTag = $(this).closest('Placemark');
 
                 var xy = transit.strip(parentTag.find('Point').text()).split(',');
-                points[transit.trim(parentTag.find('name').text()).toLowerCase()] = {
+                var stopName = transit.trim(parentTag.find('name').text()).toLowerCase();
+                stopNames.push(stopName);
+
+                points[stopName] = {
                     x: parseFloat(xy[1], 10),
                     y: parseFloat(xy[0], 10)
                 };
@@ -196,7 +200,8 @@ var transit = (function () {
 
             return {
                 "lines": lines,
-                "points": points
+                "points": points,
+                "stopnames": stopNames
             };
         },
 
