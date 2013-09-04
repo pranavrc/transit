@@ -421,6 +421,22 @@ var transit = (function () {
                    t.getSeconds().toString();
         },
 
+        secondsToHours : function (timeInSeconds) {
+            var absTime = Math.abs(timeInSeconds);
+            var hours = parseInt(absTime / 3600 ) % 24;
+            var minutes = parseInt(absTime / 60 ) % 60;
+            var seconds = absTime % 60;
+
+            var result = (hours < 10 ? "0" + hours : hours) + ":" +
+                         (minutes < 10 ? "0" + minutes : minutes) + ":" +
+                         (seconds  < 10 ? "0" + seconds : seconds);
+
+            if (timeInSeconds >= 0)
+                return result;
+            else
+                return "-" + result;
+        },
+
         estimateCurrentPosition : function (vehicleObj, timezone) {
             var arrivals = vehicleObj.arrivals;
             var departures = vehicleObj.departures;
