@@ -433,6 +433,7 @@ var transit = (function () {
                 "approaching": "",
                 "leftTime": 0,
                 "approachTime": 0,
+                "completed": false,
                 "justReached": false,
                 "justLeft": false,
                 "currentCoords": null
@@ -486,8 +487,11 @@ var transit = (function () {
                             currPos.departureTime = travelTimesAsStrings[range];
                             currPos.approachTime = travelTimesAsStrings[range + 1];
                             currPos.currentCoords = stops[currPos.stationaryAt];
-                            console.log(JSON.stringify(currPos));
                         }
+                    } else if (range == travelTimes.length - 1) {
+                        currPos.completed = true;
+                        currPos.stationaryAt = arrivals[travelTimes[range]];
+                        currPos.currentCoords = stops[currPos.stationaryAt];
                     }
                 }
 
