@@ -519,7 +519,7 @@ var transit = (function () {
             $('#' + statusDiv).stop(true, true);
             $('#' + statusDiv).css('display', 'inline');
             $('#' + statusDiv).html(htmlContent);
-            $('#' + statusDiv).fadeOut(5000);
+            $('#' + statusDiv).fadeOut(7500);
         },
 
         main : function (div, localKmlFile, remoteKmlFile, jsonFile, routeObj, vehicleObj) {
