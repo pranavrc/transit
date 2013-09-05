@@ -270,9 +270,12 @@ var transit = (function () {
 
             return {
                 "name": vehicleObj.name,
-                "info": vehicleObj.info,
                 "color": vehicleObj.color,
                 "starts": startTime,
+                "starttime": firstStop.departure,
+                "endtime": lastStop.arrival,
+                "startpoint": firstStopName,
+                "endpoint": lastStopName,
                 "route": line,
                 "stops": vehicleStopCoords,
                 "ppoints": percentStopDists,
