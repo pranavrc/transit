@@ -190,7 +190,6 @@ var transit = (function () {
             var vehicleDepartures = {};
             var vehicleTravelTimes = new Array();
             var vehicleTravelTimesAsStrings = new Array();
-            var vehicleRoute = vehicleObj.route;
             var stopsObj = vehicleObj.stops;
             var noOfStops = vehicleObj.stops.length;
             var firstStop = stopsObj[0];
@@ -198,7 +197,7 @@ var transit = (function () {
             var startTime = transit.parseTime(firstStop.departure, firstStop.day);
             var vehicleStopCoords = {};
             var points = routes.points;
-            var opLine = routes.lines[vehicleRoute.toLowerCase()];
+            var opLine = routes.lines[vehicleObj.route.toLowerCase()];
 
             vehicleTravelTimesAsStrings.push(firstStop.departure);
             vehicleDepartures[startTime - startTime] = firstStopName;
