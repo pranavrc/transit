@@ -579,11 +579,14 @@ var transit = (function () {
             return positions;
         },
 
-        mouseOverInfo : function (vehicle, position) {
-            var base = "<strong>Vehicle: </strong>" + vehicle.name + "<br />" +
-                       "<strong>Start: </strong>" + vehicle.startpoint + " (" + vehicle.starttime +
-                       ")<br />" + "<strong>End: </strong>" + vehicle.endpoint + " (" +
-                       vehicle.endtime + ")<br />"
+        createBaseInfo : function (name, startpoint, starttime, endpoint, endtime) {
+            return "<strong>Vehicle: </strong>" + name + "<br />" +
+                   "<strong>Start: </strong>" + startpoint + " (" + starttime +
+                   ")<br />" + "<strong>End: </strong>" + endpoint + " (" +
+                   endtime + ")<br />";
+        },
+
+        createPositionInfo : function (base, position) {
             if (position.stationaryAt) {
                 return base + "<strong>At: </strong>" + position.stationaryAt +
                        "<br />" + "<strong>Departure: </strong>" + position.departureTime;
