@@ -45,6 +45,13 @@ var transit = (function () {
                 'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
             });
 
+            $("#status").hover(function () {
+                $('#status').stop(true, true);
+                $('#status').css('display', 'inline');
+            }, function () {
+                $('#status').css('display', 'none');
+            });
+
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
             transit.initSearch(selector, stopsList, routePoints, map);
 
