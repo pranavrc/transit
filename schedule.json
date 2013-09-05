@@ -1,109 +1,141 @@
 {
-    "timezone": 330,
+    "timezone": "+5:30",
     "vehicles":
     [
         {
             "name": "Sub #1",
-            "info": "EMU",
             "route": "Egmore Line",
             "stops": [
             {
                 "name": "Beach",
-                "departure": "12:45",
+                "departure": "23:41",
                 "day": 1
             },
             {
                 "name": "Fort",
-                "arrival": "12:46",
-                "departure": "12:46:30",
+                "arrival": "23:43",
+                "departure": "23:43:30",
                 "day": 1
             },
             {
                 "name": "Park",
-                "arrival": "12:47:00",
-                "departure": "12:47:30",
+                "arrival": "23:45:00",
+                "departure": "23:45:30",
                 "day": 1
             },
             {
                 "name": "Egmore",
-                "arrival": "12:48:00",
-                "departure": "12:48:30",
+                "arrival": "23:47",
+                "departure": "23:47:30",
                 "day": 1
             },
             {
                 "name": "Chetpet",
-                "arrival": "12:49:00",
-                "departure": "12:49:30",
-                "day": 1
+                "arrival": "11:46:30",
+                "departure": "18:58:00",
+                "day": 2
             },
             {
                 "name": "Nungambakkam",
-                "arrival": "12:50:00",
-                "day": 1
+                "arrival": "19:09:00",
+                "day": 2
             }
             ]
         },
         {
             "name": "Sub #2",
-            "info": "EMU",
             "route": "Central Line",
             "stops": [
             {
                 "name": "Central",
-                "departure": "12:49",
+                "departure": "23:41",
                 "day": 1
             },
             {
                 "name": "Basin Bridge",
-                "arrival": "12:50",
-                "departure": "12:50:30",
+                "arrival": "23:43",
+                "departure": "23:43:30",
                 "day": 1
             },
             {
                 "name": "Vyasarpadi Jeeva",
-                "arrival": "12:51",
-                "departure": "12:51:30",
+                "arrival": "23:45",
+                "departure": "23:45:30",
                 "day": 1
             },
             {
                 "name": "Perambur",
-                "arrival": "12:53",
-                "departure": "12:53:30",
+                "arrival": "23:46",
+                "departure": "23:46:30",
                 "day": 1
             },
             {
                 "name": "Perambur Carriage Works",
-                "arrival": "12:54",
-                "departure": "12:54:30",
+                "arrival": "23:48",
+                "departure": "23:48:30",
                 "day": 1
             },
             {
                 "name": "Perambur Loco Works",
-                "arrival": "12:56",
-                "departure": "12:56:30",
+                "arrival": "23:50",
+                "departure": "23:50:30",
                 "day": 1
             },
             {
                 "name": "Villivakkam",
-                "arrival": "12:58",
-                "departure": "12:58:30",
+                "arrival": "23:51",
+                "departure": "23:51:30",
                 "day": 1
             },
             {
                 "name": "Korattur",
-                "arrival": "13:00",
-                "departure": "13:00:30",
-                "day": 1
+                "arrival": "12:53",
+                "departure": "12:53:30",
+                "day": 2
             },
             {
                 "name": "Pattaravakkam",
-                "arrival": "13:02",
-                "departure": "13:02:30",
-                "day": 1
+                "arrival": "12:59:00",
+                "departure": "12:59:30",
+                "day": 3
             },
             {
                 "name": "Ambattur",
-                "arrival": "13:03",
+                "arrival": "19:50:00",
+                "day": 4
+            }
+            ]
+        },
+        {
+            "name": "Sub #3",
+            "route": "Central line",
+            "stops": [
+            {
+                "name": "ambattur",
+                "departure": "18:47",
+                "day": 1
+            },
+            {
+                "name": "perambur",
+                "arrival": "18:47:10",
+                "departure": "18:47:20",
+                "day": 1
+            },
+            {
+                "name": "ambattur",
+                "arrival": "18:47:30",
+                "departure": "18:47:40",
+                "day": 1
+            },
+            {
+                "name": "central",
+                "arrival": "18:47:50",
+                "departure": "18:48:00",
+                "day": 1
+            },
+            {
+                "name": "perambur",
+                "arrival": "18:48:20",
                 "day": 1
             }
             ]
