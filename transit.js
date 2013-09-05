@@ -570,7 +570,7 @@ var transit = (function () {
             $('#' + statusDiv).fadeOut(7500);
         },
 
-        main : function (selector, localKmlFile, remoteKmlFile, jsonFile, routeObj, vehicleObj) {
+        main : function (selector, remoteKmlFile, routeObj, vehicleObj) {
             var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
             transit.overlayKml(remoteKmlFile, map);
             var routeLines = routeObj.lines;
@@ -649,7 +649,7 @@ var transit = (function () {
                             json.success(function (jsonData) {
                                 var routes = transit.routeParser(kmlData);
                                 var vehicles = transit.vehicleParser(jsonData);
-                                transit.main(selector, localKmlFile, remoteKmlFile, jsonFile, routes, vehicles);
+                                transit.main(selector, remoteKmlFile, routes, vehicles);
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
                                 transit.initStatus(selector);
