@@ -652,7 +652,7 @@ var transit = (function () {
                             json.success(function (jsonData) {
                                 var routes = transit.routeParser(kmlData);
                                 var vehicles = transit.vehicleParser(jsonData);
-                                transit.main(div, localKmlFile, remoteKmlFile, jsonFile, routes, vehicles);
+                                transit.main(selector, localKmlFile, remoteKmlFile, jsonFile, routes, vehicles);
                             }).fail(function () {
                                 console.log("Error");
                             });
