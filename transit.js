@@ -93,6 +93,10 @@ var transit = (function () {
                         map.setCenter(zeroIn);
                     }
                 });
+
+                $("#search").focus(function () {
+                    $(this).val('');
+                });
             });
         },
 
