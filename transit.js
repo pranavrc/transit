@@ -276,6 +276,8 @@ var transit = (function () {
                 "endtime": lastStop.arrival,
                 "startpoint": firstStopName,
                 "endpoint": lastStopName,
+                "baseinfo": transit.createBaseInfo(vehicleObj.name, firstStopName, firstStop.departure,
+                                                   lastStopName, lastStop.arrival),
                 "route": line,
                 "stops": vehicleStopCoords,
                 "ppoints": percentStopDists,
