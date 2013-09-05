@@ -651,10 +651,16 @@ var transit = (function () {
                                 var vehicles = transit.vehicleParser(jsonData);
                                 transit.main(selector, localKmlFile, remoteKmlFile, jsonFile, routes, vehicles);
                             }).fail(function () {
-                                console.log("Error");
+                                $(selector).css('position', 'relative');
+                                transit.initStatus(selector);
+                                $('#status').css('display', 'inline');
+                                $('#status').html('Oh Shoot, there was an error loading the JSON file.');
                             });
                         }).fail(function () {
-                            console.log("Error");
+                            $(selector).css('position', 'relative');
+                            transit.initStatus(selector);
+                            $('#status').css('display', 'inline');
+                            $('#status').html('Oh Shoot, there was an error loading the KML file.');
                         });
                     });
         }
