@@ -666,7 +666,7 @@ var transit = (function () {
                                                         currPosition.stationaryAt + "</strong>.");
                                 }
 
-                                var mouseOverInfo = transit.mouseOverInfo(vehicle, currPosition);
+                                var mouseOverInfo = transit.createPositionInfo(vehicle.baseinfo, currPosition);
                                 var currMarker = transit.initMarker(currPosition.currentCoords,
                                                                     mouseOverInfo, map, vehicle.color);
                                 currMarker.setMap(map);
