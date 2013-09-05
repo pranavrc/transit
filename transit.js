@@ -73,7 +73,7 @@ var transit = (function () {
                 $("#search").css({
                     'position': 'absolute',
                     'width': '50%',
-                    'height': '6px',
+                    'height': '12px',
                     'top': '1%',
                     'left': '20%',
                     'z-index': '99',
@@ -81,7 +81,7 @@ var transit = (function () {
                                    'Arial, Helvetica, sans-serif',
                     'font-size': '12px',
                     'border-radius': '5px',
-                    'padding': '10px',
+                    'padding': '5px',
                 });
 
                 $("#search").autocomplete({
