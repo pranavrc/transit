@@ -579,16 +579,19 @@ var transit = (function () {
             return positions;
         },
 
-        mouseOverInfo : function (name, info, stationary, departTime, l, a, lT, aT) {
-            var base = "<strong>Vehicle: </strong>" + name + "<br />" +
-                       "<strong>Info: </strong>" + info + "<br />";
-            if (stationary) {
-                return base + "<strong>At: </strong>" + stationary +
-                       "<br />" + "<strong>Departure: </strong>" + departTime;
+        mouseOverInfo : function (vehicle, position) {
+            var base = "<strong>Vehicle: </strong>" + vehicle.name + "<br />" +
+                       "<strong>Start: </strong>" + vehicle.startpoint + " (" + vehicle.starttime +
+                       ")<br />" + "<strong>End: </strong>" + vehicle.endpoint + " (" +
+                       vehicle.endtime + ")<br />"
+            if (position.stationaryAt) {
+                return base + "<strong>At: </strong>" + position.stationaryAt +
+                       "<br />" + "<strong>Departure: </strong>" + position.departureTime;
             } else {
                 return base +
-                       "<strong>Left: </strong>" + l + " (" + lT + ")" + "<br />" +
-                       "<strong>Approaching: </strong>" + a + " (" + aT + ")";
+                       "<strong>Left: </strong>" + position.leaving + " (" + position.leftTime +
+                       ")" + "<br />" + "<strong>Approaching: </strong>" + position.approaching +
+                       " (" + position.approachTime + ")";
             }
         },
 
@@ -658,13 +661,7 @@ var transit = (function () {
                                                         currPosition.stationaryAt + "</strong>.");
                                 }
 
-                                var mouseOverInfo = transit.mouseOverInfo(vehicle.name, vehicle.info,
-                                                                          currPosition.stationaryAt,
-                                                                          currPosition.departureTime,
-                                                                          currPosition.leaving,
-                                                                          currPosition.approaching,
-                                                                          currPosition.leftTime,
-                                                                          currPosition.approachTime);
+                                var mouseOverInfo = transit.mouseOverInfo(vehicle, currPosition);
                                 var currMarker = transit.initMarker(currPosition.currentCoords,
                                                                     mouseOverInfo, map, vehicle.color);
                                 currMarker.setMap(map);
