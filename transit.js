@@ -199,7 +199,6 @@ var transit = (function () {
             var vehicleStopCoords = {};
             var points = routes.points;
             var opLine = routes.lines[vehicleRoute.toLowerCase()];
-            var line = new Array();
 
             vehicleTravelTimesAsStrings.push(firstStop.departure);
             vehicleDepartures[startTime - startTime] = firstStopName;
@@ -217,8 +216,6 @@ var transit = (function () {
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
                 vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName.toLowerCase()]);
                 var prevStop = vehicleStopCoords[stopsObj[eachStop - 1].name];
-                line = line.concat(transit.pointsBetweenStops(opLine, prevStop,
-                                                              vehicleStopCoords[tempName]).slice(0, -1));
             }
 
             var lastStop = stopsObj[noOfStops - 1];
@@ -244,10 +241,8 @@ var transit = (function () {
                 "starts": startTime,
                 "baseinfo": transit.createBaseInfo(vehicleObj.name, firstStopName, firstStop.departure,
                                                    lastStopName, lastStop.arrival),
-                "route": line,
+                "route": opLine,
                 "stops": vehicleStopCoords,
-                "ppoints": percentStopDists,
-                "ppercents": percentDists,
                 "days": lastStop.day - firstStop.day,
                 "arrivals": vehicleArrivals,
                 "departures": vehicleDepartures,
