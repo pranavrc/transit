@@ -569,7 +569,7 @@ var transit = (function () {
                     }
                 }
 
-                positions.push(currPos);
+                if (currPos.currentCoords) positions.push(currPos);
             }
 
             return positions;
