@@ -56,7 +56,8 @@ var transit = (function () {
                              'href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />');
 
             $.getScript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js", function () {
-                $("#" + div).append("<input type=\"text\" id=\"search\" placeholder=\"Search stops.\">");
+                $("#" + div).append("<input type=\"text\" id=\"search\" " +
+                                    "placeholder=\"Search for a stop and select it from the dropdown.\">");
 
                 $("#search").css({
                     'position': 'absolute',
