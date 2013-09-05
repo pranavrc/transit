@@ -225,12 +225,6 @@ var transit = (function () {
             vehicleTravelTimesAsStrings.push(lastStop.arrival);
             vehicleTravelTimes.push(endTime);
             vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName.toLowerCase()]);
-            var line = line.concat(transit.pointsBetweenStops(opLine, vehicleStopCoords[tempName],
-                                                              vehicleStopCoords[lastStopName]));
-            var ps = transit.hashOfPercentDists(line);
-
-            var percentStopDists = ps.hash;
-            var percentDists = ps.percentages;
 
             var colors = ['red', 'blue', 'yellow', 'white', 'green', 'orange'];
             vehicleObj.color = colors[Math.floor(Math.random() * colors.length)];
@@ -451,8 +445,6 @@ var transit = (function () {
             var travelTimes = vehicleObj.traveltimes;
             var travelTimesAsStrings = vehicleObj.traveltimesasstrings;
             var noOfDays = vehicleObj.days;
-            var ppoints = vehicleObj.ppoints;
-            var ppercents = vehicleObj.ppercents;
             var starts = vehicleObj.starts;
             var route = vehicleObj.route;
             var stops = vehicleObj.stops;
