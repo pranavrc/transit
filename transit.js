@@ -116,36 +116,6 @@ var transit = (function () {
             return marker;
         },
 
-        moveMarkers : function (markerSet, interval, map) {
-            interval = (typeof interval == 'undefined') ? 1000 : interval;
-            var transition = setInterval(
-                    function () {
-                        for (var counter = 0; counter < markerSet.length; counter++) {
-                            for (var i = 0; i < markerSet.length; i++) {
-                                var curPos = new google.maps.LatLng(markerSet[i].coordSet[counter][0],
-                                    markerSet[i].coordSet[counter][1]);
-                                markerSet[i].marker.position = curPos;
-                                markerSet[i].marker.setMap(map);
-                            }
-                        }
-                    },
-                    interval);
-        },
-
-        constructMarkerSet : function (markers) {
-            var markerSet = new Array();
-            for (var counter = 0; counter < markers.length; counter++) {
-                var markerObj = transit.initMarker(markers[counter].coords[0], markers[counter].title);
-                var coordList = markers[counter].coords.slice(1);
-
-                markerSet.push({
-                    marker: markerObj,
-                    coordSet: coordList
-                });
-            }
-            return markerSet;
-        },
-
         overlayKml : function (kmlUrl, map) {
             var kmlOptions = {
                 map: map
@@ -272,10 +242,6 @@ var transit = (function () {
                 "name": vehicleObj.name,
                 "color": vehicleObj.color,
                 "starts": startTime,
-                "starttime": firstStop.departure,
-                "endtime": lastStop.arrival,
-                "startpoint": firstStopName,
-                "endpoint": lastStopName,
                 "baseinfo": transit.createBaseInfo(vehicleObj.name, firstStopName, firstStop.departure,
                                                    lastStopName, lastStop.arrival),
                 "route": line,
