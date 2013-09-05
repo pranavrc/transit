@@ -1,15 +1,15 @@
 var transit = (function () {
     return {
-        initMap : function (div, stopsList, routePoints) {
+        initMap : function (selector, stopsList, routePoints) {
             var mapDet = {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            $("#" + div).append("<div id=\"status\"></div>")
+            $(selector).append("<div id=\"status\"></div>")
                         .append("<div id=\"timezone\"></div>")
                         .append("<div id=\"transitMap\"></div>");
 
-            $("#" + div).css('position', 'relative');
+            $(selector).css('position', 'relative');
 
             $("#transitMap").css({
                 'position': 'absolute',
@@ -46,17 +46,17 @@ var transit = (function () {
             });
 
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
-            transit.initSearch(div, stopsList, routePoints, map);
+            transit.initSearch(selector, stopsList, routePoints, map);
 
             return map;
         },
 
-        initSearch : function (div, stopsList, routePoints, map) {
+        initSearch : function (selector, stopsList, routePoints, map) {
             $('head').append('<link rel="stylesheet" ' +
                              'href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />');
 
             $.getScript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js", function () {
-                $("#" + div).append("<input type=\"text\" id=\"search\" " +
+                $(selector).append("<input type=\"text\" id=\"search\" " +
                                     "placeholder=\"Search for a stop and select it from the dropdown.\">");
 
                 $("#search").css({
@@ -573,8 +573,8 @@ var transit = (function () {
             $('#' + statusDiv).fadeOut(7500);
         },
 
-        main : function (div, localKmlFile, remoteKmlFile, jsonFile, routeObj, vehicleObj) {
-            var map = transit.initMap(div, routeObj.stopnames, routeObj.points);
+        main : function (selector, localKmlFile, remoteKmlFile, jsonFile, routeObj, vehicleObj) {
+            var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
             transit.overlayKml(remoteKmlFile, map);
             var routeLines = routeObj.lines;
             var routePoints = routeObj.points;
@@ -642,7 +642,7 @@ var transit = (function () {
                     }, 1000);
         },
 
-        initialize : function (div, localKmlFile, remoteKmlFile, jsonFile) {
+        initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         var kml = transit.kmlPromise(localKmlFile);
