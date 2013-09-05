@@ -5,9 +5,8 @@ var transit = (function () {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            $(selector).append("<div id=\"status\"></div>")
-                        .append("<div id=\"timezone\"></div>")
-                        .append("<div id=\"transitMap\"></div>");
+            $(selector).append("<div id=\"timezone\"></div>")
+                       .append("<div id=\"transitMap\"></div>");
 
             $(selector).css('position', 'relative');
 
@@ -17,7 +16,28 @@ var transit = (function () {
                 'height': '100%',
             });
 
-            $("#status").css({
+            $("#timezone").css({
+                'position': 'absolute',
+                'bottom': '4%',
+                'left': '1%',
+                'z-index': '99',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
+                'font-weight': 'bold',
+                'font-size': '14px',
+                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
+            });
+
+            transit.initStatus(selector);
+            var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
+            transit.initSearch(selector, stopsList, routePoints, map);
+
+            return map;
+        },
+
+        initStatus : function (selector) {
+            $(selector).append('<div id="status"></div>');
+
+            $('#status').css({
                 'position': 'absolute',
                 'bottom': '3%',
                 'right': '1%',
@@ -34,28 +54,12 @@ var transit = (function () {
                 'display': 'none'
             });
 
-            $("#timezone").css({
-                'position': 'absolute',
-                'bottom': '4%',
-                'left': '1%',
-                'z-index': '99',
-                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
-                'font-weight': 'bold',
-                'font-size': '14px',
-                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
-            });
-
-            $("#status").hover(function () {
+            $('#status').hover(function () {
                 $('#status').stop(true, true);
                 $('#status').css('display', 'inline');
             }, function () {
                 $('#status').css('display', 'none');
             });
-
-            var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
-            transit.initSearch(selector, stopsList, routePoints, map);
-
-            return map;
         },
 
         initSearch : function (selector, stopsList, routePoints, map) {
