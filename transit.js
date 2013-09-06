@@ -658,7 +658,7 @@ var transit = (function () {
                                 if (!currPosition.currentCoords) continue;
 
                                 if (currPosition.justReached) {
-                                    transit.writeStatus('status',
+                                    transit.writeStatus('#ticker',
                                                         "<strong>" + vehicle.name +
                                                         "</strong> just reached <strong>" +
                                                         currPosition.stationaryAt + "</strong>. " +
@@ -666,7 +666,7 @@ var transit = (function () {
                                                         "</strong>." );
                                 } else if (currPosition.justLeft || currPosition.started) {
                                     var sOrL = currPosition.started ? 'just started from' : 'just left';
-                                    transit.writeStatus('status',
+                                    transit.writeStatus('#ticker',
                                                         "<strong>" + vehicle.name +
                                                         "</strong> " + sOrL + " <strong>" +
                                                         currPosition.stationaryAt + "</strong>. " +
@@ -674,7 +674,7 @@ var transit = (function () {
                                                         "</strong> at <strong>" + currPosition.approachTime +
                                                         "</strong>.");
                                 } else if (currPosition.completed) {
-                                    transit.writeStatus('status',
+                                    transit.writeStatus('#ticker',
                                                         "<strong>" + vehicle.name +
                                                         "</strong> just reached its destination at <strong>" +
                                                         currPosition.stationaryAt + "</strong>.");
