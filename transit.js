@@ -456,6 +456,9 @@ var transit = (function () {
             var tzS = timezone.split(':');
             tzS = tzS.map(function (x) { return parseInt(x, 10); });
 
+            if (tzS.length < 3)
+                tzS[2] = 0;
+
             if (tzS[0] < 0) {
                 tzS[1] *= -1;
                 tzS[2] *= -1;
