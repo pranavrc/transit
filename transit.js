@@ -93,13 +93,6 @@ var transit = (function () {
                 'padding': '10px',
                 'display': 'none'
             });
-
-            $('#status').hover(function () {
-                $('#status').stop(true, true);
-                $('#status').css('display', 'inline');
-            }, function () {
-                $('#status').css('display', 'none');
-            });
         },
 
         initSearch : function (selector, stopsList, routePoints, map) {
