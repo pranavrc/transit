@@ -10,13 +10,13 @@ var transit = (function () {
 
             $(selector).css('position', 'relative');
 
-            $("#transitMap").css({
+            $(selector + "> #transitMap").css({
                 'position': 'absolute',
                 'width': '100%',
                 'height': '100%',
             });
 
-            $("#timezone").css({
+            $(selector + "> #timezone").css({
                 'position': 'absolute',
                 'bottom': '3%',
                 'right': '0.8%',
@@ -38,20 +38,26 @@ var transit = (function () {
         initTicker : function (selector) {
             $(selector).append('<div id="ticker"></div>');
 
-            $("#ticker").append('<div id="checkpoint1"></div><br />')
-                        .append('<div id="checkpoint2"></div><br />')
-                        .append('<div id="checkpoint3"></div>');
+            $(selector + "> #ticker").append('<div id="checkpoint1"></div><br />')
+                                     .append('<div id="checkpoint2"></div><br />')
+                                     .append('<div id="checkpoint3"></div>');
 
-            $("#ticker").css({
+            $(selector + "> #ticker").css({
                 'position': 'absolute',
                 'bottom': '1%',
                 'left': '1%',
                 'z-index': '99',
             });
 
-            $('#checkpoint1, #checkpoint2, #checkpoint3').css({
+            var firstCheckPoint = selector + '> #ticker > #checkpoint1';
+            var secondCheckPoint = selector + '> #ticker > #checkpoint2';
+            var thirdCheckPoint = selector + '> #ticker > #checkpoint3';
+            var cpSelector = firstCheckPoint + ',' + secondCheckPoint + ',' + thirdCheckPoint;
+
+            $(cpSelector).css({
                 'background-color': 'hsl(0, 0%, 90%)',
-                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode", ' +
+                               'Verdana, Arial, Helvetica, sans-serif',
                 'font-size': '12px',
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
@@ -61,23 +67,23 @@ var transit = (function () {
                 'padding': '5px',
                 'line-height': '235%',
                 'display': 'none'
-            });
+              });
 
-            $('#checkpoint1, #checkpoint2, #checkpoint3').hover(function () {
-                $('#checkpoint1, #checkpoint2, #checkpoint3').stop(true, true);
+            $(cpSelector).hover(function () {
+                $(cpSelector).stop(true, true);
 
-                if ($('#checkpoint1').html()) $('#checkpoint1').css('display', 'inline');
-                if ($('#checkpoint2').html()) $('#checkpoint2').css('display', 'inline');
-                if ($('#checkpoint3').html()) $('#checkpoint3').css('display', 'inline');
+                if ($(firstCheckPoint).html()) $(firstCheckPoint).css('display', 'inline');
+                if ($(secondCheckPoint).html()) $(secondCheckPoint).css('display', 'inline');
+                if ($(thirdCheckPoint).html()) $(thirdCheckPoint).css('display', 'inline');
             }, function () {
-                $('#checkpoint1, #checkpoint2, #checkpoint3').fadeOut(7500);
+                $(cpSelector).fadeOut(7500);
             });
         },
 
         initStatus : function (selector) {
             $(selector).append('<div id="status"></div>');
 
-            $('#status').css({
+            $(selector + '> #status').css({
                 'position': 'absolute',
                 'bottom': '3%',
                 'right': '0.8%',
@@ -103,7 +109,7 @@ var transit = (function () {
                 $(selector).append("<input type=\"text\" id=\"search\" " +
                                     "placeholder=\"Search for a stop and select it from the dropdown.\">");
 
-                $("#search").css({
+                $(selector + "> #search").css({
                     'position': 'absolute',
                     'width': '50%',
                     'height': '12px',
@@ -117,7 +123,7 @@ var transit = (function () {
                     'padding': '5px',
                 });
 
-                $("#search").autocomplete({
+                $(selector + "> #search").autocomplete({
                     source: stopsList,
                     select: function (event, ui) {
                         var coordsOfItem = routePoints[ui.item.value];
@@ -127,13 +133,13 @@ var transit = (function () {
                     }
                 });
 
-                $("#search").focus(function () {
+                $(selector + "> #search").focus(function () {
                     $(this).val('');
                 });
             });
         },
 
-        initMarker : function (coords, mouseoverText, map, color) {
+        initMarker : function (coords, selector, mouseoverText, map, color) {
             mouseoverText = (typeof mouseoverText == 'undefined') ? 'Marker' : mouseoverText;
             var markerPos = new google.maps.LatLng(coords.x, coords.y);
 
@@ -152,13 +158,13 @@ var transit = (function () {
             marker = new google.maps.Marker(marker);
 
             google.maps.event.addListener(marker, 'mouseover', function () {
-                $('#status').stop(true, true);
-                $('#status').css('display', 'inline');
-                $('#status').html(mouseoverText);
+                $(selector + '> #status').stop(true, true);
+                $(selector + '> #status').css('display', 'inline');
+                $(selector + '> #status').html(mouseoverText);
             });
 
             google.maps.event.addListener(marker, 'mouseout', function () {
-                $('#status').css('display', 'none');
+                $(selector + '> #status').css('display', 'none');
             });
 
             return marker;
@@ -601,9 +607,9 @@ var transit = (function () {
         },
 
         writeStatus : function (selector, htmlContent) {
-            var firstChild = $('#checkpoint1');
-            var secondChild = $('#checkpoint2');
-            var thirdChild = $('#checkpoint3');
+            var firstChild = $(selector + '#checkpoint1');
+            var secondChild = $(selector + '#checkpoint2');
+            var thirdChild = $(selector + '#checkpoint3');
 
             firstChild.stop(true, true);
             firstChild.html(secondChild.html());
@@ -658,7 +664,7 @@ var transit = (function () {
                                 if (!currPosition.currentCoords) continue;
 
                                 if (currPosition.justReached) {
-                                    transit.writeStatus('#ticker',
+                                    transit.writeStatus(selector + '> #ticker > ',
                                                         "<strong>" + vehicle.name +
                                                         "</strong> just reached <strong>" +
                                                         currPosition.stationaryAt + "</strong>. " +
@@ -666,7 +672,7 @@ var transit = (function () {
                                                         "</strong>." );
                                 } else if (currPosition.justLeft || currPosition.started) {
                                     var sOrL = currPosition.started ? 'just started from' : 'just left';
-                                    transit.writeStatus('#ticker',
+                                    transit.writeStatus(selector + '> #ticker > ',
                                                         "<strong>" + vehicle.name +
                                                         "</strong> " + sOrL + " <strong>" +
                                                         currPosition.stationaryAt + "</strong>. " +
@@ -674,14 +680,14 @@ var transit = (function () {
                                                         "</strong> at <strong>" + currPosition.approachTime +
                                                         "</strong>.");
                                 } else if (currPosition.completed) {
-                                    transit.writeStatus('#ticker',
+                                    transit.writeStatus(selector + '> #ticker > ',
                                                         "<strong>" + vehicle.name +
                                                         "</strong> just reached its destination at <strong>" +
                                                         currPosition.stationaryAt + "</strong>.");
                                 }
 
                                 var mouseOverInfo = transit.createPositionInfo(vehicle.baseinfo, currPosition);
-                                var currMarker = transit.initMarker(currPosition.currentCoords,
+                                var currMarker = transit.initMarker(currPosition.currentCoords, selector,
                                                                     mouseOverInfo, map, vehicle.color);
                                 currMarker.setMap(map);
                                 vehicle.markers[i] = currMarker;
@@ -704,14 +710,15 @@ var transit = (function () {
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
                                 transit.initStatus(selector);
-                                $('#status').css('display', 'inline');
-                                $('#status').html('Oh Shoot, there was an error loading the JSON file.');
+                                $(selector + '> #status').css('display', 'inline');
+                                $(selector + '> #status').html('Oh Shoot, there was an error' +
+                                                               'loading the JSON file.');
                             });
                         }).fail(function () {
                             $(selector).css('position', 'relative');
                             transit.initStatus(selector);
-                            $('#status').css('display', 'inline');
-                            $('#status').html('Oh Shoot, there was an error loading the KML file.');
+                            $(selector + '> #status').css('display', 'inline');
+                            $(selector + '> #status').html('Oh Shoot, there was an error loading the KML file.');
                         });
                     });
         }
