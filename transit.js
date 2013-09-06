@@ -456,7 +456,12 @@ var transit = (function () {
             var tzS = timezone.split(':');
             tzS = tzS.map(function (x) { return parseInt(x, 10); });
 
-            return tzS[0] * 3600 + tzS[1] * 60 + timeOffset * 60;
+            if (tzS[0] < 0) {
+                tzS[1] *= -1;
+                tzS[2] *= -1;
+            }
+
+            return tzS[0] * 3600 + tzS[1] * 60 + tzS[2] + timeOffset * 60;
         },
 
         parseTime : function (timeString, day) {
