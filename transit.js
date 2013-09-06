@@ -28,10 +28,50 @@ var transit = (function () {
             });
 
             transit.initStatus(selector);
+            transit.initTicker(selector);
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
             transit.initSearch(selector, stopsList, routePoints, map);
 
             return map;
+        },
+
+        initTicker : function (selector) {
+            $(selector).append('<div id="ticker"></div>');
+
+            $("#ticker").append('<div id="checkpoint1"></div><br />')
+                        .append('<div id="checkpoint2"></div><br />')
+                        .append('<div id="checkpoint3"></div>');
+
+            $("#ticker").css({
+                'position': 'absolute',
+                'bottom': '1%',
+                'left': '1%',
+                'z-index': '99',
+            });
+
+            $('#checkpoint1, #checkpoint2, #checkpoint3').css({
+                'background-color': 'hsl(0, 0%, 90%)',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
+                'font-size': '12px',
+                '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
+                'border-radius': '5px',
+                'padding': '5px',
+                'line-height': '235%',
+                'display': 'none'
+            });
+
+            $('#checkpoint1, #checkpoint2, #checkpoint3').hover(function () {
+                $('#checkpoint1, #checkpoint2, #checkpoint3').stop(true, true);
+
+                if ($('#checkpoint1').html()) $('#checkpoint1').css('display', 'inline');
+                if ($('#checkpoint2').html()) $('#checkpoint2').css('display', 'inline');
+                if ($('#checkpoint3').html()) $('#checkpoint3').css('display', 'inline');
+            }, function () {
+                $('#checkpoint1, #checkpoint2, #checkpoint3').fadeOut(7500);
+            });
         },
 
         initStatus : function (selector) {
@@ -40,7 +80,7 @@ var transit = (function () {
             $('#status').css({
                 'position': 'absolute',
                 'bottom': '3%',
-                'right': '1%',
+                'right': '0.8%',
                 'z-index': '99',
                 'background-color': 'hsl(0, 0%, 90%)',
                 'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
