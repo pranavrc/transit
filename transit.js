@@ -18,8 +18,8 @@ var transit = (function () {
 
             $("#timezone").css({
                 'position': 'absolute',
-                'bottom': '4%',
-                'left': '1%',
+                'bottom': '3%',
+                'right': '0.8%',
                 'z-index': '99',
                 'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
                 'font-weight': 'bold',
