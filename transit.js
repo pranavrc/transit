@@ -487,7 +487,7 @@ var transit = (function () {
                          (seconds  < 10 ? "0" + seconds : seconds);
 
             if (timeInSeconds >= 0)
-                return result;
+                return "+" + result;
             else
                 return "-" + result;
         },
@@ -636,7 +636,7 @@ var transit = (function () {
             var vehicles = vehicleObj.vehicles;
             var noOfVehicles = vehicles.length;
 
-            $('#timezone').append("UTC" + timezone + "/Local+" +
+            $('#timezone').append("UTC" + timezone + "/Local" +
                                   transit.secondsToHours(transit.parseTimeZone(timezone)));
 
             for (var count = 0; count < noOfVehicles; count++) {
