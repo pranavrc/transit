@@ -600,11 +600,25 @@ var transit = (function () {
             }
         },
 
-        writeStatus : function (statusDiv, htmlContent) {
-            $('#' + statusDiv).stop(true, true);
-            $('#' + statusDiv).css('display', 'inline');
-            $('#' + statusDiv).html(htmlContent);
-            $('#' + statusDiv).fadeOut(7500);
+        writeStatus : function (selector, htmlContent) {
+            var firstChild = $('#checkpoint1');
+            var secondChild = $('#checkpoint2');
+            var thirdChild = $('#checkpoint3');
+
+            firstChild.stop(true, true);
+            firstChild.html(secondChild.html());
+            if (firstChild.html()) firstChild.css('display', 'inline');
+            firstChild.fadeOut(7500);
+
+            secondChild.stop(true, true);
+            secondChild.html(thirdChild.html());
+            if (secondChild.html()) secondChild.css('display', 'inline');
+            secondChild.fadeOut(7500);
+
+            thirdChild.stop(true, true);
+            thirdChild.html(htmlContent);
+            if (thirdChild.html()) thirdChild.css('display', 'inline');
+            thirdChild.fadeOut(7500);
         },
 
         main : function (selector, remoteKmlFile, routeObj, vehicleObj) {
