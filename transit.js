@@ -266,14 +266,12 @@ var transit = (function () {
 
                 if (typeof temp.departure == 'undefined') {
                     var currDepartureTime = currArrivalTime + transit.parseTime(stopinterval, 1);
-                    vehicleTravelTimesAsStrings.push(temp.arrival,
-                                                     transit.secondsToHours(currDepartureTime + startTime)
-                                                     .replace('+', ''));
+                    temp.departure = transit.secondsToHours(currDepartureTime + startTime).replace('+', '');
                 } else {
                     var currDepartureTime = transit.parseTime(temp.departure, temp.day) - startTime;
-                    vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
                 }
 
+                vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
