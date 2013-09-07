@@ -292,9 +292,11 @@ var transit = (function () {
 
             return {
                 "name": vehicleObj.name,
+                "info": vehicleObj.info,
                 "color": vehicleObj.color,
                 "starts": startTime,
-                "baseinfo": transit.createBaseInfo(vehicleObj.name, firstStopName, firstStop.departure,
+                "baseinfo": transit.createBaseInfo(vehicleObj.name, vehicleObj.info,
+                                                   firstStopName, firstStop.departure,
                                                    lastStopName, lastStop.arrival),
                 "route": opLine,
                 "stops": vehicleStopCoords,
@@ -603,8 +605,9 @@ var transit = (function () {
             return positions;
         },
 
-        createBaseInfo : function (name, startpoint, starttime, endpoint, endtime) {
+        createBaseInfo : function (name, info, startpoint, starttime, endpoint, endtime) {
             return "<strong>Vehicle: </strong>" + name + "<br />" +
+                   ((typeof info != "undefined") ? "<strong>Info: </strong>" + info + "<br />" : "") +
                    "<strong>Start: </strong>" + startpoint + " (" + starttime +
                    ")<br />" + "<strong>End: </strong>" + endpoint + " (" +
                    endtime + ")<br />";
