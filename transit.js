@@ -263,10 +263,19 @@ var transit = (function () {
                 var temp = stopsObj[eachStop];
                 var tempName = temp.name;
                 var currArrivalTime = transit.parseTime(temp.arrival, temp.day) - startTime;
-                var currDepartureTime = transit.parseTime(temp.departure, temp.day) - startTime;
+
+                if (typeof temp.departure == 'undefined') {
+                    var currDepartureTime = currArrivalTime + transit.parseTime(stopinterval, 1);
+                    vehicleTravelTimesAsStrings.push(temp.arrival,
+                                                     transit.secondsToHours(currDepartureTime + startTime)
+                                                     .replace('+', ''));
+                } else {
+                    var currDepartureTime = transit.parseTime(temp.departure, temp.day) - startTime;
+                    vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
+                }
+
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
-                vehicleTravelTimesAsStrings.push(temp.arrival, temp.departure);
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
                 vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName.toLowerCase()]);
                 var prevStop = vehicleStopCoords[stopsObj[eachStop - 1].name];
@@ -643,13 +652,14 @@ var transit = (function () {
             var routePoints = routeObj.points;
             var timezone = vehicleObj.timezone;
             var vehicles = vehicleObj.vehicles;
+            var stopinterval = vehicleObj.stopinterval;
             var noOfVehicles = vehicles.length;
 
             $('#timezone').append("UTC" + timezone + "/Local" +
                                   transit.secondsToHours(transit.parseTimeZone(timezone)));
 
             for (var count = 0; count < noOfVehicles; count++) {
-                vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone);
+                vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone, stopinterval);
             }
 
             var transition = setInterval(
