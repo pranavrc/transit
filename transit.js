@@ -235,11 +235,12 @@ var transit = (function () {
 
             vehicleObj.timezone = data.timezone;
             vehicleObj.vehicles = data.vehicles;
+            vehicleObj.stopinterval = data.stopinterval;
 
             return vehicleObj;
         },
 
-        schedule : function (vehicleObj, routes, timezone) {
+        schedule : function (vehicleObj, routes, timezone, stopinterval) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = new Array();
