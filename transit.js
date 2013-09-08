@@ -496,7 +496,7 @@ var transit = (function () {
                 tzS[2] *= -1;
             }
 
-            return tzS[0] * 3600 + tzS[1] * 60 + tzS[2] + timeOffset * 60;
+            return (tzS[0] * 3600 + tzS[1] * 60 + tzS[2] + timeOffset * 60) % 86400;
         },
 
         parseTime : function (timeString, day) {
