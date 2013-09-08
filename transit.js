@@ -136,6 +136,13 @@ var transit = (function () {
                 $(selector + "> #search").focus(function () {
                     $(this).val('');
                 });
+
+                $('.ui-autocomplete').css({
+                    'max-height': '50%',
+                    'overflow-y': 'auto',
+                    'overflow-x': 'hidden',
+                    'padding-right': '20px'
+                });
             });
         },
 
