@@ -644,25 +644,14 @@ var transit = (function () {
             }
         },
 
-        writeStatus : function (selector, htmlContent) {
-            var firstChild = $(selector + '#checkpoint1');
-            var secondChild = $(selector + '#checkpoint2');
-            var thirdChild = $(selector + '#checkpoint3');
+        writeStatus : function (selector, currentTime, htmlContent) {
+            var tickerDiv = selector + "> #tickerDiv";
 
-            firstChild.stop(true, true);
-            firstChild.html(secondChild.html());
-            if (firstChild.html()) firstChild.css('display', 'inline');
-            firstChild.fadeOut(7500);
-
-            secondChild.stop(true, true);
-            secondChild.html(thirdChild.html());
-            if (secondChild.html()) secondChild.css('display', 'inline');
-            secondChild.fadeOut(7500);
-
-            thirdChild.stop(true, true);
-            thirdChild.html(htmlContent);
-            if (thirdChild.html()) thirdChild.css('display', 'inline');
-            thirdChild.fadeOut(7500);
+            $(tickerDiv).show();
+            $(tickerDiv).stop(true, true);
+            $(tickerDiv + "> #ticker").append('<em>' + currentTime + '</em> | ' + htmlContent + '<br />');
+            $(tickerDiv).css('display','inline');
+            $(tickerDiv).fadeOut(5000);
         },
 
         main : function (selector, remoteKmlFile, routeObj, vehicleObj) {
