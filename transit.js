@@ -36,47 +36,44 @@ var transit = (function () {
         },
 
         initTicker : function (selector) {
-            $(selector).append('<div id="ticker"></div>');
+            $(selector).append('<div id="tickerDiv"><strong>Status Log<br /><br />' +
+                               '</strong><div id="ticker"></div></div>');
+            var tickerDiv = selector + "> #tickerDiv";
+            var ticker = tickerDiv + "> #ticker";
 
-            $(selector + "> #ticker").append('<div id="checkpoint1"></div><br />')
-                                     .append('<div id="checkpoint2"></div><br />')
-                                     .append('<div id="checkpoint3"></div>');
-
-            $(selector + "> #ticker").css({
+            $(tickerDiv).css({
                 'position': 'absolute',
                 'bottom': '1%',
                 'left': '1%',
+                'width': '40%',
                 'z-index': '99',
-            });
-
-            var firstCheckPoint = selector + '> #ticker > #checkpoint1';
-            var secondCheckPoint = selector + '> #ticker > #checkpoint2';
-            var thirdCheckPoint = selector + '> #ticker > #checkpoint3';
-            var cpSelector = firstCheckPoint + ',' + secondCheckPoint + ',' + thirdCheckPoint;
-
-            $(cpSelector).css({
                 'background-color': 'hsl(0, 0%, 90%)',
-                'font-family': '"Lucida Grande", "Lucida Sans Unicode", ' +
-                               'Verdana, Arial, Helvetica, sans-serif',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
                 'font-size': '12px',
+                'height': '40%',
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
-                'border-radius': '5px',
-                'padding': '5px',
-                'line-height': '235%',
+                'border-radius': '15px',
+                'padding': '10px',
+                'text-align': 'center',
                 'display': 'none'
-              });
+            });
 
-            $(cpSelector).hover(function () {
-                $(cpSelector).stop(true, true);
+            $(ticker).css({
+                'max-height': '85%',
+                'overflow-y': 'auto',
+                'overflow-x': 'auto',
+                'text-align': 'left',
+                'line-height': '150%'
+            });
 
-                if ($(firstCheckPoint).html()) $(firstCheckPoint).css('display', 'inline');
-                if ($(secondCheckPoint).html()) $(secondCheckPoint).css('display', 'inline');
-                if ($(thirdCheckPoint).html()) $(thirdCheckPoint).css('display', 'inline');
+            $(tickerDiv).hover(function () {
+                $(tickerDiv).stop(true, true);
+                $(tickerDiv).css('display', 'inline');
             }, function () {
-                $(cpSelector).fadeOut(7500);
+                $(tickerDiv).fadeOut(5000);
             });
         },
 
