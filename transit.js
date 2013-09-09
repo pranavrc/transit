@@ -741,7 +741,7 @@ var transit = (function () {
                                 $(selector).css('position', 'relative');
                                 transit.initStatus(selector);
                                 $(selector + '> #status').css('display', 'inline');
-                                $(selector + '> #status').html('Oh Shoot, there was an error' +
+                                $(selector + '> #status').html('Oh Shoot, there was an error ' +
                                                                'loading the JSON file.');
                             });
                         }).fail(function () {
