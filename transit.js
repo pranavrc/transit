@@ -646,11 +646,13 @@ var transit = (function () {
 
         writeStatus : function (selector, currentTime, htmlContent) {
             var tickerDiv = selector + "> #tickerDiv";
+            var ticker = tickerDiv + "> #ticker";
 
             $(tickerDiv).show();
             $(tickerDiv).stop(true, true);
-            $(tickerDiv + "> #ticker").append('<em>' + currentTime + '</em> | ' + htmlContent + '<br />');
+            $(ticker).append('<em>' + currentTime + '</em> | ' + htmlContent + '<br />');
             $(tickerDiv).css('display','inline');
+            $(ticker).scrollTop($(ticker)[0].scrollHeight);
             $(tickerDiv).fadeOut(5000);
         },
 
