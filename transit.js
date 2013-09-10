@@ -802,15 +802,12 @@ var transit = (function () {
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
                                 transit.initStatus(selector);
-                                $(selector + '> #status').css('display', 'inline');
-                                $(selector + '> #status').html('Oh Shoot, there was an error ' +
-                                                               'loading the JSON file.');
+                                transit.writeStatus(selector, 'Oh Shoot, there was an error loading the JSON file.');
                             });
                         }).fail(function () {
                             $(selector).css('position', 'relative');
                             transit.initStatus(selector);
-                            $(selector + '> #status').css('display', 'inline');
-                            $(selector + '> #status').html('Oh Shoot, there was an error loading the KML file.');
+                            transit.writeStatus(selector, 'Oh Shoot, there was an error loading the KML file.');
                         });
                     });
         }
