@@ -727,7 +727,12 @@ var transit = (function () {
                                   transit.secondsToHours(transit.parseTimeZone(timezone)));
 
             for (var count = 0; count < noOfVehicles; count++) {
-                vehicles[count] = transit.scheduler(vehicles[count], routeObj, timezone, stopinterval);
+                try {
+                    vehicles[count] = transit.scheduler(vehicles[count], routeObj, timezone, stopinterval);
+                } catch (err) {
+                    transit.writeStatus(selector, err);
+                    throw new Error(err);
+                }
             }
 
             var transition = setInterval(
