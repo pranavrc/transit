@@ -708,6 +708,11 @@ var transit = (function () {
             $(tickerDiv).fadeOut(5000);
         },
 
+        writeStatus : function (selector, message) {
+            $(selector + '> #status').css('display', 'inline');
+            $(selector + '> #status').html(message);
+        },
+
         main : function (selector, remoteKmlFile, routeObj, vehicleObj) {
             var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
             transit.overlayKml(remoteKmlFile, map);
