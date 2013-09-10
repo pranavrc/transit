@@ -258,10 +258,21 @@ var transit = (function () {
             var points = routes.points;
             var opLine = routes.lines[vehicleObj.route.toLowerCase()];
 
+            if (typeof opLine == "undefined") {
+                throw new Error(vehicleObj.name + "'s route " + vehicleObj.route + " doesn't exist.");
+            }
+
             vehicleTravelTimesAsStrings.push(firstStop.departure.time);
             vehicleDepartures[startTime - startTime] = firstStopName;
             vehicleTravelTimes.push(startTime - startTime);
-            vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine, points[firstStopName.toLowerCase()]);
+
+            try {
+                vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine,
+                                                                              points[firstStopName.toLowerCase()]);
+            } catch (err) {
+                throw new Error("The stop " + firstStopName + " in vehicle " +
+                                vehicleObj.name + "'s schedule wasn't found in its route.");
+            }
 
             for (var eachStop = 1; eachStop < noOfStops - 1; eachStop++) {
                 var temp = stopsObj[eachStop];
@@ -295,7 +306,14 @@ var transit = (function () {
                 vehicleArrivals[currArrivalTime] = tempName;
                 vehicleDepartures[currDepartureTime] = tempName;
                 vehicleTravelTimes.push(currArrivalTime, currDepartureTime);
-                vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine, points[tempName.toLowerCase()]);
+
+                try {
+                    vehicleStopCoords[tempName] = transit.resolvePointToLine(opLine,
+                                                                             points[tempName.toLowerCase()]);
+                } catch (err) {
+                    throw new Error("The stop " + tempName + " in vehicle " +
+                                    vehicleObj.name + "'s schedule wasn't found in its route.");
+                }
             }
 
             var lastStop = stopsObj[noOfStops - 1];
@@ -304,7 +322,14 @@ var transit = (function () {
             vehicleArrivals[endTime] = lastStopName;
             vehicleTravelTimesAsStrings.push(lastStop.arrival.time);
             vehicleTravelTimes.push(endTime);
-            vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine, points[lastStopName.toLowerCase()]);
+
+            try {
+                vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine,
+                                                                             points[lastStopName.toLowerCase()]);
+            } catch (err) {
+                throw new Error("The stop " + lastStopName + " in vehicle " +
+                                vehicleObj.name + "'s schedule wasn't found in its route.");
+            }
 
             // Thanks to https://gist.github.com/bobspace/2712980 for the color list.
             var colors = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","Beige","Bisque","Black",
