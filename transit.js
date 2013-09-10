@@ -671,7 +671,7 @@ var transit = (function () {
             }
         },
 
-        writeStatus : function (selector, currentTime, htmlContent) {
+        writeLog : function (selector, currentTime, htmlContent) {
             var tickerDiv = selector + "> #tickerDiv";
             var ticker = tickerDiv + "> #ticker";
 
@@ -721,26 +721,26 @@ var transit = (function () {
                                 if (!currPosition.currentCoords) continue;
 
                                 if (currPosition.justReached) {
-                                    transit.writeStatus(selector, transit.currTime(),
-                                                        "<strong>" + vehicle.name +
-                                                        "</strong> just reached <strong>" +
-                                                        currPosition.stationaryAt + "</strong>. " +
-                                                        "Departs at: <strong>" + currPosition.departureTime +
-                                                        "</strong>." );
+                                    transit.writeLog(selector, transit.currTime(),
+                                                     "<strong>" + vehicle.name +
+                                                     "</strong> just reached <strong>" +
+                                                     currPosition.stationaryAt + "</strong>. " +
+                                                     "Departs at: <strong>" + currPosition.departureTime +
+                                                     "</strong>." );
                                 } else if (currPosition.justLeft || currPosition.started) {
                                     var sOrL = currPosition.started ? 'just started from' : 'just left';
-                                    transit.writeStatus(selector, transit.currTime(),
-                                                        "<strong>" + vehicle.name +
-                                                        "</strong> " + sOrL + " <strong>" +
-                                                        currPosition.stationaryAt + "</strong>. " +
-                                                        "Next Stop: <strong>" + currPosition.approachingStop +
-                                                        "</strong> at <strong>" + currPosition.approachTime +
-                                                        "</strong>.");
+                                    transit.writeLog(selector, transit.currTime(),
+                                                     "<strong>" + vehicle.name +
+                                                     "</strong> " + sOrL + " <strong>" +
+                                                     currPosition.stationaryAt + "</strong>. " +
+                                                     "Next Stop: <strong>" + currPosition.approachingStop +
+                                                     "</strong> at <strong>" + currPosition.approachTime +
+                                                     "</strong>.");
                                 } else if (currPosition.completed) {
-                                    transit.writeStatus(selector, transit.currTime(),
-                                                        "<strong>" + vehicle.name +
-                                                        "</strong> just reached its destination at <strong>" +
-                                                        currPosition.stationaryAt + "</strong>.");
+                                    transit.writeLog(selector, transit.currTime(),
+                                                     "<strong>" + vehicle.name +
+                                                     "</strong> just reached its destination at <strong>" +
+                                                     currPosition.stationaryAt + "</strong>.");
                                 }
 
                                 var mouseOverInfo = transit.createPositionInfo(vehicle.baseinfo, currPosition);
