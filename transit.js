@@ -799,11 +799,13 @@ var transit = (function () {
                                 transit.main(selector, remoteKmlFile, routes, vehicles);
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
+                                $(selector).html('');
                                 transit.initStatus(selector);
                                 transit.writeStatus(selector, 'Oh Shoot, there was an error loading the JSON file.');
                             });
                         }).fail(function () {
                             $(selector).css('position', 'relative');
+                            $(selector).html('');
                             transit.initStatus(selector);
                             transit.writeStatus(selector, 'Oh Shoot, there was an error loading the KML file.');
                         });
