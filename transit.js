@@ -519,6 +519,11 @@ var transit = (function () {
         },
 
         parseTime : function (timeString, day) {
+            var hmsRe = /^(?:2[0-3]|[01]?[0-9]):[0-5][0-9](:[0-5][0-9])?$/;
+
+            if (!hmsRe.test(timeString))
+                throw new Error(timeString + " is not a valid timestring.");
+
             var hms = timeString.split(':');
             hms = hms.map(function (x) { return parseInt(x, 10); });
 
