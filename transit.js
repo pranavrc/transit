@@ -5,10 +5,10 @@ var transit = (function () {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
+            $(selector).html('');
+
             $(selector).append("<div id=\"timezone\"></div>")
                        .append("<div id=\"transitMap\"></div>");
-
-            $(selector).css('position', 'relative');
 
             $(selector + "> #transitMap").css({
                 'position': 'absolute',
@@ -791,6 +791,16 @@ var transit = (function () {
         initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
+                        $(selector).css({
+                            'position': 'relative',
+                            'font-family': '"Lucida Grande", "Lucida Sans Unicode",' +
+                                           'Verdana, Arial, Helvetica, sans-serif',
+                            'font-size': '12px',
+                            'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
+                            'background-color': 'hsl(0, 0%, 90%)'
+                        });
+
+                        $(selector).html("<strong>Initializing, et al...</strong>");
                         var kml = transit.kmlPromise(localKmlFile);
                         var json = transit.jsonPromise(jsonFile);
 
