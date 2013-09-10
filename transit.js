@@ -244,7 +244,7 @@ var transit = (function () {
             return vehicleObj;
         },
 
-        schedule : function (vehicleObj, routes, timezone, stopinterval) {
+        scheduler : function (vehicleObj, routes, timezone, stopinterval) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = new Array();
@@ -697,7 +697,7 @@ var transit = (function () {
                                   transit.secondsToHours(transit.parseTimeZone(timezone)));
 
             for (var count = 0; count < noOfVehicles; count++) {
-                vehicles[count] = transit.schedule(vehicles[count], routeObj, timezone, stopinterval);
+                vehicles[count] = transit.scheduler(vehicles[count], routeObj, timezone, stopinterval);
             }
 
             var transition = setInterval(
