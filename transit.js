@@ -21,10 +21,7 @@ var transit = (function () {
                 'bottom': '3%',
                 'right': '0.8%',
                 'z-index': '99',
-                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
                 'font-weight': 'bold',
-                'font-size': '14px',
-                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
             });
 
             transit.initStatus(selector);
@@ -48,14 +45,11 @@ var transit = (function () {
                 'width': '40%',
                 'z-index': '99',
                 'background-color': 'hsl(0, 0%, 90%)',
-                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
-                'font-size': '12px',
-                'height': '40%',
+                'height': '35%',
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
-                'border-radius': '15px',
+                'border-radius': '10px',
                 'padding': '10px',
                 'text-align': 'center',
                 'display': 'none'
@@ -86,12 +80,9 @@ var transit = (function () {
                 'right': '0.8%',
                 'z-index': '99',
                 'background-color': 'hsl(0, 0%, 90%)',
-                'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif',
-                'font-size': '12px',
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
                 'border-radius': '5px',
                 'padding': '10px',
                 'display': 'none'
@@ -109,13 +100,10 @@ var transit = (function () {
                 $(selector + "> #search").css({
                     'position': 'absolute',
                     'width': '50%',
-                    'height': '12px',
+                    'height': '13px',
                     'top': '1%',
                     'left': '20%',
                     'z-index': '99',
-                    'font-family': '"Lucida Grande", "Lucida Sans Unicode", Verdana,' +
-                                   'Arial, Helvetica, sans-serif',
-                    'font-size': '12px',
                     'border-radius': '5px',
                     'padding': '5px',
                 });
