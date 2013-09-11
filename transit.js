@@ -788,7 +788,8 @@ var transit = (function () {
                             'background-color': 'hsl(0, 0%, 90%)'
                         });
 
-                        $(selector).html("<strong>Initializing, et al...</strong>");
+                        $(selector).html("<div style='position:absolute;top:46%;right:46%;'>" +
+                                         "<strong>Initializing, et al...</strong></div>");
                         var kml = transit.kmlPromise(localKmlFile);
                         var json = transit.jsonPromise(jsonFile);
 
