@@ -148,6 +148,10 @@ var transit = (function () {
 
             marker = new google.maps.Marker(marker);
 
+            return marker;
+        },
+
+        onMarkerMouseover : function (selector, marker, mouseoverText) {
             google.maps.event.addListener(marker, 'mouseover', function () {
                 $(selector + '> #status').stop(true, true);
                 $(selector + '> #status').css('display', 'inline');
@@ -157,8 +161,6 @@ var transit = (function () {
             google.maps.event.addListener(marker, 'mouseout', function () {
                 $(selector + '> #status').css('display', 'none');
             });
-
-            return marker;
         },
 
         overlayKml : function (kmlUrl, map) {
