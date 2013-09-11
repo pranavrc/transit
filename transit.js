@@ -728,7 +728,7 @@ var transit = (function () {
             $(selector + '> #status').html(message);
         },
 
-        main : function (selector, remoteKmlFile, routeObj, vehicleObj) {
+        main : function (selector, refreshInterval, remoteKmlFile, routeObj, vehicleObj) {
             var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
             transit.overlayKml(remoteKmlFile, map);
             var routeLines = routeObj.lines;
@@ -813,10 +813,10 @@ var transit = (function () {
                                 transit.onMarkerMouseover(selector, vehicle.markers[i], mouseOverInfo);
                             }
                         }
-                    }, 1000);
+                    }, refreshInterval);
         },
 
-        initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile) {
+        initialize : function (selector, refreshInterval, localKmlFile, remoteKmlFile, jsonFile) {
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         $(selector).css({
@@ -837,7 +837,7 @@ var transit = (function () {
                             json.success(function (jsonData) {
                                 var routes = transit.routeParser(kmlData);
                                 var vehicles = transit.vehicleParser(jsonData);
-                                transit.main(selector, remoteKmlFile, routes, vehicles);
+                                transit.main(selector, refreshInterval, remoteKmlFile, routes, vehicles);
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
                                 $(selector).html('');
