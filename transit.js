@@ -729,10 +729,6 @@ var transit = (function () {
 
                             if (typeof vehicle.markers == "undefined") {
                                 vehicle.markers = new Array();
-                            } else {
-                                for (var i = 0; i < vehicle.markers.length; i++) {
-                                    vehicle.markers[i].setMap(null);
-                                }
                             }
 
                             var currPositions = transit.estimateCurrentPosition(vehicle, timezone);
@@ -740,7 +736,13 @@ var transit = (function () {
                             for (var i = 0; i < currPositions.length; i++) {
                                 var currPosition = currPositions[i];
 
-                                if (!currPosition.currentCoords) continue;
+                                if (!currPosition.currentCoords) {
+                                    if (typeof vehicle.markers[i] != "undefined") {
+                                        vehicle.markers[i].setMap(null);
+                                        delete vehicle.markers[i];
+                                    }
+                                    continue;
+                                }
 
                                 if (currPosition.justReached) {
                                     transit.writeLog(selector, transit.currTime(),
