@@ -58,11 +58,19 @@ var transit = (function () {
             });
 
             $(ticker).css({
-                'max-height': '85%',
+                'height': '75%',
                 'overflow-y': 'auto',
                 'overflow-x': 'auto',
                 'text-align': 'left',
                 'line-height': '150%'
+            });
+
+            $(clear).css({
+                'cursor': 'pointer'
+            });
+
+            $(clear).click(function () {
+                $(ticker).html('');
             });
 
             $(tickerDiv).hover(function () {
