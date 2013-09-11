@@ -765,13 +765,24 @@ var transit = (function () {
                                                      "<strong>" + vehicle.name +
                                                      "</strong> just reached its destination at <strong>" +
                                                      currPosition.stationaryAt + "</strong>.");
+                                    vehicle.markers[i].setMap(null);
+                                    delete vehicle.markers[i];
                                 }
 
                                 var mouseOverInfo = transit.createPositionInfo(vehicle.baseinfo, currPosition);
-                                var currMarker = transit.initMarker(currPosition.currentCoords, selector,
-                                                                    mouseOverInfo, map, vehicle.color);
-                                currMarker.setMap(map);
-                                vehicle.markers[i] = currMarker;
+
+                                if (typeof vehicle.markers[i] == "undefined") {
+                                    var currMarker = transit.initMarker(currPosition.currentCoords, selector,
+                                                                        map, vehicle.color);
+                                    currMarker.setMap(map);
+                                    vehicle.markers[i] = currMarker;
+                                } else {
+                                    var currMarkerPos = new google.maps.LatLng(currPosition.currentCoords.x,
+                                                                               currPosition.currentCoords.y);
+                                    vehicle.markers[i].setPosition(currMarkerPos);
+                                }
+
+                                transit.onMarkerMouseover(selector, vehicle.markers[i], mouseOverInfo);
                             }
                         }
                     }, 1000);
