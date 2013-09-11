@@ -131,8 +131,7 @@ var transit = (function () {
             });
         },
 
-        initMarker : function (coords, selector, mouseoverText, map, color) {
-            mouseoverText = (typeof mouseoverText == 'undefined') ? 'Marker' : mouseoverText;
+        initMarker : function (coords, selector, map, color) {
             var markerPos = new google.maps.LatLng(coords.x, coords.y);
 
             var markerIcon = {
