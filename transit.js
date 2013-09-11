@@ -480,8 +480,6 @@ var transit = (function () {
 
         // Variant of binary search that returns enclosing elements of searchElement in array.
         enclosure : function (searchElement) {
-            'use strict';
-
             var minIndex = 0;
             var maxIndex = this.length - 1;
             var currentIndex;
@@ -659,7 +657,7 @@ var transit = (function () {
                     }
                 }
 
-                if (currPos.currentCoords) positions.push(currPos);
+                positions.push(currPos);
             }
 
             return positions;
