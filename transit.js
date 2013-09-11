@@ -112,7 +112,7 @@ var transit = (function () {
                     'width': '50%',
                     'height': '13px',
                     'top': '1%',
-                    'left': '20%',
+                    'left': '25%',
                     'z-index': '99',
                     'border-radius': '5px',
                     'padding': '5px',
