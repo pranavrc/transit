@@ -319,6 +319,9 @@ var transit = (function () {
             vehicleTravelTimesAsStrings.push(lastStop.arrival.time);
             vehicleTravelTimes.push(endTime);
 
+            if (!transit.isSorted(vehicleTravelTimes))
+                throw new Error(vehicleObj.name + " seems to be going backwards in time.");
+
             try {
                 vehicleStopCoords[lastStopName] = transit.resolvePointToLine(opLine,
                                                                              points[lastStopName.toLowerCase()]);
@@ -376,6 +379,14 @@ var transit = (function () {
 
         trim : function (string) {
             return string.replace(/^\s+|\s+$/g, '');
+        },
+
+        isSorted : function (list) {
+            for (var i = 0; i < list.length - 1; i++) {
+                if (list[i] > list[i+1]) return false;
+            }
+
+            return true;
         },
 
         resolvePointToLine : function (line, point) {
