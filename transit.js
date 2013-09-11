@@ -242,14 +242,17 @@ var transit = (function () {
             var noOfStops = vehicleObj.stops.length;
             var firstStop = stopsObj[0];
             var firstStopName = firstStop.name;
+
+            if (typeof firstStop.departure == 'undefined')
+                throw new Error(vehicleObj.name + " is missing its initial departure time at " + firstStopName);
+
             var startTime = transit.parseTime(firstStop.departure.time, firstStop.departure.day);
             var vehicleStopCoords = {};
             var points = routes.points;
             var opLine = routes.lines[vehicleObj.route.toLowerCase()];
 
-            if (typeof opLine == "undefined") {
+            if (typeof opLine == "undefined")
                 throw new Error(vehicleObj.name + "'s route " + vehicleObj.route + " doesn't exist.");
-            }
 
             vehicleTravelTimesAsStrings.push(firstStop.departure.time);
             vehicleDepartures[startTime - startTime] = firstStopName;
@@ -307,6 +310,10 @@ var transit = (function () {
 
             var lastStop = stopsObj[noOfStops - 1];
             var lastStopName = lastStop.name;
+
+            if (typeof lastStop.arrival == 'undefined')
+                throw new Error(vehicleObj.name + " is missing its final arrival time at " + lastStopName);
+
             var endTime = transit.parseTime(lastStop.arrival.time, lastStop.arrival.day) - startTime;
             vehicleArrivals[endTime] = lastStopName;
             vehicleTravelTimesAsStrings.push(lastStop.arrival.time);
