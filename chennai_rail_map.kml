@@ -518,7 +518,7 @@
 		</Placemark>
 		<Placemark>
 			<styleUrl>#icon-503-EE9C96</styleUrl>
-			<name>Washermenpet</name>
+			<name>Washermanpet</name>
 			<Point>
 				<coordinates>80.28287172317505,13.10861254550437,0.0</coordinates>
 			</Point>
@@ -898,9 +898,8 @@
 		</Placemark>
 		<Placemark>
 			<styleUrl>#icon-503-4186F0</styleUrl>
-			<name>Thiruvalllikeni</name>
-			<description><![CDATA[6 km
-]]></description>
+			<name>Thiruvallikeni</name>
+			<description><![CDATA[6 km]]></description>
 			<Point>
 				<coordinates>80.28052747249603,13.055582054802892,0.0</coordinates>
 			</Point>
