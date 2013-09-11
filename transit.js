@@ -162,6 +162,9 @@ var transit = (function () {
         },
 
         onMarkerMouseover : function (selector, marker, mouseoverText) {
+            google.maps.event.clearListeners(marker, 'mouseover');
+            google.maps.event.clearListeners(marker, 'mouseout');
+
             google.maps.event.addListener(marker, 'mouseover', function () {
                 $(selector + '> #status').stop(true, true);
                 $(selector + '> #status').css('display', 'inline');
