@@ -34,9 +34,11 @@ var transit = (function () {
 
         initTicker : function (selector) {
             $(selector).append('<div id="tickerDiv"><strong>Transit Log<br /><br />' +
-                               '</strong><div id="ticker"></div></div>');
+                               '</strong><div id="ticker"></div><br />' +
+                               '<div id="clear"><strong>Click here to reset</strong></div></div>');
             var tickerDiv = selector + "> #tickerDiv";
             var ticker = tickerDiv + "> #ticker";
+            var clear = tickerDiv + "> #clear";
 
             $(tickerDiv).css({
                 'position': 'absolute',
