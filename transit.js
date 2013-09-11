@@ -731,7 +731,7 @@ var transit = (function () {
             $(selector + '> #status').html(message);
         },
 
-        main : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map) {
+        setInMotion : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map) {
             var transition = setInterval(
                     function() {
                         for (var count = 0; count < noOfVehicles; count++) {
@@ -841,8 +841,8 @@ var transit = (function () {
                                     }
                                 }
 
-                                transit.main(selector, refreshInterval, vehicles, noOfVehicles,
-                                             stopinterval, timezone, map);
+                                transit.setInMotion(selector, refreshInterval, vehicles, noOfVehicles,
+                                                    stopinterval, timezone, map);
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
                                 $(selector).html('');
