@@ -800,7 +800,9 @@ var transit = (function () {
                     }, refreshInterval);
         },
 
-        initialize : function (selector, refreshInterval, localKmlFile, remoteKmlFile, jsonFile) {
+        initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
+            refreshInterval = (typeof refreshInterval == "undefined" ||
+                               refreshInterval < 1) ? 1000 : refreshInterval * 1000;
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         $(selector).css({
