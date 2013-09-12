@@ -448,7 +448,7 @@ var transit = (function () {
         },
 
         linearDist : function (sourceCoords, targetCoords) {
-            return Math.sqrt(Math.pow((targetCoords.x - sourceCoords.x), 2),
+            return Math.sqrt(Math.pow((targetCoords.x - sourceCoords.x), 2) +
                              Math.pow((targetCoords.y - sourceCoords.y), 2));
         },
 
