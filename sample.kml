@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Untitled map</name>
+		<description><![CDATA[]]></description>
+		<Folder>
+			<name>Untitled layer</name>
+			<Placemark>
+				<styleUrl>#line-000000-4</styleUrl>
+				<name>Line 1</name>
+				<LineString>
+					<tessellate>0</tessellate>
+					<coordinates>78.75,24.367113562651262,0.0 78.662109375,20.46818922264095,0.0 78.046875,15.368949896534705,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>A</name>
+				<Point>
+					<coordinates>79.453125,25.16517336866393,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>B</name>
+				<Point>
+					<coordinates>80.244140625,20.715015145512098,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>C</name>
+				<Point>
+					<coordinates>79.013671875,15.029685756555674,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder>
+			<name>Untitled layer</name>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>D</name>
+				<Point>
+					<coordinates>77.431640625,24.60706913770968,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>E</name>
+				<Point>
+					<coordinates>77.080078125,20.46818922264095,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>F</name>
+				<Point>
+					<coordinates>77.255859375,15.368949896534705,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Style id='line-000000-4'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>4</width>
+			</LineStyle>
+		</Style>
+		<Style id='icon-503-FF8277'>
+			<IconStyle>
+				<color>ff7782FF</color>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+	</Document>
+</kml>
