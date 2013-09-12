@@ -54,6 +54,8 @@ var transit = (function () {
                 'border-radius': '10px',
                 'padding': '10px',
                 'text-align': 'center',
+                'overflow-y': 'auto',
+                'overflow-x': 'auto',
                 'display': 'none'
             });
 
