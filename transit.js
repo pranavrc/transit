@@ -800,6 +800,34 @@ var transit = (function () {
                     }, refreshInterval);
         },
 
+        callMain : function (selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile, vehicles) {
+            var timezone = vehicleObj.timezone;
+            var stopinterval = vehicleObj.stopinterval;
+            var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
+            transit.overlayKml(remoteKmlFile, map);
+
+            $('#timezone').append("UTC" + timezone + "/Local" +
+                                  transit.secondsToHours(transit.parseTimeZone(timezone)));
+
+            if (typeof vehicles == "undefined") {
+                var vehicles = vehicleObj.vehicles;
+                var noOfVehicles = vehicles.length;
+
+                for (var count = 0; count < noOfVehicles; count++) {
+                    try {
+                        vehicles[count] = transit.scheduler(vehicles[count], routeObj,
+                                                            timezone, stopinterval);
+                    } catch (err) {
+                        transit.writeStatus(selector, err);
+                        throw new Error(err);
+                    }
+                }
+            }
+
+            transit.setInMotion(selector, refreshInterval, vehicles, noOfVehicles,
+                                stopinterval, timezone, map);
+        },
+
         initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
@@ -823,30 +851,7 @@ var transit = (function () {
                             json.success(function (jsonData) {
                                 var routeObj = transit.routeParser(kmlData);
                                 var vehicleObj = transit.vehicleParser(jsonData);
-
-                                var timezone = vehicleObj.timezone;
-                                var vehicles = vehicleObj.vehicles;
-                                var stopinterval = vehicleObj.stopinterval;
-                                var noOfVehicles = vehicles.length;
-
-                                var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
-                                transit.overlayKml(remoteKmlFile, map);
-
-                                $('#timezone').append("UTC" + timezone + "/Local" +
-                                                      transit.secondsToHours(transit.parseTimeZone(timezone)));
-
-                                for (var count = 0; count < noOfVehicles; count++) {
-                                    try {
-                                        vehicles[count] = transit.scheduler(vehicles[count], routeObj,
-                                                                            timezone, stopinterval);
-                                    } catch (err) {
-                                        transit.writeStatus(selector, err);
-                                        throw new Error(err);
-                                    }
-                                }
-
-                                transit.setInMotion(selector, refreshInterval, vehicles, noOfVehicles,
-                                                    stopinterval, timezone, map);
+                                transit.callMain(selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile);
                             }).fail(function () {
                                 $(selector).css('position', 'relative');
                                 $(selector).html('');
