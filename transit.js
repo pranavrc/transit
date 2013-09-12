@@ -822,6 +822,8 @@ var transit = (function () {
                         throw new Error(err);
                     }
                 }
+            } else {
+                var noOfVehicles = vehicles.length;
             }
 
             transit.setInMotion(selector, refreshInterval, vehicles, noOfVehicles,
