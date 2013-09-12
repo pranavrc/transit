@@ -407,13 +407,13 @@ var transit = (function () {
         resolvePointToLine : function (line, point) {
             if (point.x == line[0].x && point.y == line[0].y)
                 return point;
-            var closestDist = transit.haversine(line[0], point).toFixed(20);
+            var closestDist = transit.linearDist(line[0], point).toFixed(20);
             var currPt = line[0];
             for (var count = 1; count < line.length; count++) {
                 if (point.x == line[count].x && point.y == line[count].y)
                     return point;
 
-                var currDist = transit.haversine(line[count], point).toFixed(20);
+                var currDist = transit.linearDist(line[count], point).toFixed(20);
 
                 if (closestDist > currDist) {
                     currPt = line[count];
@@ -495,7 +495,7 @@ var transit = (function () {
             var percentages = new Array();
 
             for (var x = 0; x < routeLength - 1; x++) {
-                totalDist += transit.haversine(points[x], points[x + 1]);
+                totalDist += transit.linearDist(points[x], points[x + 1]);
                 distances.push(totalDist);
             }
 
