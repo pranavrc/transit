@@ -200,18 +200,18 @@ var transit = (function () {
             google.maps.event.clearListeners(marker, 'mouseover');
             google.maps.event.clearListeners(marker, 'mouseout');
 
-            if (transit.isMobileDevice()) {
-                var infoWindow = new google.maps.InfoWindow({
-                    content: '<div style="font-size:20px;">' + mouseoverText + '</div>'
-                });
+            if (!transit.isMobileDevice()) {
+                if (typeof marker.infoWindow != "undefined") {
+                    marker.infoWindow.setContent('<div style="font-size:20px;">' + mouseoverText + '</div>');
+                } else {
+                    marker.infoWindow = new google.maps.InfoWindow({
+                        content: '<div style="font-size:20px;">' + mouseoverText + '</div>'
+                    });
 
-                google.maps.event.addListener(marker, 'mouseover', function () {
-                    infoWindow.open(map, marker);
-                });
-
-                google.maps.event.addListener(marker, 'mouseout', function () {
-                    infoWindow.close();
-                });
+                    google.maps.event.addListener(marker, 'click', function () {
+                        marker.infoWindow.open(map, marker);
+                    });
+                }
             } else {
                 google.maps.event.addListener(marker, 'mouseover', function () {
                     $(selector + '> #status').stop(true, true);
