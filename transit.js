@@ -33,12 +33,15 @@ var transit = (function () {
         },
 
         initTicker : function (selector) {
-            $(selector).append('<div id="tickerDiv"><strong>Transit Log<br /><br />' +
-                               '</strong><div id="ticker"></div><br />' +
-                               '<div id="clear"><strong>Click here to reset</strong></div></div>');
+            $(selector).append('<div id="tickerDiv"><span style="color:#800000"><strong>Transit Log</span>' +
+                               '<br /><br /></strong><div id="ticker"></div><br /><div id="tickerCtrl">' +
+                               '<span id="clear"><strong>Reset</strong></span> | ' +
+                               '<span id="stop"><strong>Stop logging</span></div></div>');
             var tickerDiv = selector + "> #tickerDiv";
             var ticker = tickerDiv + "> #ticker";
-            var clear = tickerDiv + "> #clear";
+            var tickerCtrl = tickerDiv + "> #tickerCtrl";
+            var clear = tickerCtrl + "> #clear";
+            var stop = tickerCtrl + "> #stop";
 
             $(tickerDiv).css({
                 'position': 'absolute',
@@ -67,13 +70,17 @@ var transit = (function () {
                 'line-height': '150%'
             });
 
-            $(clear).css({
+            $(tickerCtrl).css({
                 'cursor': 'pointer',
-                'margin-bottom': '10px'
+                'color': '#800000'
             });
 
             $(clear).click(function () {
                 $(ticker).html('');
+            });
+
+            $(stop).click(function () {
+                $(tickerDiv).remove();
             });
 
             $(tickerDiv).hover(function () {
