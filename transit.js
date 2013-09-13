@@ -854,7 +854,7 @@ var transit = (function () {
             });
 
             $(selector).html("<div style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
-                             "<strong>Initialis(z)ing...</strong></div>");
+                             "<strong>Initial Sizing...</strong></div>");
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         var kml = transit.kmlPromise(localKmlFile);
