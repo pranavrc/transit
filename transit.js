@@ -786,27 +786,8 @@ var transit = (function () {
                                     continue;
                                 }
 
-                                if (currPosition.justReached) {
-                                    transit.writeLog(selector, transit.currTime(),
-                                                     "<strong>" + vehicle.name +
-                                                     "</strong> just reached <strong>" +
-                                                     currPosition.stationaryAt + "</strong>. " +
-                                                     "Departs at: <strong>" + currPosition.departureTime +
-                                                     "</strong>." );
-                                } else if (currPosition.justLeft || currPosition.started) {
-                                    var sOrL = currPosition.started ? 'just started from' : 'just left';
-                                    transit.writeLog(selector, transit.currTime(),
-                                                     "<strong>" + vehicle.name +
-                                                     "</strong> " + sOrL + " <strong>" +
-                                                     currPosition.stationaryAt + "</strong>. " +
-                                                     "Next Stop: <strong>" + currPosition.approachingStop +
-                                                     "</strong> at <strong>" + currPosition.approachTime +
-                                                     "</strong>.");
-                                } else if (currPosition.completed) {
-                                    transit.writeLog(selector, transit.currTime(),
-                                                     "<strong>" + vehicle.name +
-                                                     "</strong> just reached its destination at <strong>" +
-                                                     currPosition.stationaryAt + "</strong>.");
+                                transit.writeLog(selector, currPosition, vehicle);
+                                if (currPosition.completed) {
                                     vehicle.markers[i].setMap(null);
                                     delete vehicle.markers[i];
                                 }
