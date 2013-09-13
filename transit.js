@@ -200,19 +200,7 @@ var transit = (function () {
             google.maps.event.clearListeners(marker, 'mouseover');
             google.maps.event.clearListeners(marker, 'mouseout');
 
-            if (transit.isMobileDevice()) {
-                if (typeof marker.infoWindow != "undefined") {
-                    marker.infoWindow.setContent('<div style="font-size:20px;">' + mouseoverText + '</div>');
-                } else {
-                    marker.infoWindow = new google.maps.InfoWindow({
-                        content: '<div style="font-size:20px;">' + mouseoverText + '</div>'
-                    });
-
-                    google.maps.event.addListener(marker, 'click', function () {
-                        marker.infoWindow.open(map, marker);
-                    });
-                }
-            } else {
+            if (!transit.isMobileDevice()) {
                 google.maps.event.addListener(marker, 'mouseover', function () {
                     $(selector + '> #status').stop(true, true);
                     $(selector + '> #status').css('display', 'inline');
@@ -221,6 +209,24 @@ var transit = (function () {
 
                 google.maps.event.addListener(marker, 'mouseout', function () {
                     $(selector + '> #status').css('display', 'none');
+                });
+            } else {
+                mouseoverText = '<div style="font-size:20px;">' + mouseoverText + '</div>';
+            }
+
+            if (typeof marker.infoWindow != "undefined") {
+                marker.infoWindow.setContent(mouseoverText);
+            } else {
+                marker.infoWindow = new google.maps.InfoWindow({
+                    content: mouseoverText
+                });
+
+                google.maps.event.addListener(marker, 'click', function () {
+                    marker.infoWindow.open(map, marker);
+                });
+
+                google.maps.event.addListener(map, 'click', function () {
+                    marker.infoWindow.close();
                 });
             }
         },
