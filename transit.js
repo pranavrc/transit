@@ -47,7 +47,7 @@ var transit = (function () {
                 'width': '40%',
                 'z-index': '99',
                 'background-color': 'hsl(0, 0%, 90%)',
-                'height': '35%',
+                'height': '38%',
                 '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
                 'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
@@ -68,7 +68,8 @@ var transit = (function () {
             });
 
             $(clear).css({
-                'cursor': 'pointer'
+                'cursor': 'pointer',
+                'margin-bottom': '10px'
             });
 
             $(clear).click(function () {
@@ -844,8 +845,8 @@ var transit = (function () {
                             'background-color': 'hsl(0, 0%, 90%)'
                         });
 
-                        $(selector).html("<div style='position:absolute;top:46%;right:46%;'>" +
-                                         "<strong>Initializing, et al...</strong></div>");
+                        $(selector).html("<div style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
+                                         "<strong>Yeah, <em>initializing</em>...</strong></div>");
                         var kml = transit.kmlPromise(localKmlFile);
                         var json = transit.jsonPromise(jsonFile);
 
