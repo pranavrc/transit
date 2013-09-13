@@ -196,19 +196,33 @@ var transit = (function () {
             return marker;
         },
 
-        onMarkerMouseover : function (selector, marker, mouseoverText) {
+        onMarkerMouseover : function (selector, map, marker, mouseoverText) {
             google.maps.event.clearListeners(marker, 'mouseover');
             google.maps.event.clearListeners(marker, 'mouseout');
 
-            google.maps.event.addListener(marker, 'mouseover', function () {
-                $(selector + '> #status').stop(true, true);
-                $(selector + '> #status').css('display', 'inline');
-                $(selector + '> #status').html(mouseoverText);
-            });
+            if (transit.isMobileDevice()) {
+                var infoWindow = new google.maps.InfoWindow({
+                    content: mouseoverText
+                });
 
-            google.maps.event.addListener(marker, 'mouseout', function () {
-                $(selector + '> #status').css('display', 'none');
-            });
+                google.maps.event.addListener(marker, 'mouseover', function () {
+                    infoWindow.open(map, marker);
+                });
+
+                google.maps.event.addListener(marker, 'mouseout', function () {
+                    infoWindow.close();
+                });
+            } else {
+                google.maps.event.addListener(marker, 'mouseover', function () {
+                    $(selector + '> #status').stop(true, true);
+                    $(selector + '> #status').css('display', 'inline');
+                    $(selector + '> #status').html(mouseoverText);
+                });
+
+                google.maps.event.addListener(marker, 'mouseout', function () {
+                    $(selector + '> #status').css('display', 'none');
+                });
+            }
         },
 
         overlayKml : function (kmlUrl, map) {
@@ -838,7 +852,7 @@ var transit = (function () {
                                     vehicle.markers[i].setPosition(currMarkerPos);
                                 }
 
-                                transit.onMarkerMouseover(selector, vehicle.markers[i], mouseOverInfo);
+                                transit.onMarkerMouseover(selector, map, vehicle.markers[i], mouseOverInfo);
                             }
                         }
                     }, refreshInterval);
