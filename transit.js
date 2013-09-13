@@ -724,13 +724,35 @@ var transit = (function () {
             }
         },
 
-        writeLog : function (selector, currentTime, htmlContent) {
+        writeLog : function (selector, currPosition, vehicle) {
             var tickerDiv = selector + "> #tickerDiv";
             var ticker = tickerDiv + "> #ticker";
 
+            if (!($(tickerDiv).length > 0) || !(currPosition.justReached ||
+                currPosition.justLeft || currPosition.started || currPosition.completed)) return;
+
             $(tickerDiv).show();
             $(tickerDiv).stop(true, true);
-            $(ticker).append('<em>' + currentTime + '</em> | ' + htmlContent + '<br />');
+
+            if (currPosition.justReached) {
+                $(ticker).append("<em>" + transit.currTime() + "</em> | " +
+                                 "<strong>" + vehicle.name + "</strong> just reached <strong>" +
+                                 currPosition.stationaryAt + "</strong>. " +
+                                 "Departs at: <strong>" + currPosition.departureTime + "</strong>.<br />");
+            } else if (currPosition.justLeft || currPosition.started) {
+                var sOrL = currPosition.started ? 'just started from' : 'just left';
+                $(ticker).append("<em>" + transit.currTime() + "</em> | " +
+                                 "<strong>" + vehicle.name + "</strong> " + sOrL + " <strong>" +
+                                 currPosition.stationaryAt + "</strong>. " +
+                                 "Next Stop: <strong>" + currPosition.approachingStop +
+                                 "</strong> at <strong>" + currPosition.approachTime + "</strong>.<br />");
+            } else if (currPosition.completed) {
+                $(ticker).append("<em>" + transit.currTime() + "</em> | " +
+                                 "<strong>" + vehicle.name +
+                                 "</strong> just reached its destination at <strong>" +
+                                 currPosition.stationaryAt + "</strong>.<br />");
+            }
+
             $(tickerDiv).css('display','inline');
             $(ticker).scrollTop($(ticker)[0].scrollHeight);
             $(tickerDiv).fadeOut(5000);
