@@ -613,7 +613,20 @@ var transit = (function () {
                 tzS[2] *= -1;
             }
 
-            return (tzS[0] * 3600 + tzS[1] * 60 + tzS[2] + timeOffset * 60) % 86400;
+            return tzS[0] * 3600 + tzS[1] * 60 + tzS[2] + timeOffset * 60;
+        },
+
+        dayInTimezone : function (timezone) {
+            var difference = Math.ceil((transit.parseTime(transit.currTime(), 1) +
+                                        transit.parseTimeZone(timezone)) / 86400) - 1;
+            var currDay = new Date().getDay();
+            var offset = currDay + difference;
+            console.log(difference);
+            console.log(offset);
+
+            var dayIndex = (offset < 0) ? 7 + (offset % 7) : (currDay + difference) % 7;
+
+            return dayIndex;
         },
 
         parseTime : function (timeString, day) {
