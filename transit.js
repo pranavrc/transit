@@ -200,7 +200,7 @@ var transit = (function () {
             google.maps.event.clearListeners(marker, 'mouseover');
             google.maps.event.clearListeners(marker, 'mouseout');
 
-            if (!transit.isMobileDevice()) {
+            if (transit.isMobileDevice()) {
                 if (typeof marker.infoWindow != "undefined") {
                     marker.infoWindow.setContent('<div style="font-size:20px;">' + mouseoverText + '</div>');
                 } else {
