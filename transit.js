@@ -683,7 +683,7 @@ var transit = (function () {
 
             for (var i = 1; i <= noOfDays + 1; i++) {
                 var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i) +
-                                                   transit.parseTimeZone(timezone) - starts);
+                                                   (transit.parseTimeZone(timezone) % 86400) - starts);
 
                 var currPos = {
                     "stationaryAt": "",
@@ -712,7 +712,7 @@ var transit = (function () {
                     var approachingStopCoords = stops[approachingStop];
                     var timePercent = transit.percentInRange(travelTimes[range[0]], travelTimes[range[1]],
                                                              transit.parseTime(time, i) +
-                                                             transit.parseTimeZone(timezone) - starts);
+                                                             (transit.parseTimeZone(timezone) % 86400) - starts);
                     var pointsFromLtoA = transit.pointsBetweenStops(route, leavingStopCoords,
                                                                     approachingStopCoords);
                     var ps = transit.hashOfPercentDists(pointsFromLtoA);
@@ -884,7 +884,7 @@ var transit = (function () {
             transit.overlayKml(remoteKmlFile, map);
 
             $('#timezone').append("UTC" + timezone + "/Local" +
-                                  transit.secondsToHours(transit.parseTimeZone(timezone)));
+                                  transit.secondsToHours(transit.parseTimeZone(timezone) % 86400));
 
             if (typeof vehicles == "undefined") {
                 var vehicles = vehicleObj.vehicles;
