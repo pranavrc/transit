@@ -834,19 +834,19 @@ var transit = (function () {
         initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
+            $(selector).css({
+                'position': 'relative',
+                'font-family': '"Lucida Grande", "Lucida Sans Unicode",' +
+                               'Verdana, Arial, Helvetica, sans-serif',
+                'font-size': '12px',
+                'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
+                'background-color': 'hsl(0, 0%, 90%)'
+            });
+
+            $(selector).html("<div style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
+                             "<strong>Initialis(z)ing...</strong></div>");
             google.maps.event.addDomListener(window, 'load',
                     function () {
-                        $(selector).css({
-                            'position': 'relative',
-                            'font-family': '"Lucida Grande", "Lucida Sans Unicode",' +
-                                           'Verdana, Arial, Helvetica, sans-serif',
-                            'font-size': '12px',
-                            'text-shadow': 'hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px',
-                            'background-color': 'hsl(0, 0%, 90%)'
-                        });
-
-                        $(selector).html("<div style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
-                                         "<strong>Yeah, <em>initializing</em>...</strong></div>");
                         var kml = transit.kmlPromise(localKmlFile);
                         var json = transit.jsonPromise(jsonFile);
 
