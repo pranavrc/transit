@@ -39,7 +39,6 @@ var transit = (function () {
                 'padding': '10px',
                 'font-weight': 'bold',
                 'cursor': 'pointer',
-                'display': 'none'
             });
 
             $(selector + "> #toggleLog").click(function () {
@@ -50,7 +49,6 @@ var transit = (function () {
             });
 
             transit.initStatus(selector);
-            transit.initTicker(selector);
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
             transit.initSearch(selector, stopsList, routePoints, map);
 
