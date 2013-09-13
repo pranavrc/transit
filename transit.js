@@ -8,7 +8,8 @@ var transit = (function () {
             $(selector).html('');
 
             $(selector).append("<div id=\"timezone\"></div>")
-                       .append("<div id=\"transitMap\"></div>");
+                       .append("<div id=\"transitMap\"></div>")
+                       .append("<div id=\"toggleLog\">Start Logging</div>");
 
             $(selector + "> #transitMap").css({
                 'position': 'absolute',
@@ -22,6 +23,30 @@ var transit = (function () {
                 'right': '0.8%',
                 'z-index': '99',
                 'font-weight': 'bold',
+            });
+
+            $(selector + "> #toggleLog").css({
+                'position': 'absolute',
+                'bottom': '4%',
+                'left': '1%',
+                'z-index': '99',
+                'color': '#800000',
+                '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                'background-color': 'hsl(0, 0%, 90%)',
+                'border-radius': '10px',
+                'padding': '10px',
+                'font-weight': 'bold',
+                'cursor': 'pointer',
+                'display': 'none'
+            });
+
+            $(selector + "> #toggleLog").click(function () {
+                transit.initTicker(selector);
+                var tickerDiv = selector + "> #tickerDiv";
+                $(tickerDiv).css('display', 'inline');
+                $(tickerDiv).fadeOut(5000);
             });
 
             transit.initStatus(selector);
@@ -42,6 +67,7 @@ var transit = (function () {
             var tickerCtrl = tickerDiv + "> #tickerCtrl";
             var clear = tickerCtrl + "> #clear";
             var stop = tickerCtrl + "> #stop";
+            $(selector + "> #toggleLog").css('display', 'none');
 
             $(tickerDiv).css({
                 'position': 'absolute',
@@ -81,6 +107,7 @@ var transit = (function () {
 
             $(stop).click(function () {
                 $(tickerDiv).remove();
+                $(selector + "> #toggleLog").css('display', 'inline');
             });
 
             $(tickerDiv).hover(function () {
