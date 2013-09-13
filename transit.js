@@ -202,7 +202,7 @@ var transit = (function () {
 
             if (transit.isMobileDevice()) {
                 var infoWindow = new google.maps.InfoWindow({
-                    content: mouseoverText
+                    content: '<div style="font-size:20px;">' + mouseoverText + '</div>'
                 });
 
                 google.maps.event.addListener(marker, 'mouseover', function () {
