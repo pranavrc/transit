@@ -28,7 +28,7 @@
                     <li><a href="#get_started">Getting started.</a></li>
                     <li><a href="#kml">Making your transit routes.</a></li>
                     <li><a href="#json">Scheduling your vehicles.</a></li>
-                    <li><a href="#index">The HTML.</a></li>
+                    <li><a href="#index">The Code.</a></li>
                 </ul>
             </div><hr />
 
@@ -56,13 +56,13 @@
             <hr />
             <div id="get_started">
                 <h3>Getting started.</h3>
-                Do you know that all railroads lead to Rome? One of them starts from Tokyo, goes to Being and Moscow, and ends in Rome. Well, not really, but let's make one anyway. We're going to draw the route from Tokyo to Beijing to Moscow to Rome and schedule a train called the <em>Grand Intercontinental Maglev</em> to make a stopping run from Tokyo to Rome. Our Maglev will start at <strong>Tokyo</strong> at <strong>20:00:00 UTC</strong>, stop at <strong>Beijing</strong> from <strong>20:00:25-20:00:35 UTC</strong>, <strong>Moscow</strong> from <strong>20:01:00-20:01:10 UTC</strong>, and reach <strong>Rome</strong> at <strong>20:01:30 UTC</strong>.<br /><br />
-                Fire up <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a> and log in with your Google Account if you use one.
+                Do you know that all railroads lead to Rome? One of them starts from Tokyo, goes to Being and Moscow, and ends in Rome. Well, not really, but let's make one anyway. We're going to draw the route from Tokyo to Beijing to Moscow to Rome and schedule a train called the <em>Grand Intercontinental Maglev</em> to make a stopping run from Tokyo to Rome. Our Maglev will start at <strong>Tokyo</strong> at <strong>20:00:00 UTC</strong>, stop at <strong>Beijing</strong> from <strong>20:00:25-20:00:35 UTC</strong>, <strong>Moscow</strong> from <strong>20:01:00-20:01:10 UTC</strong>, and reach <strong>Rome</strong> at <strong>20:01:30 UTC</strong>. That's right, we're gonna use ultra-powerful magnetic fields for ultra-powerful levitation.<br /><br />
+                Fire up <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a> and log in with your Google Account if you use one. <strong>Take a tour</strong>, if you wish.
             </div>
             <hr />
             <div id="kml">
                 <h3>Making the transit routes.</h3>
-                To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps.
+                First off, we place markers at all our stops, viz., Tokyo, Beijing, Moscow and Rome. The markers must then be named. Give them a name and a short description if you like(optional). Then, we draw a line between our stops. If there was a real railroad here, you might want to trace through it. We'll draw a random railroad. This line serves as the primary route for our Maglev.<br /><br />The line must then be named. Let's call it the <em>Road to Rome</em>, even though if you're making a real map, you might want to use a more descriptive name. Make sure you place line-points at all your stops. Don't worry if the line-point isn't exactly over your stop's marker; Transit resolves your markers to the closest line-point it finds.
             </div>
             <hr />
             <div id="json">
@@ -70,7 +70,7 @@
             </div>
             <hr />
             <div id="index">
-                <h3>The HTML.</h3>
+                <h3>The Code.</h3>
             </div>
         </div><hr />
         <div id="footer">&copy; <a href="http://onloop.net">Pranav Ravichandran.</a></div>
