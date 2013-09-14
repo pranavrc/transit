@@ -3,6 +3,7 @@
     <head>
         <title>transit.js</title>
         <link rel="stylesheet" href="index.css">
+        <link rel="shortcut icon" type="image/png" href="favicon.ico">
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -18,7 +19,7 @@
         <h1>transit.js</h1>
         <div id="exp">Make client-side, schedule-driven transit maps.</div><hr /><br />
         <div id="parent">
-            transit.js lets you build completely client-side maps of schedule-based transit systems. There's no webserver involved, your browser does all the work. <a href="http://onloop.net/chennairail" target="_blank">Here's</a> what it looks like in action.<br /><br />
+            <strong>Transit</strong> lets you build completely client-side maps of schedule-based transit systems. There's no webserver involved, the browser does all the work. <a href="http://onloop.net/chennairail">Here's</a> what a Transit app looks like in action.<br /><br />
             <div id="list">
                 <ul>
                     <li><a href="#get_started">Getting started.</a></li>
@@ -28,10 +29,28 @@
                 </ul>
             </div><hr />
 
-            <div id="get_started"><h3>Getting started.</h3></div><hr />
-            <div id="kml"><h3>Making the transit routes.</h3></div><hr />
-            <div id="json"><h3>Scheduling your vehicles.</h3></div><hr />
-            <div id="index"><h3>The HTML.</h3></div>        
-        </div>
+            <div id="get_started">
+                <h3>Getting started.</h3>
+                Transit takes a set of transit routes or paths, and a set of vehicles and their schedules, and simulates their movement on the given routes in a Google map (I'm working on OSM support), based on the schedule. The transit routes are defined in a <strong>KML</strong> (<a href=http://en.wikipedia.org/wiki/Keyhole_Markup_Language">Keyhole Markup Language</a>) file, and the vehicle schedules are written in a <strong>JSON</strong> (<a href="http://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>) file.<br /><br />
+
+                To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps. For the JSON, you can use a JSON editor. If you're writing <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">a lot of</a> schedules, though, Vim or Emacs might save your sanity.<br /><br />
+
+                The <a href="http://onloop.net/chennairail">Chennai Suburban Rail Map</a> uses <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_map.kml">this</a> KML file and <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">this</a> JSON file.
+            </div>
+            <hr />
+            <div id="kml">
+                <h3>Making the transit routes.</h3>
+                To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps.
+            </div>
+            <hr />
+            <div id="json">
+                <h3>Scheduling your vehicles.</h3>
+            </div>
+            <hr />
+            <div id="index">
+                <h3>The HTML.</h3>
+            </div>
+        </div><hr />
+        <div id="footer">&copy; <a href="http://onloop.net">Pranav Ravichandran.</a></div>
     </body>
 </html>
