@@ -53,10 +53,26 @@ h1 {
 	text-align: center;
 }
 
+h3 {
+    color: #666;
+}
+
 a:link {
 	color: #800000;
 }
 
 a:visited {
 	color: #696969;
+}
+
+#footer {
+	display: block;
+	margin-top: 0px;
+	font-size: 11px;
+    text-align: center;
+}
+
+#parent img {
+    width: 50%;
+    height: 50%;
 }
