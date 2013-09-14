@@ -2,35 +2,54 @@
 
 <html>
     <head>
-        <title>Foo</title>
+        <title>Chennai Suburban Rail Map</title>
         <meta charset="utf-8" />
 
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDg_NuTLeaUr7PkWpwZZPk3DpU6KfkLWFw&sensor=false"></script>
         <script src="transit.js"></script>
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <style type="text/css">
             html, body {
                 height: 100%;
                 margin: 0;
                 padding: 0;
             }
+
+            #map > #transitplug {
+                z-index: 99;
+                position: absolute;
+                bottom: 1%;
+                left: 30.5%;
+                font-weight: bold;
+            }
+
+            a {
+                color: #800000;
+            }
         </style>
     </head>
 
     <body>
-        <div id="map" style="width:100%;height:100%;"></div>
+        <div id="map" style="width:100%;height:100%;">
+            <div id="transitplug">&copy; <a href="http://onloop.net/" target="_blank">Pranav Ravichandran</a>. This is a schedule-based map of <a href="http://en.wikipedia.org/wiki/Chennai_Suburban_Railway" target="_blank">Chennai Suburban Railway</a>, made with <a href="http://onloop.net/transitjs" target="_blank">transit.js</a>.</div>
+        </div>
 
         <script>
+            var timezone = "+5:30:00";
+            var schedule = "";
+            schedule = (transit.dayInTimezone(timezone) != 0) ? "chennai_rail_schedule.json" :
+                                                                "chennai_rail_schedule_sunday.json";
             if (!transit.isMobileDevice()) {
                 transit.initialize("#map",
                                    "chennai_rail_map.kml",
                                    "https://raw.github.com/pranavrc/transit/master/chennai_rail_map.kml",
-                                   "chennai_rail_schedule.json");
+                                   schedule);
             } else {
                 transit.initialize("#map",
                                    "chennai_rail_map.kml",
                                    "https://raw.github.com/pranavrc/transit/master/chennai_rail_map.kml",
-                                   "chennai_rail_schedule.json",
+                                   schedule,
                                    5);
             }
 
