@@ -621,8 +621,6 @@ var transit = (function () {
                                         transit.parseTimeZone(timezone)) / 86400) - 1;
             var currDay = new Date().getDay();
             var offset = currDay + difference;
-            console.log(difference);
-            console.log(offset);
 
             var dayIndex = (offset < 0) ? 7 + (offset % 7) : (currDay + difference) % 7;
 
@@ -920,7 +918,7 @@ var transit = (function () {
             });
 
             $(selector).html("<div style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
-                             "<strong>Initial Sizing...</strong></div>");
+                             "<strong>Initialis(z)ing...</strong></div>");
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         var kml = transit.kmlPromise(localKmlFile);
