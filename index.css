@@ -1,5 +1,5 @@
 body {
-	background-color: hsl(0,0%,95%);
+    background-color: hsl(0,0%,95%);
     font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
     text-shadow: hsla(0,0%,40%,0.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
 }
@@ -7,50 +7,51 @@ body {
 #parent {
     width: 60%;
     margin: auto;
-	font-size: 14px;
-	text-align: left;
+    font-size: 14px;
+    text-align: left;
     line-height: 150%;
 }
 
 ul {
-	list-style-type: decimal;
-	margin: 0;
-	padding: 10px;
+    background-color: hsl(0,0%,90%);
+    list-style-type: decimal;
+    margin: 0;
+    padding: 10px;
     padding-left: 50px;
-	text-align: left;
+    text-align: left;
     border: 1px solid #999;
-	-webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
-	border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
 
 #exp {
-	text-align: center;
-	font-size: 15px;
-	margin-bottom: 5px;
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 5px;
     font-weight: bold;
 }
 
 p {
-	background: url('');
+    background: url('');
 }
 
 hr {
-	color: white;
-	border: 0;
+    color: white;
+    border: 0;
     height: 1px;
     background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
-	background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
-	background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
-	background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
+    background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
+    background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
+    background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.3), rgba(0,0,0,0));
 }
 
 h1 {
-	font-size: 25px;
-	font-weight: bold;
-	color: #666;
-	text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    color: #666;
+    text-align: center;
 }
 
 h3 {
@@ -58,17 +59,17 @@ h3 {
 }
 
 a:link {
-	color: #800000;
+    color: #800000;
 }
 
 a:visited {
-	color: #696969;
+    color: #696969;
 }
 
 #footer {
-	display: block;
-	margin-top: 0px;
-	font-size: 11px;
+    display: block;
+    margin-top: 0px;
+    font-size: 11px;
     text-align: center;
 }
 
