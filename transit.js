@@ -141,8 +141,9 @@ var transit = (function () {
             $.getScript("http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js", function () {
                 $(selector).append("<input type=\"text\" id=\"search\" " +
                                     "placeholder=\"Search for a stop and select it from the dropdown.\">");
+                var searchDiv = selector + "> #search";
 
-                $(selector + "> #search").css({
+                $(searchDiv).css({
                     'position': 'absolute',
                     'width': '50%',
                     'height': '13px',
@@ -153,7 +154,7 @@ var transit = (function () {
                     'padding': '5px',
                 });
 
-                $(selector + "> #search").autocomplete({
+                $(searchDiv).autocomplete({
                     source: stopsList,
                     select: function (event, ui) {
                         var coordsOfItem = routePoints[ui.item.value];
@@ -163,7 +164,7 @@ var transit = (function () {
                     }
                 });
 
-                $(selector + "> #search").focus(function () {
+                $(searchDiv).focus(function () {
                     $(this).val('');
                 });
 
@@ -172,6 +173,10 @@ var transit = (function () {
                     'overflow-y': 'auto',
                     'overflow-x': 'hidden',
                     'padding-right': '20px'
+                });
+
+                google.maps.event.addListener(map, 'click', function () {
+                    $(searchDiv).focusout();
                 });
             });
         },
