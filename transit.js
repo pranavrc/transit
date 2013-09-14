@@ -501,7 +501,7 @@ var transit = (function () {
             return string.replace(/^\s+|\s+$/g, '');
         },
 
-        // Return true of a list is sorted. False if not.
+        // Return true if a list is sorted. False if not.
         // Acts as a helper to check if a vehicle's schedule is chronologically ordered.
         isSorted : function (list) {
             for (var i = 0; i < list.length - 1; i++) {
