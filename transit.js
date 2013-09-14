@@ -917,7 +917,8 @@ var transit = (function () {
                 'background-color': 'hsl(0, 0%, 90%)'
             });
 
-            $(selector).append("<div id='init' style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
+            $(selector).append("<div id='init' style='position:absolute;width:100%;" +
+                               "text-align:center;font-size:20px;top:48%;'>" +
                                "<strong>Initialis(z)ing...</strong></div>");
             google.maps.event.addDomListener(window, 'load',
                     function () {
