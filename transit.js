@@ -622,7 +622,7 @@ var transit = (function () {
             var currDay = new Date().getDay();
             var offset = currDay + difference;
 
-            var dayIndex = (offset < 0) ? 7 + (offset % 7) : (currDay + difference) % 7;
+            var dayIndex = (offset < 0) ? 6 + (offset % 7) : offset % 7;
 
             return dayIndex;
         },
