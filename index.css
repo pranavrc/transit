@@ -26,6 +26,16 @@ ul {
     border-radius: 10px;
 }
 
+#code {
+    font-family: "Lucida Console", "Lucida Sans Typewriter", Monaco, "Bitstream Vera Sans Mono", monospace;
+    font-size: 12px;
+    border-radius: 10px;
+	border-left: 1px solid #999;
+	padding-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 #exp {
     text-align: center;
     font-size: 15px;
