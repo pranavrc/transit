@@ -338,7 +338,7 @@ var transit = (function () {
         // Takes a vehicleParser output object, a routeParser output object,
         // and builds another object to be used by the estimator (estimateCurrentPosition).
         // Contains keys such as time-adjusted traveltimes, arrival times, departure times et al.
-        scheduler : function (vehicleObj, routes, timezone, stopinterval) {
+        scheduler : function (vehicleObj, routes, stopinterval) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
             var vehicleTravelTimes = new Array();
@@ -985,8 +985,7 @@ var transit = (function () {
 
                 for (var count = 0; count < noOfVehicles; count++) {
                     try {
-                        vehicles[count] = transit.scheduler(vehicles[count], routeObj,
-                                                            timezone, stopinterval);
+                        vehicles[count] = transit.scheduler(vehicles[count], routeObj, stopinterval);
                     } catch (err) {
                         transit.writeStatus(selector, err);
                         throw new Error(err);
