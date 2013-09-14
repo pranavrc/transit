@@ -25,6 +25,7 @@
                 <ul>
                     <li><a href="#intro">What's this?</a></li>
                     <li><a href="#download">Download and Usage.</a></li>
+                    <li><a href="#get_started">Getting started.</a></li>
                     <li><a href="#kml">Making your transit routes.</a></li>
                     <li><a href="#json">Scheduling your vehicles.</a></li>
                     <li><a href="#index">The HTML.</a></li>
@@ -33,7 +34,7 @@
 
             <div id="intro">
                 <h3>What's this?</h3>
-                Transit takes a set of transit routes or paths, and a set of vehicles and their schedules, and simulates their movement on the given routes in a Google map (I'm working on OSM support), based on the schedule. The transit routes are defined in a <strong>KML</strong> (<a href=http://en.wikipedia.org/wiki/Keyhole_Markup_Language">Keyhole Markup Language</a>) file, and the vehicle schedules are written in a <strong>JSON</strong> (<a href="http://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>) file.<br /><br />
+                Transit takes a set of transit routes or paths, and a set of vehicles and their schedules, and simulates their movement on the given routes in a Google map (I'm working on <a href="http://openstreetmap.org">OSM</a> support), based on the schedule. The transit routes are defined in a <strong>KML</strong> (<a href=http://en.wikipedia.org/wiki/Keyhole_Markup_Language">Keyhole Markup Language</a>) file, and the vehicle schedules are written in a <strong>JSON</strong> (<a href="http://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>) file.<br /><br />
 
                 To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps. For the JSON, you can use a JSON editor. If you're writing <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">a lot of</a> schedules, though, Vim or Emacs might save your sanity.<br /><br />
 
@@ -44,9 +45,19 @@
             <hr />
             <div id="download">
                 <h3>Download and Usage.</h3>
-                You can download Transit in a zipped file from <a href="https://github.com/pranavrc/transit/archive/master.zip">here</a>. To include Transit in your app, just do the normal script tag thingy:<br />
-                <code>&lt;script src="transit-min.js"&gt;&lt;/script&gt;</code><br />
-                Do not use the URL of the raw file from Github inside your script tags. <em>Github ain't no CDN</em>.
+                You can download Transit in a zipped file from <a href="https://github.com/pranavrc/transit/archive/master.zip">here</a>. Transit requires <a href="http://jquery.com/">jQuery 1.10.1</a>, and the <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps JavaScript API V3</a>, so you'll have to include those too. The following should do:<br />
+                <div id="code">
+                    &lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;script&gt;<br />
+                    &lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;script&gt;<br />
+                    &lt;script src="transit-min.js"&gt;&lt;/script&gt;<br />
+                </div>
+                The API_KEY for your app is optional, but it helps you with analytics, so if you plan to get one, start <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key">here</a>.
+            </div>
+            <hr />
+            <div id="get_started">
+                <h3>Getting started.</h3>
+                Do you know that all railroads lead to Rome? One of them starts from Tokyo, goes to Being and Moscow, and ends in Rome. Well, not really, but let's make one anyway. We're going to draw the route from Tokyo to Beijing to Moscow to Rome and schedule a train called the <em>Grand Intercontinental Maglev</em> to make a stopping run from Tokyo to Rome. Our Maglev will start at <strong>Tokyo</strong> at <strong>20:00:00 UTC</strong>, stop at <strong>Beijing</strong> from <strong>20:00:25-20:00:35 UTC</strong>, <strong>Moscow</strong> from <strong>20:01:00-20:01:10 UTC</strong>, and reach <strong>Rome</strong> at <strong>20:01:30 UTC</strong>.<br /><br />
+                Fire up <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a> and log in with your Google Account if you use one.
             </div>
             <hr />
             <div id="kml">
