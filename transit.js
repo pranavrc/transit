@@ -1,10 +1,19 @@
+/* transit.js 0.1.0
+ * (c) Pranav Ravichandran <me@onloop.net>
+ * transit.js carries the MIT license.
+ * http://onloop.net/transit/
+ */
+
 var transit = (function () {
     return {
+        // Get a selector div, a list of names of stops in the map, and the points of the stops,
+        // and return a map object with a status and a search bar.
         initMap : function (selector, stopsList, routePoints) {
             var mapDet = {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
+            // Remove the initialization message before overlaying the map on the div.
             $(selector + "> #init").remove();
 
             $(selector).append("<div id=\"timezone\"></div>")
@@ -41,6 +50,7 @@ var transit = (function () {
                 'cursor': 'pointer',
             });
 
+            // Open the log when the toggle button is clicked.
             $(selector + "> #toggleLog").click(function () {
                 transit.initTicker(selector);
                 var tickerDiv = selector + "> #tickerDiv";
@@ -55,6 +65,7 @@ var transit = (function () {
             return map;
         },
 
+        // Initialize the ticker that shows a log of events.
         initTicker : function (selector) {
             $(selector).append('<div id="tickerDiv"><span style="color:#800000"><strong>Transit Log</span>' +
                                '<br /><br /></strong><div id="ticker"></div><br /><div id="tickerCtrl">' +
@@ -65,6 +76,7 @@ var transit = (function () {
             var tickerCtrl = tickerDiv + "> #tickerCtrl";
             var clear = tickerCtrl + "> #clear";
             var stop = tickerCtrl + "> #stop";
+            // Clear the toggle button when the log is active.
             $(selector + "> #toggleLog").css('display', 'none');
 
             $(tickerDiv).css({
@@ -99,15 +111,18 @@ var transit = (function () {
                 'color': '#800000'
             });
 
+            // Clear/reset the log.
             $(clear).click(function () {
                 $(ticker).html('');
             });
 
+            // Remove the log and show the toggle button.
             $(stop).click(function () {
                 $(tickerDiv).remove();
                 $(selector + "> #toggleLog").css('display', 'inline');
             });
 
+            // Show log on mouseover, and fade it out on mouseout.
             $(tickerDiv).hover(function () {
                 $(tickerDiv).stop(true, true);
                 $(tickerDiv).css('display', 'inline');
@@ -116,6 +131,8 @@ var transit = (function () {
             });
         },
 
+        // Initialize a status div to show error messages and vehicle details
+        // on the bottom right corner.
         initStatus : function (selector) {
             $(selector).append('<div id="status"></div>');
 
@@ -134,6 +151,9 @@ var transit = (function () {
             });
         },
 
+        // Initialize a search box that takes a list of names of stops, and their coordinates.
+        // Autocompletes on key down from the list of stops. Zooms into the respective coordinates
+        // of a stop, when selected.
         initSearch : function (selector, stopsList, routePoints, map) {
             $('head').append('<link rel="stylesheet" ' +
                              'href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />');
@@ -164,6 +184,7 @@ var transit = (function () {
                     }
                 });
 
+                // Style the dropdown using a predefined jquery-ui class.
                 $('.ui-autocomplete').css({
                     'max-height': '50%',
                     'overflow-y': 'auto',
@@ -173,6 +194,7 @@ var transit = (function () {
             });
         },
 
+        // Initialize a marker at a point specified by the coords parameter in the map.
         initMarker : function (coords, selector, map, color) {
             var markerPos = new google.maps.LatLng(coords.x, coords.y);
 
@@ -193,10 +215,13 @@ var transit = (function () {
             return marker;
         },
 
+        // Event handlers for marker mouseover, like infowindow popups and status messages.
         onMarkerMouseover : function (selector, map, marker, mouseoverText) {
+            // Clear all listeners first so they don't accumulate.
             google.maps.event.clearListeners(marker, 'mouseover');
             google.maps.event.clearListeners(marker, 'mouseout');
 
+            // Show status messages only in non-mobile devices.
             if (!transit.isMobileDevice()) {
                 google.maps.event.addListener(marker, 'mouseover', function () {
                     $(selector + '> #status').stop(true, true);
@@ -208,26 +233,31 @@ var transit = (function () {
                     $(selector + '> #status').css('display', 'none');
                 });
             } else {
+                // Increase font size of mouseover text in handheld devices.
                 mouseoverText = '<div style="font-size:20px;">' + mouseoverText + '</div>';
             }
 
             if (typeof marker.infoWindow != "undefined") {
+                // Update content of existing infowindow.
                 marker.infoWindow.setContent(mouseoverText);
             } else {
                 marker.infoWindow = new google.maps.InfoWindow({
                     content: mouseoverText
                 });
 
+                // Open an infowindow on clicking a marker.
                 google.maps.event.addListener(marker, 'click', function () {
                     marker.infoWindow.open(map, marker);
                 });
 
+                // Close all info windows on clicking anywhere on the map.
                 google.maps.event.addListener(map, 'click', function () {
                     marker.infoWindow.close();
                 });
             }
         },
 
+        // Take a KML file in a public domain and overlay it on the map.
         overlayKml : function (kmlUrl, map) {
             var kmlOptions = {
                 map: map
@@ -235,6 +265,7 @@ var transit = (function () {
             var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
         },
 
+        // AJAX promise for doing stuff with the kml data later.
         kmlPromise : function (kmlUrl) {
             return $.ajax({
                 url: kmlUrl,
@@ -243,6 +274,7 @@ var transit = (function () {
             });
         },
 
+        // AJAX promise bla json bla.
         jsonPromise : function (jsonUrl) {
             return $.ajax({
                 url: jsonUrl,
@@ -251,6 +283,8 @@ var transit = (function () {
             });
         },
 
+        // Take KML data and parse it to get a list of stop names, an object of line name-coordinates,
+        // and an object of stopname - points.
         routeParser : function (data) {
             var lines = {};
             var points = {};
@@ -288,6 +322,9 @@ var transit = (function () {
             };
         },
 
+        // Take JSON schedule data and return a list of vehicle objects,
+        // the timezone of the map and the default stop interval for the vehicles
+        // if specified.
         vehicleParser : function (data) {
             var vehicleObj = {};
 
@@ -298,6 +335,9 @@ var transit = (function () {
             return vehicleObj;
         },
 
+        // Takes a vehicleParser output object, a routeParser output object,
+        // and builds another object to be used by the estimator (estimateCurrentPosition).
+        // Contains keys such as time-adjusted traveltimes, arrival times, departure times et al.
         scheduler : function (vehicleObj, routes, timezone, stopinterval) {
             var vehicleArrivals = {};
             var vehicleDepartures = {};
@@ -308,6 +348,7 @@ var transit = (function () {
             var firstStop = stopsObj[0];
             var firstStopName = firstStop.name;
 
+            // Throw error if the first stop's departure isn't mentioned.
             if (typeof firstStop.departure == 'undefined')
                 throw new Error(vehicleObj.name + " is missing its initial departure time at " + firstStopName);
 
@@ -316,6 +357,7 @@ var transit = (function () {
             var points = routes.points;
             var opLine = routes.lines[vehicleObj.route.toLowerCase()];
 
+            // Error if vehicle's travelling on a non-existent route.
             if (typeof opLine == "undefined")
                 throw new Error(vehicleObj.name + "'s route " + vehicleObj.route + " doesn't exist.");
 
@@ -324,9 +366,11 @@ var transit = (function () {
             vehicleTravelTimes.push(startTime - startTime);
 
             try {
+                // If the user's not placed a marker exactly on the line, resolve the marker to a point on the line.
                 vehicleStopCoords[firstStopName] = transit.resolvePointToLine(opLine,
                                                                               points[firstStopName.toLowerCase()]);
             } catch (err) {
+                // Invalid stop name error.
                 throw new Error("The stop " + firstStopName + " in vehicle " +
                                 vehicleObj.name + "'s schedule wasn't found in its route.");
             }
@@ -336,6 +380,8 @@ var transit = (function () {
                 var prevStop = stopsObj[eachStop - 1];
                 var tempName = temp.name;
 
+                // If arrival time isn't specified, calculate it from the defaultstopinterval
+                // and the departure time specified.
                 if (typeof temp.arrival == 'undefined') {
                     var currDepartureTime = transit.parseTime(temp.departure.time, temp.departure.day) -
                                             startTime;
@@ -348,6 +394,7 @@ var transit = (function () {
                                           startTime;
                 }
 
+                // Do the same as above with departure times.
                 if (typeof temp.departure == 'undefined') {
                     var currArrivalTime = transit.parseTime(temp.arrival.time, temp.arrival.day) - startTime;
                     var currDepartureTime = currArrivalTime + transit.parseTime(stopinterval, 1);
@@ -376,6 +423,7 @@ var transit = (function () {
             var lastStop = stopsObj[noOfStops - 1];
             var lastStopName = lastStop.name;
 
+            // Error if reaching time isn't specified.
             if (typeof lastStop.arrival == 'undefined')
                 throw new Error(vehicleObj.name + " is missing its final arrival time at " + lastStopName);
 
@@ -384,6 +432,7 @@ var transit = (function () {
             vehicleTravelTimesAsStrings.push(lastStop.arrival.time);
             vehicleTravelTimes.push(endTime);
 
+            // If the vehicle has a schedule that's going in reverse, throw an error.
             if (!transit.isSorted(vehicleTravelTimes))
                 throw new Error(vehicleObj.name + " seems to be going backwards in time.");
 
@@ -418,6 +467,9 @@ var transit = (function () {
                           "SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat",
                           "White","WhiteSmoke","Yellow","YellowGreen"];
 
+            // Assign a distinct color for each vehicle. This helps track the vehicle and
+            // since transit returns multiple markers for vehicles travelling over multiple days,
+            // it helps track other markers associated with the same vehicle.
             vehicleObj.color = colors[Math.floor(Math.random() * colors.length)];
 
             return {
@@ -425,6 +477,7 @@ var transit = (function () {
                 "info": vehicleObj.info,
                 "color": vehicleObj.color,
                 "starts": startTime,
+                // Create basic information about the vehicle.
                 "baseinfo": transit.createBaseInfo(vehicleObj.name, vehicleObj.info,
                                                    firstStopName, firstStop.departure.time,
                                                    lastStopName, lastStop.arrival.time),
@@ -438,14 +491,18 @@ var transit = (function () {
             };
         },
 
+        // Remove newlines and whitespaces.
         strip : function (string) {
             return string.replace(/\s+/g, '').replace(/\n/g, '');
         },
 
+        // Remove leading and trailing whitespaces.
         trim : function (string) {
             return string.replace(/^\s+|\s+$/g, '');
         },
 
+        // Return true of a list is sorted. False if not.
+        // Acts as a helper to check if a vehicle's schedule is chronologically ordered.
         isSorted : function (list) {
             for (var i = 0; i < list.length - 1; i++) {
                 if (list[i] > list[i+1]) return false;
@@ -454,6 +511,8 @@ var transit = (function () {
             return true;
         },
 
+        // Take a line [(x1,y1),(x2,y2)..(xn,yn)] and a point (x,y).
+        // Return the point on the line that's closest to (x,y).
         resolvePointToLine : function (line, point) {
             if (point.x == line[0].x && point.y == line[0].y)
                 return point;
@@ -475,6 +534,7 @@ var transit = (function () {
         },
 
         // Reimplemented from http://www.movable-type.co.uk/scripts/latlong.html
+        // Calculate great circle distance between two coordinates.
         haversine : function (sourceCoords, targetCoords) {
             var R = 6371; // km
 
@@ -497,11 +557,14 @@ var transit = (function () {
             return d;
         },
 
+        // Calculate linear distance on a plane between two points (x1,y1) and (x2,y2).
         linearDist : function (sourceCoords, targetCoords) {
             return Math.sqrt(Math.pow((targetCoords.x - sourceCoords.x), 2) +
                              Math.pow((targetCoords.y - sourceCoords.y), 2));
         },
 
+        // Take two coordinates (x1,y1), (x2,y2) and a percentage. Return the coordinates that
+        // are on the line between (x1,y1) and (x2,y2) at percentage%.
         percentDist : function (sourceCoords, targetCoords, percentage) {
             var newCoords = {};
             var ratio = percentage / 100;
@@ -510,10 +573,14 @@ var transit = (function () {
             return newCoords;
         },
 
+        // Opposite of percentDist(). Take two values and return the percentage of target
+        // value in the range.
         percentInRange : function (lower, upper, target) {
             return ((target - lower) / (upper - lower)) * 100;
         },
 
+        // Take a list of coordinates in the route, and slice the list between start and end.
+        // If the start is after the end, make sure the slicing goes well by swapping.
         pointsBetweenStops : function (route, start, end) {
             var startingAt = transit.indexOfCoordsObjInList(route, start);
             var endingAt = transit.indexOfCoordsObjInList(route, end);
@@ -524,6 +591,8 @@ var transit = (function () {
                 return route.slice(startingAt, endingAt + 1);
         },
 
+        // Since indexOf() doesn't work for objects, make a substitute function to return
+        // the index of a coordinates (x,y) object in a list.
         indexOfCoordsObjInList : function (list, coords) {
             for (var i = 0; i < list.length; i++) {
                 if (coords.x == list[i].x && coords.y == list[i].y)
@@ -533,6 +602,8 @@ var transit = (function () {
             return -1;
         },
 
+        // Take a list of coordinates, and return the percentage distances of each
+        // point in the list from start to end.
         hashOfPercentDists : function (points) {
             var start = points[0];
             var routeLength = points.length;
@@ -596,6 +667,8 @@ var transit = (function () {
             }
         },
 
+        // Take a timezone string and return the difference in seconds
+        // between the client's timezone and the given timezone.
         parseTimeZone : function (timezone) {
             var timeOffset = new Date().getTimezoneOffset();
 
@@ -613,6 +686,9 @@ var transit = (function () {
             return tzS[0] * 3600 + tzS[1] * 60 + tzS[2] + timeOffset * 60;
         },
 
+        // Take a timezone string and return the day in the timezone by calculating
+        // the offset between client timezone and target timezone. Returns 0 - 6
+        // based on the index of the day in the week. 0 being Sunday and 6 being Saturday.
         dayInTimezone : function (timezone) {
             var difference = Math.ceil((transit.parseTime(transit.currTime(), 1) +
                                         transit.parseTimeZone(timezone)) / 86400) - 1;
@@ -624,6 +700,8 @@ var transit = (function () {
             return dayIndex;
         },
 
+        // Take a time string and a day and return the number of seconds from 00:00:00,
+        // adding the respective number of days in seconds.
         parseTime : function (timeString, day) {
             var hmsRe = /^(?:2[0-3]|[01]?[0-9]):[0-5]?[0-9](:[0-5]?[0-9])?$/;
 
@@ -639,6 +717,7 @@ var transit = (function () {
             return hms[0] * 3600 + hms[1] * 60 + hms[2] + (day - 1) * 86400;
         },
 
+        // Return current time as a HH:MM:SS string.
         currTime : function () {
             var t = new Date();
             return t.getHours().toString() + ":" +
@@ -646,6 +725,7 @@ var transit = (function () {
                    t.getSeconds().toString();
         },
 
+        // Convert seconds to a HH:MM:SS string.
         secondsToHours : function (timeInSeconds) {
             var absTime = Math.abs(timeInSeconds);
             var hours = parseInt(absTime / 3600 ) % 24;
@@ -662,6 +742,10 @@ var transit = (function () {
                 return "-" + result;
         },
 
+        // Main estimator function. Takes an object returned by the scheduler.
+        // From the client's current time, and the travel times of the target vehicle,
+        // estimates the current position of the vehicle and returns the coordinates
+        // of the marker that should be placed on the map.
         estimateCurrentPosition : function (vehicleObj, timezone) {
             var arrivals = vehicleObj.arrivals;
             var departures = vehicleObj.departures;
@@ -677,6 +761,8 @@ var transit = (function () {
             var time = transit.currTime();
 
             for (var i = 1; i <= noOfDays + 1; i++) {
+                // Take the current time, adjust it to account for the timezone, and find out
+                // where in the vehicle's journey it lies.
                 var range = transit.enclosure.call(travelTimes, transit.parseTime(time, i) +
                                                    (transit.parseTimeZone(timezone) % 86400) - starts);
 
@@ -694,6 +780,7 @@ var transit = (function () {
                     "currentCoords": null
                 };
 
+                // If the vehicle is moving between two stops.
                 if (range[0] % 2 == 0 && range.length == 2) {
                     var leftTime = travelTimes[range[0]];
                     var approachTime = travelTimes[range[1]];
@@ -720,17 +807,18 @@ var transit = (function () {
                     var percent = transit.percentInRange(bef, af, timePercent);
                     currPos.currentCoords = transit.percentDist(distHash[bef], distHash[af], percent);
                 } else {
+                    // If the vehicle is stationary at a stop.
                     if (range[0] % 2 != 0 && range.length == 2) {
                         currPos.stationaryAt = departures[travelTimes[range[1]]];
                         currPos.departureTime = travelTimesAsStrings[range[1]];
                         currPos.currentCoords = stops[currPos.stationaryAt];
                     } else if (range > 0 && range < travelTimes.length - 1) {
-                        if (range % 2 != 0) {
+                        if (range % 2 != 0) { // Vehicle just reached a stop.
                             currPos.justReached = true;
                             currPos.stationaryAt = departures[travelTimes[range + 1]];
                             currPos.departureTime = travelTimesAsStrings[range + 1];
                             currPos.currentCoords = stops[currPos.stationaryAt];
-                        } else {
+                        } else { // Vehicle just left a stop.
                             currPos.justLeft = true;
                             currPos.stationaryAt = departures[travelTimes[range]];
                             currPos.approachingStop = arrivals[travelTimes[range + 1]];
@@ -738,11 +826,11 @@ var transit = (function () {
                             currPos.approachTime = travelTimesAsStrings[range + 1];
                             currPos.currentCoords = stops[currPos.stationaryAt];
                         }
-                    } else if (range == travelTimes.length - 1) {
+                    } else if (range == travelTimes.length - 1) { // Vehicle's done with its journey.
                         currPos.completed = true;
                         currPos.stationaryAt = arrivals[travelTimes[range]];
                         currPos.currentCoords = stops[currPos.stationaryAt];
-                    } else if (range == 0) {
+                    } else if (range == 0) { // Vehicle just started on its journey.
                         currPos.started = true;
                         currPos.stationaryAt = departures[travelTimes[range]];
                         currPos.approachingStop = arrivals[travelTimes[range + 1]];
@@ -757,6 +845,7 @@ var transit = (function () {
             return positions;
         },
 
+        // Create a basic info string about a vehicle.
         createBaseInfo : function (name, info, startpoint, starttime, endpoint, endtime) {
             return "<strong>Vehicle: </strong>" + name + "<br />" +
                    ((typeof info != "undefined") ? "<strong>Info: </strong>" + info + "<br />" : "") +
@@ -765,6 +854,7 @@ var transit = (function () {
                    endtime + ")<br />";
         },
 
+        // Build on a vehicle's basic info and create position info based on the current position.
         createPositionInfo : function (base, position) {
             if (position.stationaryAt) {
                 return base + "<strong>At: </strong>" + position.stationaryAt +
@@ -777,6 +867,7 @@ var transit = (function () {
             }
         },
 
+        // Write events to the ticker log.
         writeLog : function (selector, currPosition, vehicle) {
             var tickerDiv = selector + "> #tickerDiv";
             var ticker = tickerDiv + "> #ticker";
@@ -811,11 +902,14 @@ var transit = (function () {
             $(tickerDiv).fadeOut(5000);
         },
 
+        // Write statuses to the status div.
         writeStatus : function (selector, message) {
             $(selector + '> #status').css('display', 'inline');
             $(selector + '> #status').html(message);
         },
 
+        // Recognize if client is using a handheld device. Some nasty useragent sniffing down here.
+        // Taken from http://detectmobilebrowsers.com/
         isMobileDevice : function () {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
             if(/(android|ipad|playbook|silk|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(userAgent)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(userAgent.substr(0,4)))
@@ -824,6 +918,9 @@ var transit = (function () {
                 return false;
         },
 
+        // Sets the vehicles in motion. Continuously estimates positions of vehicles and moves markers to
+        // the acquired coordinate positions. refreshInterval determines the time of waiting between two
+        // cycles of movements.
         setInMotion : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map) {
             var transition = setInterval(
                     function() {
@@ -872,6 +969,7 @@ var transit = (function () {
                     }, refreshInterval);
         },
 
+        // String all the function calls together. Kinda like C's main().
         callMain : function (selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile, vehicles) {
             var timezone = vehicleObj.timezone;
             var stopinterval = vehicleObj.stopinterval;
@@ -902,7 +1000,10 @@ var transit = (function () {
                                 stopinterval, timezone, map);
         },
 
+        // Initialize stuff. Run the promises, acquire the kml and json data, add the main DOM listener,
+        // call the main function and write statuses if anything goes awry.
         initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
+            // Default the refreshInterval to 1 second if it's less than 1 or unspecified.
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
             $(selector).css({
@@ -914,6 +1015,7 @@ var transit = (function () {
                 'background-color': 'hsl(0, 0%, 90%)'
             });
 
+            // Write an initialization message while loading the map and markers.
             $(selector).append("<div id='init' style='position:absolute;width:100%;" +
                                "text-align:center;font-size:20px;top:48%;'>" +
                                "<strong>Initialis(z)ing...</strong></div>");
