@@ -7,7 +7,7 @@
 
         <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDg_NuTLeaUr7PkWpwZZPk3DpU6KfkLWFw&sensor=false"></script>
-        <script src="transit.js"></script>
+        <script src="transit-min.js"></script>
         <link rel="icon" href="favicon.ico" type="image/x-icon" />
         <style type="text/css">
             html, body {
@@ -39,8 +39,10 @@
         <script>
             var timezone = "+5:30:00";
             var schedule = "";
+            // Load Sunday schedule if IST is on a Sunday.
             schedule = (transit.dayInTimezone(timezone) != 0) ? "chennai_rail_schedule.json" :
                                                                 "chennai_rail_schedule_sunday.json";
+            // If client is on a handheld device, increase the refresh interval for responsiveness.
             if (!transit.isMobileDevice()) {
                 transit.initialize("#map",
                                    "chennai_rail_map.kml",
