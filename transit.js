@@ -5,7 +5,7 @@ var transit = (function () {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            $(selector).html('');
+            $(selector + "> #init").remove();
 
             $(selector).append("<div id=\"timezone\"></div>")
                        .append("<div id=\"transitMap\"></div>")
@@ -917,8 +917,8 @@ var transit = (function () {
                 'background-color': 'hsl(0, 0%, 90%)'
             });
 
-            $(selector).html("<div style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
-                             "<strong>Initialis(z)ing...</strong></div>");
+            $(selector).append("<div id='init' style='position:absolute;top:47%;right:45%;font-size:20px;'>" +
+                               "<strong>Initialis(z)ing...</strong></div>");
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         var kml = transit.kmlPromise(localKmlFile);
