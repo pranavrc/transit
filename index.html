@@ -151,7 +151,45 @@
                     &nbsp;&nbsp;&nbsp;]<br />
                     }
                 </div>
-                So let's schedule our Grand Intercontinental Maglev.
+                So let's schedule our Grand Intercontinental Maglev.<br /><br />
+                <div id="code">
+                    {<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+5:30:00", (Since I'm on UTC+5:30:00, I'll write the schedule in it, for convenience)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "00:00:10", (Let's have the Maglev stop for 10 seconds at intermittent stops so that we won't have to specify both arrival and departure times for Beijing and Moscow)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"vehicles"</strong>:<br />
+                    &nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Grand Intercontinental Maglev",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Blazing Fast!",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Railroad to Rome", (This is what we named our route, remember?)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>:<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Tokyo Station",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:41", <strong>"day"</strong>: 1 }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Beijing Railway Station",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:41:35", <strong>"day"</strong>: 1 } (will arrive at 11:41:25 - default stop interval)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Komsomolskaya",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:42:10", <strong>"day"</strong>: 1 } (11:42:00 arrival)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Termini",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:43", <strong>"day"</strong>: 1 }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;]<br />
+                    }
+                </div>
+                So that's it. That's the schedule for our blazing fast Maglev.<br /><br />
+                <strong>NOTE:</strong><br />
+                1. Each train can travel only through one route. If you have two trains sharing half of the same route and then diverging onto other routes, you'll have to draw two routes separately, overlapping on the shared half.<br />
+                2. The first stop MUST have a departure time specified. Likewise with the last stop and an arrival time. The intermittent stops can have any one of them if you have a default stop interval.<br />
+                3. The <strong>day</strong> parameter indicates a calendar day, NOT the day of travel. If a vehicle starts at 23:59:59 and reaches its next stop at 00:00:00, you'd need to assign day 1 for the 23:59:59 departure and day 2 for the 00:00:00 arrival.
             </div>
             <hr />
             <div id="index">
