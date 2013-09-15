@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>transit.js</title>
+        <meta charset='utf-8'>
+        <link rel="stylesheet" href="index.css">
+        <link rel="shortcut icon" type="image/png" href="favicon.ico">
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-44036056-1', 'onloop.net');
+            ga('send', 'pageview');
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#clicktoshow').click(function () {
+                    if ($('.hide').is(':hidden')) {
+                        $('.hide').slideDown('fast');
+                        $('#clicktoshow').html('Hide');
+                    } else {
+                        $('.hide').slideUp('fast');
+                        $('#clicktoshow').html('Show');
+                    }
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <a href="https://github.com/pranavrc/transit"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+        <h1>transit.js</h1>
+        <div id="exp">Make client-side, schedule-driven transit maps.</div><hr /><br />
+        <div id="parent">
+            <strong>Transit</strong> lets you build completely client-side maps of schedule-based transit systems. There's no webserver involved, the browser does all the work. <a href="http://onloop.net/chennairail">Here's</a> what a Transit app looks like in action.<br />
+            <hr />
+            <div id="list">
+                <ul>
+                    <li><a href="#intro">What's this?</a></li>
+                    <li><a href="#download">Download and Usage.</a></li>
+                    <li><a href="#get_started">Getting started.</a></li>
+                    <li><a href="#kml">Railroad to Rome - Making our transit routes.</a></li>
+                    <li><a href="#json">The Grand Intercontinental Maglev - Scheduling our vehicles.</a></li>
+                    <li><a href="#initialize">Initializing our Map.</a></li>
+                    <li><a href="#deploy">Deploying our App.</a></li>
+                    <li><a href="#app">Our Grand Intercontinental Maglev!</a></li>
+                    <li><a href="#final">Notes.</a></li>
+                </ul>
+            </div><hr />
+
+            <div id="intro">
+                <h3>What's this?</h3>
+                Transit takes a set of transit routes or paths, and a set of vehicles and their schedules, and simulates their movement on the given routes in a Google map (I'm working on <a href="http://openstreetmap.org">OSM</a> support), based on the schedule. The transit routes are defined in a <strong>KML</strong> (<a href=http://en.wikipedia.org/wiki/Keyhole_Markup_Language">Keyhole Markup Language</a>) file, and the vehicle schedules are written in a <strong>JSON</strong> (<a href="http://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>) file.<br /><br />
+
+                To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps. For the JSON, you can use a JSON editor. If you're writing <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">a lot of</a> schedules, though, <a href="http://www.vim.org/">Vim</a> or <a href="http://www.gnu.org/software/emacs/">Emacs</a> might save your sanity.<br /><br />
+
+                The <a href="http://onloop.net/chennairail">Chennai Suburban Rail Map</a> uses <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_map.kml">this</a> KML file and <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">this</a> JSON file.
+
+                Transit comes with an Event log that logs arrival and departure times, and status and info windows for displaying current information about vehicles.
+            </div>
+            <hr />
+            <div id="download">
+                <h3>Download and Usage.</h3>
+                You can download Transit in a zipped file from <a href="https://github.com/pranavrc/transit/archive/master.zip">here</a>. Transit requires <a href="http://jquery.com/">jQuery 1.10.1</a>, and the <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps JavaScript API V3</a>, so you'll have to include those too. The following should do:<br />
+                <div id="code">
+                    &lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;script&gt;<br />
+                    &lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;script&gt;<br />
+                    &lt;script src="transit.js"&gt;&lt;/script&gt; &lt;!--You can use transit-min.js (<a href="http://en.wikipedia.org/wiki/Minification_%28programming%29">minified</a> file) here--&gt;<br />
+                </div>
+                The API_KEY for your app is optional, but it helps you with analytics, so if you plan to get one, start <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key">here</a>.<br /><br />
+                Transit does not have a CDN yet. Don't use the URL of the raw file from Github. <em>Github ain't no CDN</em>.
+            </div>
+            <hr />
+            <div id="get_started">
+                <h3>Getting started.</h3>
+                Do you know that all railroads lead to Rome? One of them starts from Tokyo, goes to Being and Moscow, and ends in Rome. Well, not really, but let's make one anyway. We're going to draw the route from Tokyo to Beijing to Moscow to Rome and schedule a train called the <em>Grand Intercontinental Maglev</em> to make a stopping run from Tokyo to Rome, covering the distance in less than 2 minutes. That's right, we're gonna use ultra-powerful magnetic fields for ultra-powerful magnetic levitation.<br /><br />
+                Fire up <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a> and log in with your Google Account if you use one. <strong>Take a tour</strong>, if you wish.
+            </div>
+            <hr />
+            <div id="kml">
+                <h3>Railroad to Rome - Making our transit routes.</h3>
+                <a href="images/stops.jpg"><img src="images/stops.jpg" alt="Image of stops in the route"></a><br />
+                First off, we place markers at all our stops, viz., Tokyo, Beijing, Moscow and Rome. You can search for them and add the marker to the map from the search result. If you manually place the markers, set their names and descriptions (optional).<br /><br />
+                <a href="images/line.jpg"><img src="images/line.jpg" alt="Image of the route"></a><br />
+                Then, we draw the route between our stops. If there was a real railroad between your markers, you might want to trace through it. We'll draw a random railroad here, and name it the <em>Railroad to Rome</em>. Notice how I placed line-points (the white circles that demarcate the line) below all the markers?<br />Don't forget to do that - <strong>the markers just name the stops, the points are the actual stops</strong>.<br /><br />That said, it's completely fine if you don't accurately place the points on the marker's bases. Transit will automatically resolve your markers' positions to the positions of the closest points on the line.<br /><br />
+                <a href="images/export.jpg"><img src="images/export.jpg" alt="Image of the export option"></a><br />
+                Self-explanatory. Once we're done, we export our map to KML.<br /><br />
+                <a href="images/download.jpg"><img src="images/download.jpg" alt="Image of the Download option"></a><br />
+                If you create multiple layers, export the <strong>Entire map</strong>. If it's just one layer, it doesn't matter, because that layer IS the entire map. We'll save our KML file as <strong>railroad_to_rome.kml</strong>.<br /><br />
+                <strong>NOTE:</strong><br />
+                1. Multiple stops must not have the same name. If you have two stops in the route that share a name, just name them <strong>&lt;Stopname&gt; #1</strong> and <strong>&lt;Stopname&gt; #2</strong> (Tokyo #1 and Tokyo #2) or similar.<br />
+                2. A route/line must not pass through the same stop more than once. If you need this functionality, make two markers and points for a single stop, and again, name them <strong>&lt;Stopname&gt; #1</strong> and <strong>&lt;Stopname&gt; #2</strong>.
+            </div>
+            <hr />
+            <div id="json">
+                <h3>The Grand Intercontinental Maglev - Scheduling our vehicles.</h3>
+                Let's create a JSON file and name it <strong>railroad_to_rome_schedule.json</strong>. The schedule file needs to have the following format:<br /><br />
+                <span id="clicktoshow">Show</span><br /><br />
+                <div id="code" class="hide">
+                    {<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+/-HH:MM:(Optional SS, default 00)", (UTC offset in HH:MM:SS for the timezone you're gonna use)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "HH:MM:(Optional SS, default 00)", (If one of arrival or departure isn't specified for a stop, it's calculated using this interval. This is useful when you have to write schedules for vehicles that have a consistent stopping time of, say, 00:01:00. This doesn't apply to the first stop and the last one, because the first stop needs a mandatory departure time specified and the last one needs an arrival time specified)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"vehicles"</strong>: (We write a list of vehicles and their schedules under this)<br />
+                    &nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Vehicle #1",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Vehicle #1 Info", (Optional)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Vehicle #1 Route", (Name of the route in which it will travel, that we drew on the KML map)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>: (The schedule)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #1", (Name of a stop in the route, that we defined with a marker in the map)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:(Optional SS, default 00)", <strong>"day"</strong>: Integer (Calendar day starting with 00:00:00 and ending with 23:59:59, NOT the day of travel) }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #2",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer },<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #N",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Vehicle #N",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Vehicle #N Info",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Vehicle #N Route",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>:<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #1",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:(Optional SS, default 00)", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #2",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer },<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #N",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;]<br />
+                    }
+                </div>
+                So let's schedule our Grand Intercontinental Maglev.<br /><br />
+                <div id="code">
+                    {<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+5:30:00", (Since I'm on UTC+5:30:00, I'll write the schedule in it, for convenience)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "00:00:10", (Let's have the Maglev stop for 10 seconds at intermittent stops so that we won't have to specify both arrival and departure times for Beijing and Moscow)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"vehicles"</strong>:<br />
+                    &nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Grand Intercontinental Maglev",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Blazing Fast!",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Railroad to Rome", (This is what we named our route, remember?)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>:<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Tokyo Station",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:41", <strong>"day"</strong>: 1 }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Beijing Railway Station",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:41:35", <strong>"day"</strong>: 1 } (will arrive at 11:41:25 - default stop interval)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Komsomolskaya",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:42:10", <strong>"day"</strong>: 1 } (11:42:00 arrival)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Termini",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"11:43", <strong>"day"</strong>: 1 }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;]<br />
+                    }
+                </div>
+                So that's it. That's the schedule for our blazing fast Maglev.<br /><br />
+                <strong>NOTE:</strong><br />
+                1. Each train can travel only through one route. If you have two trains sharing half of the same route and then diverging onto other routes, you'll have to draw two routes separately, overlapping on the shared half.<br />
+                2. The first stop MUST have a departure time specified. Likewise with the last stop and an arrival time. The intermittent stops can have any one of them if you have a default stop interval.<br />
+                3. The <strong>day</strong> parameter indicates a calendar day, NOT the day of travel. If a vehicle starts at 23:59:59 and reaches its next stop at 00:00:00, you'd need to assign day 1 for the 23:59:59 departure and day 2 for the 00:00:00 arrival.<br />
+                4. If a vehicle's journey spans multiple days, Transit will show you all possible positions at which the vehicle could be, at a particular point of time. This is why each vehicle is assigned a distinct color. It makes tracking easier.
+            </div>
+            <hr />
+            <div id="initialize">
+                <h3>Initializing our Map.</h3>
+                We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit-min.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
+
+                First, let's get some boilerplate out of the way:<br />
+                <div id="code">
+                    &lt;!DOCTYPE html&gt;<br />
+
+                    &lt;html&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&lt;head&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Grand Intercontinental Maglev on the Railroad to Rome.&lt;/title&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="utf-8" /&gt;<br />
+
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;/script&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;/script&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="transit-min.js"&lt;&gt;/script&gt;<br />
+                </div><br />
+                Transit maps are like other Google maps, they're rendered inside a <strong>&lt;div&gt;</strong>. You can style them and overlay content on them like any other div. Let's make a div that occupies the whole page. Here's the code, along with some boilerplate.<br />
+                <div id="code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style type="text/css"&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html, body {<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 100%;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin: 0;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 0;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br />
+
+                    &nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
+                </div><br />
+                The body of the document now occupies the whole page, and our map div now occupies the whole body. Our div has been made. We just need to initialize the transit map inside it. Transit's <strong>initialize()</strong> function takes 5 arguments:
+                <div id="code">
+                    transit.initialize(selector, // The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors">selector</a> of the div. <strong>#ourMapDiv</strong> in our case.<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localKmlFile, // The path to your KML file.<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remoteKmlFile, // The same KML file, in a publicly accessible domain, for Maps API's use.<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jsonFile, // The path to your JSON file.<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refreshInterval // The number of seconds between each update of the vehicles' markers.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 second by default, if not specified.<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+                </div><br />
+                The remote KML file is required because the Maps API needs to access it and overlay it on your map. It needs to be in a publicly accessible webpage. Let's write the rest of our code with the initialize() call.
+                <div id="code">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit.initialize("#ourMapDiv",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">railroad_to_rome.kml</a>",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml</a>",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome_schedule.json">railroad_to_rome_schedule.json</a>",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1);<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br />
+                    &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+                    &lt;/html&gt;
+                </div><br />
+                We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome">Here's</a> the whole repository of code we just created.
+            </div>
+            <hr />
+            <div id="deploy">
+                <h3>Deploying our App.</h3>
+                Since this is pretty much a client-side app, you can serve it from your webserver or straight out of Github. <a href="http://pages.github.com/">Github Project Pages</a> let you host client-side apps that run on the browser. <a href="http://onloop.net/transit/railroad_to_rome/">Here's</a> our app, served from a Github Project Page. If you happen to catch it between 11:41 and 11:43 IST (The UTC+5:30:00 we specified, calculated and adjusted from the client's time and timezone) any day, say Hi to our Maglev.
+            </div>
+            <hr />
+            <div id="app">
+                <h3>Our Grand Intercontinental Maglev!</h3>
+                Right, our train is now scheduled to depart!<br /><br />
+                <a href="images/demo01.jpg"><img src="images/demo01.jpg"></img></a><br />
+                Nothing yet. Oh right, it's 11:40. Not quite time.<br /><br />
+                <a href="images/demo02.jpg"><img src="images/demo02.jpg"></img></a><br />
+                It's 11:41 now, and sure enough, there's our good ol' Mag.<br /><br />
+                <a href="images/demo03.jpg"><img src="images/demo03.jpg"></img></a><br />
+                Paying Beijing a visit.<br /><br />
+                <a href="images/demo04.jpg"><img src="images/demo04.jpg"></img></a><br />
+                Blazing a fiery trail between two borders in a few seconds.<br /><br />
+                <a href="images/demo05.jpg"><img src="images/demo05.jpg"></img></a><br />
+                Hang on while I think of a Soviet Russia joke.<br /><br />
+                <a href="images/demo06.jpg"><img src="images/demo06.jpg"></img></a><br />
+                Streaking across the EU.<br /><br />
+                <a href="images/demo07.jpg"><img src="images/demo07.jpg"></img></a><br />
+                I sure hope no one was on <em>that</em> train.
+            </div>
+            <hr />
+            <div id="final">
+                <h3>Notes.</h3>
+                I might have missed out on a few things, but this page will stay updated, and more documentation is coming up. Meanwhile, you can <a href="mailto:me at onloop.net">mail me</a> for queries or check out <a href="https://github.com/pranavrc/transit/blob/master/transit.js">Transit's</a> and <a href="https://github.com/pranavrc/chennairail">Chennairail's</a> code, to get a better understanding of how Transit works. Bug reports, pull requests, and contributions are very much welcome.<br /><br />
+                The Chennai Rail Map loads a different schedule on Sundays, and uses an increased refresh interval on mobile devices to reduce load. The <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L692">transit.dayInTimezone()</a> and <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L913">transit.isMobileDevice()</a> functions help with this.<br /><br />
+                Also, Transit does not write statuses to the bottom right status box on Mobile devices, because hover events are pretty much non-existent in them. Instead, you can just click on the vehicle markers to know their statuses, just like on non-mobile devices.<br /><br />
+                And look out for our Maglev at 11:41 IST tomorrow!
+            </div>
+        </div><br />
+        <hr /><br />
+        <div id="footer">&copy; <a href="http://onloop.net">Pranav Ravichandran.</a> Inspired by <a href="http://www.flightradar24.com/">flightradar24</a> (GPS flight tracking), <a href="http://swisstrains.ch/">swisstrains.ch</a> (Schedule-based swiss train radar) and <a href="http://busroutes.in/chennai/">busroutes</a> (Bus transit search).</div>
+    </body>
+</html>
