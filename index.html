@@ -41,10 +41,10 @@
                     <li><a href="#intro">What's this?</a></li>
                     <li><a href="#download">Download and Usage.</a></li>
                     <li><a href="#get_started">Getting started.</a></li>
-                    <li><a href="#kml">Making your transit routes.</a></li>
-                    <li><a href="#json">Scheduling your vehicles.</a></li>
-                    <li><a href="#initialize">Initializing your Map.</a></li>
-                    <li><a href="#deploy">Deploying your App.</a></li>
+                    <li><a href="#kml">Railroad to Rome - Making our transit routes.</a></li>
+                    <li><a href="#json">The Grand Intercontinental Maglev - Scheduling our vehicles.</a></li>
+                    <li><a href="#initialize">Initializing our Map.</a></li>
+                    <li><a href="#deploy">Deploying our App.</a></li>
                     <li><a href="#app">Our Grand Intercontinental Maglev!</a></li>
                     <li><a href="#final">Notes.</a></li>
                 </ul>
@@ -54,7 +54,7 @@
                 <h3>What's this?</h3>
                 Transit takes a set of transit routes or paths, and a set of vehicles and their schedules, and simulates their movement on the given routes in a Google map (I'm working on <a href="http://openstreetmap.org">OSM</a> support), based on the schedule. The transit routes are defined in a <strong>KML</strong> (<a href=http://en.wikipedia.org/wiki/Keyhole_Markup_Language">Keyhole Markup Language</a>) file, and the vehicle schedules are written in a <strong>JSON</strong> (<a href="http://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>) file.<br /><br />
 
-                To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps. For the JSON, you can use a JSON editor. If you're writing <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">a lot of</a> schedules, though, Vim or Emacs might save your sanity.<br /><br />
+                To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps. For the JSON, you can use a JSON editor. If you're writing <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">a lot of</a> schedules, though, <a href="http://www.vim.org/">Vim</a> or <a href="http://www.gnu.org/software/emacs/">Emacs</a> might save your sanity.<br /><br />
 
                 The <a href="http://onloop.net/chennairail">Chennai Suburban Rail Map</a> uses <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_map.kml">this</a> KML file and <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">this</a> JSON file.
 
@@ -80,11 +80,11 @@
             </div>
             <hr />
             <div id="kml">
-                <h3>Making your transit routes.</h3>
+                <h3>Railroad to Rome - Making our transit routes.</h3>
                 <a href="images/stops.jpg"><img src="images/stops.jpg" alt="Image of stops in the route"></a><br />
                 First off, we place markers at all our stops, viz., Tokyo, Beijing, Moscow and Rome. You can search for them and add the marker to the map from the search result. If you manually place the markers, set their names and descriptions (optional).<br /><br />
                 <a href="images/line.jpg"><img src="images/line.jpg" alt="Image of the route"></a><br />
-                Then, we draw the route between our stops. If there was a real railroad between your markers, you might want to trace through it. We'll draw a random railroad here, and name it. Notice how I placed line-points (the white circles that demarcate the line) below all the markers? Don't forget to do that - <strong>the markers just name the stops, the points are the actual stops</strong>.<br /><br />That said, it's completely fine if you don't accurately place the points on the marker's bases. Transit will automatically resolve your markers' positions to the positions of the closest points on the line.<br /><br />
+                Then, we draw the route between our stops. If there was a real railroad between your markers, you might want to trace through it. We'll draw a random railroad here, and name it the <em>Railroad to Rome</em>. Notice how I placed line-points (the white circles that demarcate the line) below all the markers?<br />Don't forget to do that - <strong>the markers just name the stops, the points are the actual stops</strong>.<br /><br />That said, it's completely fine if you don't accurately place the points on the marker's bases. Transit will automatically resolve your markers' positions to the positions of the closest points on the line.<br /><br />
                 <a href="images/export.jpg"><img src="images/export.jpg" alt="Image of the export option"></a><br />
                 Self-explanatory. Once we're done, we export our map to KML.<br /><br />
                 <a href="images/download.jpg"><img src="images/download.jpg" alt="Image of the Download option"></a><br />
@@ -95,7 +95,7 @@
             </div>
             <hr />
             <div id="json">
-                <h3>Scheduling your vehicles.</h3>
+                <h3>The Grand Intercontinental Maglev - Scheduling our vehicles.</h3>
                 Let's create a JSON file and name it <strong>railroad_to_rome_schedule.json</strong>. The schedule file needs to have the following format:<br /><br />
                 <span id="clicktoshow">Show</span><br /><br />
                 <div id="code" class="hide">
@@ -198,7 +198,7 @@
             </div>
             <hr />
             <div id="initialize">
-                <h3>Initializing your Map.</h3>
+                <h3>Initializing our Map.</h3>
                 We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
 
                 First, let's get some boilerplate out of the way:<br />
@@ -253,7 +253,7 @@
             </div>
             <hr />
             <div id="deploy">
-                <h3>Deploying your app.</h3>
+                <h3>Deploying our App.</h3>
                 Since this is pretty much a client-side app, you can serve it from your webserver or straight out of Github. <a href="http://pages.github.com/">Github Project Pages</a> let you host client-side apps that run on the browser. <a href="http://onloop.net/transit/railroad_to_rome/">Here's</a> our app, served from a Github Project Page. If you happen to catch it between 11:41 and 11:43 IST (The UTC+5:30:00 we specified, calculated and adjusted from the client's time and timezone) any day, say Hi to our Maglev.
             </div>
             <hr />
