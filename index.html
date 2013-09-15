@@ -2,8 +2,10 @@
 <html>
     <head>
         <title>transit.js</title>
+        <meta charset='utf-8'>
         <link rel="stylesheet" href="index.css">
         <link rel="shortcut icon" type="image/png" href="favicon.ico">
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"><script>
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -12,6 +14,19 @@
 
             ga('create', 'UA-44036056-1', 'onloop.net');
             ga('send', 'pageview');
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#clicktoshow').click(function () {
+                    if ($('.hide').is(':hidden')) {
+                        $('.hide').slideDown('fast');
+                        $('#clicktoshow').html('Hide');
+                    } else {
+                        $('.hide').slideUp('fast');
+                        $('#clicktoshow').html('Show');
+                    }
+                });
+            });
         </script>
     </head>
     <body>
@@ -61,19 +76,82 @@
             </div>
             <hr />
             <div id="kml">
-                <h3>Making the transit routes.</h3>
+                <h3>Making your transit routes.</h3>
                 <a href="images/stops.jpg"><img src="images/stops.jpg" alt="Image of stops in the route"></a><br />
-                First off, we place markers at all our stops, viz., Tokyo, Beijing, Moscow and Rome. You can search for them and add the marker to the map from the search result. If you manually place the markers, they must be named. Give them a name and a short description if you like (optional).<br /><br />
+                First off, we place markers at all our stops, viz., Tokyo, Beijing, Moscow and Rome. You can search for them and add the marker to the map from the search result. If you manually place the markers, set their names and descriptions (optional).<br /><br />
                 <a href="images/line.jpg"><img src="images/line.jpg" alt="Image of the route"></a><br />
                 Then, we draw the route between our stops. If there was a real railroad between your markers, you might want to trace through it. We'll draw a random railroad here, and name it. Notice how I placed line-points (the white circles that demarcate the line) below all the markers? Don't forget to do that - <strong>the markers just name the stops, the points are the actual stops</strong>.<br /><br />That said, it's completely fine if you don't accurately place the points on the marker's bases. Transit will automatically resolve your markers' positions to the positions of the closest points on the line.<br /><br />
                 <a href="images/export.jpg"><img src="images/export.jpg" alt="Image of the export option"></a><br />
                 Self-explanatory. Once we're done, we export our map to KML.<br /><br />
                 <a href="images/download.jpg"><img src="images/download.jpg" alt="Image of the Download option"></a><br />
-                If you create multiple layers, export the <strong>Entire map</strong>. If it's just one layer, it doesn't matter, because that layer IS the entire map. We'll save our KML file as <strong>railroad_to_rome.kml</strong>.
+                If you create multiple layers, export the <strong>Entire map</strong>. If it's just one layer, it doesn't matter, because that layer IS the entire map. We'll save our KML file as <strong>railroad_to_rome.kml</strong>.<br /><br />
+                <strong>NOTE:</strong><br />
+                1. Multiple stops must not have the same name. If you have two stops in the route that share a name, just name them <strong>&lt;Stopname&gt; #1</strong> and <strong>&lt;Stopname&gt; #2</strong> (Tokyo #1 and Tokyo #2) or similar.<br />
+                2. A route/line must not pass through the same stop more than once. If you need this functionality, make two markers and points for a single stop, and again, name them <strong>&lt;Stopname&gt; #1</strong> and <strong>&lt;Stopname&gt; #2</strong>.
             </div>
             <hr />
             <div id="json">
                 <h3>Scheduling your vehicles.</h3>
+                Let's create a JSON file and name it <strong>railroad_to_rome_schedule.json</strong>. The schedule file needs to have the following format:<br /><br />
+                <span id="clicktoshow">Show</span><br /><br />
+                <div id="code" class="hide">
+                    {<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+/-HH:MM:(Optional SS, default 00)", (UTC offset in HH:MM:SS for the timezone you're gonna use)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "HH:MM:(Optional SS, default 00)", (If one of arrival or departure isn't specified for a stop, it's calculated using this interval. This is useful when you have to write schedules for vehicles that have a consistent stopping time of, say, 00:01:00. This doesn't apply to the first stop and the last one, because the first stop needs a mandatory departure time specified and the last one needs an arrival time specified)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"vehicles"</strong>: (We write a list of vehicles and their schedules under this)<br />
+                    &nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Vehicle #1",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Vehicle #1 Info", (Optional)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Vehicle #1 Route", (Name of the route in which it will travel, that we drew on the KML map)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>: (The schedule)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #1", (Name of a stop in the route, that we defined with a marker in the map)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:(Optional SS, default 00)", <strong>"day"</strong>: Integer (Calendar day starting with 00:00:00 and ending with 23:59:59, NOT the day of travel) }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #2",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer },<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #N",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Vehicle #N",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Vehicle #N Info",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Vehicle #N Route",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>:<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #1",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:(Optional SS, default 00)", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #2",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer },<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"departure"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;..<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Stop #N",<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"arrival"</strong>: { <strong>"time"</strong>:"HH:MM:SS", <strong>"day"</strong>: Integer }<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                    &nbsp;&nbsp;&nbsp;]<br />
+                    }
+                </div>
+                So let's schedule our Grand Intercontinental Maglev.
             </div>
             <hr />
             <div id="index">
