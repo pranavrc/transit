@@ -84,6 +84,21 @@ a:visited {
     padding-bottom: 10px;
 }
 
+#clicktoshow {
+    cursor: pointer;
+    background-color: hsl(0,0%,90%);
+    border: 1px solid #999;
+    padding: 5px;
+    -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.hide {
+    display: none
+}
+
 #parent img {
     border: 1px solid black;
     width: 50%;
