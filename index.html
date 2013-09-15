@@ -101,12 +101,12 @@
                 <div id="code" class="hide">
                     {<br />
                     &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+/-HH:MM:(Optional SS, default 00)", (UTC offset in HH:MM:SS for the timezone you're gonna use)<br />
-                    &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "HH:MM:(Optional SS, default 00)", (If one of arrival or departure isn't specified for a stop, it's calculated using this interval. This is useful when you have to write schedules for vehicles that have a consistent stopping time of, say, 00:01:00. This doesn't apply to the first stop and the last one, because the first stop needs a mandatory departure time specified and the last one needs an arrival time specified)<br />
+                    &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "HH:MM:(Optional SS, default 00)", (<strong>Optional</strong>. If one of arrival or departure isn't specified for a stop, it's calculated using this interval. This is useful when you have to write schedules for vehicles that have a consistent stopping time of, say, 00:01:00. This doesn't apply to the first stop and the last one, because the first stop needs a mandatory departure time and the last one needs an arrival time)<br />
                     &nbsp;&nbsp;&nbsp;<strong>"vehicles"</strong>: (We write a list of vehicles and their schedules under this)<br />
                     &nbsp;&nbsp;&nbsp;[<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"name"</strong>: "Vehicle #1",<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Vehicle #1 Info", (Optional)<br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"info"</strong>: "Vehicle #1 Info", (<strong>Optional</strong>)<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"route"</strong>: "Vehicle #1 Route", (Name of the route in which it will travel, that we drew on the KML map)<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>"stops"</strong>: (The schedule)<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<br />
