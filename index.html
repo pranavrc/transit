@@ -199,7 +199,7 @@
             <hr />
             <div id="initialize">
                 <h3>Initializing our Map.</h3>
-                We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
+                We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit-min.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
 
                 First, let's get some boilerplate out of the way:<br />
                 <div id="code">
@@ -278,7 +278,7 @@
             <hr />
             <div id="final">
                 <h3>Notes.</h3>
-                I might have missed out on a few things, but this page will stay updated, and more documentation is coming up. Meanwhile, you can check out Transit's <a href="https://github.com/pranavrc/transit/blob/master/transit.js">source code</a> or chennairail's <a href="https://github.com/pranavrc/chennairail">repository of code</a>, to get a better understanding of how Transit works.<br /><br />
+                I might have missed out on a few things, but this page will stay updated, and more documentation is coming up. Meanwhile, you can check out Transit's <a href="https://github.com/pranavrc/transit/blob/master/transit.js">source code</a> or chennairail's <a href="https://github.com/pranavrc/chennairail">repository of code</a>, to get a better understanding of how Transit works. Pull requests and contributions are very much welcome!<br /><br />
                 The Chennai Rail Map loads a different schedule on Sundays, and uses an increased refresh interval on mobile devices to reduce load. The <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L692">transit.dayInTimezone()</a> and <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L913">transit.isMobileDevice()</a> functions help with this.<br /><br />
                 Also, Transit does not write statuses to the bottom right status box on Mobile devices, because hover events are pretty much non-existent in them. Instead, you can just click on the vehicle markers to know their statuses, just like on non-mobile devices.<br /><br />
                 And look out for our Maglev at 11:41 IST tomorrow!
