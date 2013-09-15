@@ -85,6 +85,7 @@ a:visited {
 }
 
 #parent img {
+    border: 1px solid black;
     width: 50%;
     height: 50%;
 }
