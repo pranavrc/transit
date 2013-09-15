@@ -11,21 +11,21 @@
             [
                 {
                     "name": "Tokyo Station",
-                    "departure": {"time": "", "day": 1}
+                    "departure": {"time": "11:41", "day": 1}
                 },
                 {
                     "name": "Beijing Railway Station",
-                    "arrival": {"time": "", "day": 1},
-                    "departure": {"time": "", "day": 1}
+                    "arrival": {"time": "11:41:25", "day": 1},
+                    "departure": {"time": "11:41:35", "day": 1}
                 },
                 {
                     "name": "Komsomolskaya",
-                    "arrival": {"time": "", "day": 1},
-                    "departure": {"time": "", "day": 1}
+                    "arrival": {"time": "11:42", "day": 1},
+                    "departure": {"time": "11:42:10", "day": 1}
                 },
                 {
                     "name": "Termini",
-                    "arrival": {"time": "", "day": 1}
+                    "arrival": {"time": "11:43", "day": 1}
                 }
             ]
         }
