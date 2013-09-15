@@ -43,7 +43,8 @@
                     <li><a href="#get_started">Getting started.</a></li>
                     <li><a href="#kml">Making your transit routes.</a></li>
                     <li><a href="#json">Scheduling your vehicles.</a></li>
-                    <li><a href="#index">Initializing your Map.</a></li>
+                    <li><a href="#initialize">Initializing your Map.</a></li>
+                    <li><a href="#deploy">Deploying your App.</a></li>
                 </ul>
             </div><hr />
 
@@ -193,7 +194,7 @@
                 4. If a vehicle's journey spans multiple days, Transit will show you all possible positions at which the vehicle could be, at a particular point of time. This is why each vehicle is assigned a distinct color. It makes tracking easier.
             </div>
             <hr />
-            <div id="index">
+            <div id="initialize">
                 <h3>Initializing your Map.</h3>
                 We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
 
@@ -233,7 +234,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refreshInterval // The number of seconds between each update of the vehicles' markers.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 second by default, if not specified.<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
                 </div><br />
-                The remote KML file is required because the Maps API needs to access it and overlay it on your map. It needs to be in a publicly accessible website. Let's write the rest of our code with the initialize() call.
+                The remote KML file is required because the Maps API needs to access it and overlay it on your map. It needs to be in a publicly accessible webpage. Let's write the rest of our code with the initialize() call.
                 <div id="code">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit.initialize("#ourMapDiv",<br />
@@ -244,8 +245,15 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br />
                     &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
                     &lt;/html&gt;
-                </div>
-        </div><hr />
-        <div id="footer">&copy; <a href="http://onloop.net">Pranav Ravichandran.</a></div>
+                </div><br />
+                We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome">Here's</a> the whole repository of code we just created.
+        </div>
+        <hr />
+        <div id="deploy">
+            <h3>Deploying your app.</h3>
+            Since this is pretty much a client-side app, you can serve it from your webserver or straight out of Github. <a href="http://pages.github.com/">Github Project Pages</a> let you host client-side apps that run on the browser. <a href="http://onloop.net/transit/railroad_to_rome/">Here's</a> our app, served from a Github Project Page.
+        </div>
+        <hr />
+        <div id="footer">&copy; <a href="http://onloop.net">Pranav Ravichandran.</a> Inspired by <a href="http://www.flightradar24.com/">flightradar24</a> (GPS flight tracking), <a href="http://swisstrains.ch/">swisstrains.ch</a> (Schedule-based swiss train radar) and <a href="http://busroutes.in/chennai/">busroutes</a> (Bus transit search).</div>
     </body>
 </html>
