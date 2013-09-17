@@ -258,6 +258,7 @@ var transit = (function () {
             kmlLayer.on("loaded", function (e) { map.fitBounds(e.target.getBounds()); });
 
             map.addLayer(kmlLayer);
+            map.addControl(new L.Control.Layers({}, {'Show Routes': kmlLayer}));
         },
 
         // AJAX promise for doing stuff with the kml data later.
