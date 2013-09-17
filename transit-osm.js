@@ -61,7 +61,7 @@ var transit = (function () {
             });
 
             transit.initStatus(selector);
-            var map = L.map('transitMap').setView([51.505, -0.09], 13);
+            var map = L.map('transitMap');
 
             tileLayer.addTo(map);
 
@@ -253,12 +253,12 @@ var transit = (function () {
         },
 
         // Take a KML file in a public domain and overlay it on the map.
-        /*overlayKml : function (kmlUrl, map) {
-            var kmlOptions = {
-                map: map
-            };
-            var kmlLayer = new google.maps.KmlLayer(kmlUrl, kmlOptions);
-        },*/
+        overlayKml : function (kmlUrl, map) {
+            var kmlLayer = new L.KML(kmlUrl, {async: true});
+            kmlLayer.on("loaded", function (e) { map.fitBounds(e.target.getBounds()); });
+
+            map.addLayer(kmlLayer);
+        },
 
         // AJAX promise for doing stuff with the kml data later.
         kmlPromise : function (kmlUrl) {
@@ -970,6 +970,7 @@ var transit = (function () {
             var stopinterval = vehicleObj.stopinterval;
             var map = transit.initMap(selector, tileLayer, routeObj.stopnames, routeObj.points);
             map.invalidateSize();
+            transit.overlayKml(remoteKmlFile, map);
 
             $('#timezone').append("UTC" + timezone + "/Local" +
                                   transit.secondsToHours(transit.parseTimeZone(timezone) % 86400));
