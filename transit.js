@@ -1032,7 +1032,8 @@ var transit = (function () {
                                 $(selector).css('position', 'relative');
                                 $(selector).html('');
                                 transit.initStatus(selector);
-                                transit.writeStatus(selector, 'Oh Shoot, there was an error loading the JSON file.');
+                                transit.writeStatus(selector, 'Oh Shoot, there was an error loading the JSON file. ' +
+                                                              'Check your file path or syntax.');
                             });
                         }).fail(function () {
                             $(selector).css('position', 'relative');
