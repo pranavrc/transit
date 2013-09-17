@@ -8,7 +8,7 @@ var transit = (function () {
     return {
         // Get a selector div, a list of names of stops in the map, and the points of the stops,
         // and return a map object with a status and a search bar.
-        initMap : function (selector, stopsList, routePoints) {
+        initMap : function (selector, tileLayer, stopsList, routePoints) {
             // Remove the initialization message before overlaying the map on the div.
             $(selector + "> #init").remove();
 
@@ -63,12 +63,7 @@ var transit = (function () {
             transit.initStatus(selector);
             var map = L.map('transitMap').setView([51.505, -0.09], 13);
 
-            L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png', {
-                attribution: 'Data, imagery and map information provided by MapQuest, OpenStreetMap ' +
-                             '<http://www.openstreetmap.org/copyright> and contributors, ODbL ' +
-                             '<http://wiki.openstreetmap.org/wiki/Legal_FAQ' +
-                             '#I_would_like_to_use_OpenStreetMap_maps._How_should_I_credit_you.#> .'
-            }).addTo(map);
+            tileLayer.addTo(map);
 
             transit.initSearch(selector, stopsList, routePoints, map);
 
@@ -970,10 +965,10 @@ var transit = (function () {
         },
 
         // String all the function calls together. Kinda like C's main().
-        callMain : function (selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile, vehicles) {
+        callMain : function (selector, tileLayer, refreshInterval, routeObj, vehicleObj, remoteKmlFile, vehicles) {
             var timezone = vehicleObj.timezone;
             var stopinterval = vehicleObj.stopinterval;
-            var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
+            var map = transit.initMap(selector, tileLayer, routeObj.stopnames, routeObj.points);
             map.invalidateSize();
 
             $('#timezone').append("UTC" + timezone + "/Local" +
@@ -1001,7 +996,7 @@ var transit = (function () {
 
         // Initialize stuff. Run the promises, acquire the kml and json data, add the main DOM listener,
         // call the main function and write statuses if anything goes awry.
-        initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
+        initialize : function (selector, tileLayer, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
             // Default the refreshInterval to 1 second if it's less than 1 or unspecified.
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
@@ -1027,7 +1022,7 @@ var transit = (function () {
                     json.success(function (jsonData) {
                         var routeObj = transit.routeParser(kmlData);
                         var vehicleObj = transit.vehicleParser(jsonData);
-                        transit.callMain(selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile);
+                        transit.callMain(selector, tileLayer, refreshInterval, routeObj, vehicleObj, remoteKmlFile);
                     }).fail(function () {
                         $(selector).css('position', 'relative');
                         $(selector).html('');
