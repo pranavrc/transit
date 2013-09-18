@@ -966,12 +966,12 @@ var transit = (function () {
         },
 
         // String all the function calls together. Kinda like C's main().
-        callMain : function (selector, tileLayer, refreshInterval, routeObj, vehicleObj, remoteKmlFile, vehicles) {
+        callMain : function (selector, tileLayer, refreshInterval, routeObj, vehicleObj, kmlFile, vehicles) {
             var timezone = vehicleObj.timezone;
             var stopinterval = vehicleObj.stopinterval;
             var map = transit.initMap(selector, tileLayer, routeObj.stopnames, routeObj.points);
             map.invalidateSize();
-            transit.overlayKml(remoteKmlFile, map);
+            transit.overlayKml(kmlFile, map);
 
             $('#timezone').append("UTC" + timezone + "/Local" +
                                   transit.secondsToHours(transit.parseTimeZone(timezone) % 86400));
@@ -998,7 +998,7 @@ var transit = (function () {
 
         // Initialize stuff. Run the promises, acquire the kml and json data, add the main DOM listener,
         // call the main function and write statuses if anything goes awry.
-        initialize : function (selector, tileLayer, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
+        initialize : function (selector, tileLayer, kmlFile, jsonFile, refreshInterval) {
             // Default the refreshInterval to 1 second if it's less than 1 or unspecified.
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
@@ -1017,14 +1017,14 @@ var transit = (function () {
                                "<strong>Initialis(z)ing...</strong></div>");
 
             $(document).ready(function () {
-                var kml = transit.kmlPromise(localKmlFile);
+                var kml = transit.kmlPromise(kmlFile);
                 var json = transit.jsonPromise(jsonFile);
 
                 kml.success(function (kmlData) {
                     json.success(function (jsonData) {
                         var routeObj = transit.routeParser(kmlData);
                         var vehicleObj = transit.vehicleParser(jsonData);
-                        transit.callMain(selector, tileLayer, refreshInterval, routeObj, vehicleObj, remoteKmlFile);
+                        transit.callMain(selector, tileLayer, refreshInterval, routeObj, vehicleObj, kmlFile);
                     }).fail(function () {
                         $(selector).css('position', 'relative');
                         $(selector).html('');
