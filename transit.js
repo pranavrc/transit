@@ -8,7 +8,7 @@ var transit = (function () {
     return {
         // Get a selector div, a list of names of stops in the map, and the points of the stops,
         // and return a map object with a status and a search bar.
-        initMap : function (selector, stopsList, routePoints) {
+        initMap : function (selector, stopsList, routePoints, basicMap) {
             var mapDet = {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -16,16 +16,7 @@ var transit = (function () {
             // Remove the initialization message before overlaying the map on the div.
             $(selector + "> #init").html('');
 
-            $(selector).append("<div id=\"timezone\"></div>")
-                       .append("<div id=\"transitMap\"></div>")
-                       .append("<div id=\"toggleLog\">Start Logging</div>");
-
-            $(selector + "> #transitMap").css({
-                'position': 'absolute',
-                'width': '100%',
-                'height': '100%',
-            });
-
+            $(selector).append("<div id=\"timezone\"></div>");
             $(selector + "> #timezone").css({
                 'position': 'absolute',
                 'bottom': '3%',
@@ -34,31 +25,42 @@ var transit = (function () {
                 'font-weight': 'bold',
             });
 
-            $(selector + "> #toggleLog").css({
+            $(selector).append("<div id=\"transitMap\"></div>");
+            $(selector + "> #transitMap").css({
                 'position': 'absolute',
-                'bottom': '4%',
-                'left': '1%',
-                'z-index': '99',
-                'color': '#800000',
-                '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-                '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-                'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
-                'background-color': 'hsl(0, 0%, 90%)',
-                'border-radius': '10px',
-                'padding': '10px',
-                'font-weight': 'bold',
-                'cursor': 'pointer',
+                'width': '100%',
+                'height': '100%',
             });
 
-            // Open the log when the toggle button is clicked.
-            $(selector + "> #toggleLog").click(function () {
-                transit.initTicker(selector);
-                var tickerDiv = selector + "> #tickerDiv";
-                $(tickerDiv).css('display', 'inline');
-                $(tickerDiv).fadeOut(5000);
-            });
+            if (!basicMap) {
+                $(selector).append("<div id=\"toggleLog\">Start Logging</div>");
+                $(selector + "> #toggleLog").css({
+                    'position': 'absolute',
+                    'bottom': '4%',
+                    'left': '1%',
+                    'z-index': '99',
+                    'color': '#800000',
+                    '-webkit-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                    '-moz-box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                    'box-shadow': '0px 0px 8px rgba(0, 0, 0, 0.3)',
+                    'background-color': 'hsl(0, 0%, 90%)',
+                    'border-radius': '10px',
+                    'padding': '10px',
+                    'font-weight': 'bold',
+                    'cursor': 'pointer',
+                });
 
-            transit.initStatus(selector);
+                // Open the log when the toggle button is clicked.
+                $(selector + "> #toggleLog").click(function () {
+                    transit.initTicker(selector);
+                    var tickerDiv = selector + "> #tickerDiv";
+                    $(tickerDiv).css('display', 'inline');
+                    $(tickerDiv).fadeOut(5000);
+                });
+
+                transit.initStatus(selector);
+            }
+
             var map = new google.maps.Map(document.getElementById('transitMap'), mapDet);
             transit.initSearch(selector, stopsList, routePoints, map);
 
@@ -216,13 +218,12 @@ var transit = (function () {
         },
 
         // Event handlers for marker mouseover, like infowindow popups and status messages.
-        onMarkerMouseover : function (selector, map, marker, mouseoverText) {
-            // Clear all listeners first so they don't accumulate.
-            google.maps.event.clearListeners(marker, 'mouseover');
-            google.maps.event.clearListeners(marker, 'mouseout');
+        onMarkerMouseover : function (selector, map, marker, mouseoverText, basicMap) {
+            if (!basicMap) {
+                // Clear all listeners first so they don't accumulate.
+                google.maps.event.clearListeners(marker, 'mouseover');
+                google.maps.event.clearListeners(marker, 'mouseout');
 
-            // Show status messages only in non-mobile devices.
-            if (!transit.isMobileDevice()) {
                 google.maps.event.addListener(marker, 'mouseover', function () {
                     $(selector + '> #status').stop(true, true);
                     $(selector + '> #status').css('display', 'inline');
@@ -232,9 +233,6 @@ var transit = (function () {
                 google.maps.event.addListener(marker, 'mouseout', function () {
                     $(selector + '> #status').css('display', 'none');
                 });
-            } else {
-                // Increase font size of mouseover text in handheld devices.
-                mouseoverText = '<div style="font-size:20px;">' + mouseoverText + '</div>';
             }
 
             if (typeof marker.infoWindow != "undefined") {
@@ -915,7 +913,7 @@ var transit = (function () {
         // Sets the vehicles in motion. Continuously estimates positions of vehicles and moves markers to
         // the acquired coordinate positions. refreshInterval determines the time of waiting between two
         // cycles of movements.
-        setInMotion : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map) {
+        setInMotion : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map, basicMap) {
             var transition = setInterval(
                     function() {
                         for (var count = 0; count < noOfVehicles; count++) {
@@ -938,7 +936,8 @@ var transit = (function () {
                                     continue;
                                 }
 
-                                transit.writeLog(selector, currPosition, vehicle);
+                                if (!basicMap) transit.writeLog(selector, currPosition, vehicle);
+
                                 if (currPosition.completed) {
                                     vehicle.markers[i].setMap(null);
                                     delete vehicle.markers[i];
@@ -957,17 +956,17 @@ var transit = (function () {
                                     vehicle.markers[i].setPosition(currMarkerPos);
                                 }
 
-                                transit.onMarkerMouseover(selector, map, vehicle.markers[i], mouseOverInfo);
+                                transit.onMarkerMouseover(selector, map, vehicle.markers[i], mouseOverInfo, basicMap);
                             }
                         }
                     }, refreshInterval);
         },
 
         // String all the function calls together. Kinda like C's main().
-        callMain : function (selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile, vehicles) {
+        callMain : function (selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile, basicMap, vehicles) {
             var timezone = vehicleObj.timezone;
             var stopinterval = vehicleObj.stopinterval;
-            var map = transit.initMap(selector, routeObj.stopnames, routeObj.points);
+            var map = transit.initMap(selector, routeObj.stopnames, routeObj.points, basicMap);
             transit.overlayKml(remoteKmlFile, map);
 
             $('#timezone').append("UTC" + timezone + "/Local" +
@@ -990,15 +989,16 @@ var transit = (function () {
             }
 
             transit.setInMotion(selector, refreshInterval, vehicles, noOfVehicles,
-                                stopinterval, timezone, map);
+                                stopinterval, timezone, map, basicMap);
         },
 
         // Initialize stuff. Run the promises, acquire the kml and json data, add the main DOM listener,
         // call the main function and write statuses if anything goes awry.
-        initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, refreshInterval) {
+        initialize : function (selector, localKmlFile, remoteKmlFile, jsonFile, basicMap, refreshInterval) {
             // Default the refreshInterval to 1 second if it's less than 1 or unspecified.
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
+            basicMap = (typeof basicMap == "undefined") ? true : basicMap;
             $(selector).css({
                 'position': 'relative',
                 'font-family': '"Lucida Grande", "Lucida Sans Unicode",' +
@@ -1021,7 +1021,7 @@ var transit = (function () {
                             json.success(function (jsonData) {
                                 var routeObj = transit.routeParser(kmlData);
                                 var vehicleObj = transit.vehicleParser(jsonData);
-                                transit.callMain(selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile);
+                                transit.callMain(selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile, basicMap);
                             }).fail(function () {
                                 $(selector + '> #init').html('Oh Shoot, there was an error loading the JSON file. ' +
                                                             'Check your file path or syntax.');
