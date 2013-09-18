@@ -8,7 +8,7 @@ var transit = (function () {
     return {
         // Get a selector div, a list of names of stops in the map, and the points of the stops,
         // and return a map object with a status and a search bar.
-        initMap : function (selector, tileLayer, stopsList, routePoints, basicMap) {
+        initMap : function (selector, tileLayer, stopsList, routePoints, showLog, showSearch) {
             // Remove the initialization message before overlaying the map on the div.
             $(selector + "> #init").html('');
 
@@ -28,7 +28,7 @@ var transit = (function () {
                 'height': '100%',
             });
 
-            if (!basicMap) {
+            if (showLog) {
                 $(selector).append("<div id=\"toggleLog\">Start Logging</div>");
                 $(selector + "> #toggleLog").css({
                     'position': 'absolute',
@@ -59,7 +59,7 @@ var transit = (function () {
 
             var map = L.map('transitMap');
             tileLayer.addTo(map);
-            transit.initSearch(selector, stopsList, routePoints, map);
+            if (showSearch) transit.initSearch(selector, stopsList, routePoints, map);
 
             return map;
         },
@@ -210,8 +210,8 @@ var transit = (function () {
         },
 
         // Event handlers for marker mouseover, like infowindow popups and status messages.
-        onMarkerMouseover : function (selector, map, marker, mouseoverText, basicMap) {
-            if (!basicMap) {
+        onMarkerMouseover : function (selector, map, marker, mouseoverText, showLog) {
+            if (showLog) {
                 // Clear all listeners so they don't accumulate.
                 marker.removeEventListener('mouseover');
                 marker.removeEventListener('mouseout');
@@ -903,7 +903,7 @@ var transit = (function () {
         // Sets the vehicles in motion. Continuously estimates positions of vehicles and moves markers to
         // the acquired coordinate positions. refreshInterval determines the time of waiting between two
         // cycles of movements.
-        setInMotion : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map, basicMap) {
+        setInMotion : function (selector, refreshInterval, vehicles, noOfVehicles, stopinterval, timezone, map, showLog) {
             var transition = setInterval(
                     function() {
                         for (var count = 0; count < noOfVehicles; count++) {
@@ -926,7 +926,7 @@ var transit = (function () {
                                     continue;
                                 }
 
-                                if (!basicMap) transit.writeLog(selector, currPosition, vehicle);
+                                if (showLog) transit.writeLog(selector, currPosition, vehicle);
 
                                 if (currPosition.completed) {
                                     map.removeLayer(vehicle.markers[i]);
@@ -946,17 +946,17 @@ var transit = (function () {
                                     vehicle.markers[i].setLatLng(currMarkerPos);
                                 }
 
-                                transit.onMarkerMouseover(selector, map, vehicle.markers[i], mouseOverInfo, basicMap);
+                                transit.onMarkerMouseover(selector, map, vehicle.markers[i], mouseOverInfo, showLog);
                             }
                         }
                     }, refreshInterval);
         },
 
         // String all the function calls together. Kinda like C's main().
-        callMain : function (selector, tileLayer, refreshInterval, routeObj, vehicleObj, kmlFile, basicMap, vehicles) {
+        callMain : function (selector, tileLayer, refreshInterval, routeObj, vehicleObj, kmlFile, showLog, showSearch, vehicles) {
             var timezone = vehicleObj.timezone;
             var stopinterval = vehicleObj.stopinterval;
-            var map = transit.initMap(selector, tileLayer, routeObj.stopnames, routeObj.points, basicMap);
+            var map = transit.initMap(selector, tileLayer, routeObj.stopnames, routeObj.points, showLog, showSearch);
             map.invalidateSize();
             transit.overlayKml(kmlFile, map);
 
@@ -980,16 +980,17 @@ var transit = (function () {
             }
 
             transit.setInMotion(selector, refreshInterval, vehicles, noOfVehicles,
-                                stopinterval, timezone, map, basicMap);
+                                stopinterval, timezone, map, showLog);
         },
 
         // Initialize stuff. Run the promises, acquire the kml and json data, add the main DOM listener,
         // call the main function and write statuses if anything goes awry.
-        initialize : function (selector, tileLayer, kmlFile, jsonFile, basicMap, refreshInterval) {
+        initialize : function (selector, tileLayer, kmlFile, jsonFile, showLog, showSearch, refreshInterval) {
             // Default the refreshInterval to 1 second if it's less than 1 or unspecified.
             refreshInterval = (typeof refreshInterval == "undefined" ||
                                refreshInterval < 1) ? 1000 : refreshInterval * 1000;
-            basicMap = (typeof basicMap == "undefined") ? true : basicMap;
+            showLog = (typeof showLog == "undefined") ? true : showLog;
+            showSearch = (typeof showSearch == "undefined") ? true : showSearch;
             $(selector).css({
                 'position': 'relative',
                 'font-family': '"Lucida Grande", "Lucida Sans Unicode",' +
@@ -1012,7 +1013,8 @@ var transit = (function () {
                     json.success(function (jsonData) {
                         var routeObj = transit.routeParser(kmlData);
                         var vehicleObj = transit.vehicleParser(jsonData);
-                        transit.callMain(selector, tileLayer, refreshInterval, routeObj, vehicleObj, kmlFile, basicMap);
+                        transit.callMain(selector, tileLayer, refreshInterval, routeObj, vehicleObj,
+                                         kmlFile, showLog, showSearch);
                     }).fail(function () {
                         $(selector + '> #init').html('Oh Shoot, there was an error loading the JSON file. ' +
                                                      'Check your file path or syntax.');
