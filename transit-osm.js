@@ -212,6 +212,10 @@ var transit = (function () {
         // Event handlers for marker mouseover, like infowindow popups and status messages.
         onMarkerMouseover : function (selector, map, marker, mouseoverText, basicMap) {
             if (!basicMap) {
+                // Clear all listeners so they don't accumulate.
+                marker.removeEventListener('mouseover');
+                marker.removeEventListener('mouseout');
+
                 L.DomEvent.addListener(marker, 'mouseover', function () {
                     $(selector + '> #status').stop(true, true);
                     $(selector + '> #status').css('display', 'inline');
