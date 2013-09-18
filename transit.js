@@ -14,7 +14,7 @@ var transit = (function () {
             };
 
             // Remove the initialization message before overlaying the map on the div.
-            $(selector + "> #init").remove();
+            $(selector + "> #init").html('');
 
             $(selector).append("<div id=\"timezone\"></div>")
                        .append("<div id=\"transitMap\"></div>")
@@ -902,12 +902,6 @@ var transit = (function () {
             $(tickerDiv).fadeOut(5000);
         },
 
-        // Write statuses to the status div.
-        writeStatus : function (selector, message) {
-            $(selector + '> #status').css('display', 'inline');
-            $(selector + '> #status').html(message);
-        },
-
         // Recognize if client is using a handheld device. Some nasty useragent sniffing down here.
         // Taken from http://detectmobilebrowsers.com/
         isMobileDevice : function () {
@@ -987,7 +981,7 @@ var transit = (function () {
                     try {
                         vehicles[count] = transit.scheduler(vehicles[count], routeObj, stopinterval);
                     } catch (err) {
-                        transit.writeStatus(selector, err);
+                        $(selector + '> #init').html(err);
                         throw new Error(err);
                     }
                 }
@@ -1016,8 +1010,8 @@ var transit = (function () {
 
             // Write an initialization message while loading the map and markers.
             $(selector).append("<div id='init' style='position:absolute;width:100%;" +
-                               "text-align:center;font-size:20px;top:48%;'>" +
-                               "<strong>Initialis(z)ing...</strong></div>");
+                               "text-align:center;top:48%;font-weight:bold;z-index:99;'></div>");
+            $(selector + '> #init').html('Initialis(z)ing...');
             google.maps.event.addDomListener(window, 'load',
                     function () {
                         var kml = transit.kmlPromise(localKmlFile);
@@ -1029,17 +1023,11 @@ var transit = (function () {
                                 var vehicleObj = transit.vehicleParser(jsonData);
                                 transit.callMain(selector, refreshInterval, routeObj, vehicleObj, remoteKmlFile);
                             }).fail(function () {
-                                $(selector).css('position', 'relative');
-                                $(selector).html('');
-                                transit.initStatus(selector);
-                                transit.writeStatus(selector, 'Oh Shoot, there was an error loading the JSON file. ' +
-                                                              'Check your file path or syntax.');
+                                $(selector + '> #init').html('Oh Shoot, there was an error loading the JSON file. ' +
+                                                            'Check your file path or syntax.');
                             });
                         }).fail(function () {
-                            $(selector).css('position', 'relative');
-                            $(selector).html('');
-                            transit.initStatus(selector);
-                            transit.writeStatus(selector, 'Oh Shoot, there was an error loading the KML file.');
+                            $(selector + '> #init').html('Oh Shoot, there was an error loading the KML file.');
                         });
                     });
         }
