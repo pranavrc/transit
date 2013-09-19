@@ -332,7 +332,7 @@
                 </div><br />
                 <span class="clicktoshow">Rendering on Handheld devices</span>
                 <div class="hide">
-                    If you want to fit transit maps on mobile devices, you can use <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag">Viewports</a>. Include a Viewport meta tag in your HTML, as follows:<br /><br />
+                    On mobile devices, the browser's zoom interferes with the map's zoom. This isn't a major issue, but if you want to fix this, you'd want to fit the map to the device's width. You can use <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag">Viewports</a> for this. Include a Viewport meta tag in your HTML, as follows:<br /><br />
                     <div class="code">
                         &lt;meta name="viewport" content="width=device-width, user-scalable=false;"&gt;
                     </div><br />
@@ -342,6 +342,10 @@
 
                     You should also consider increasing the <strong>refreshInterval</strong> parameter for mobile devices so that the load is reduced. As most handheld devices have lesser processing power, a higher refresh interval would mean higher responsiveness.<br /><br />
                     See <a href="https://github.com/pranavrc/chennairailmap/blob/gh-pages/index.html#L51">here</a> to get an idea of how it's done.
+                </div><br />
+                <span class="clicktoshow">Loading different schedules on different days</span>
+                <div class="hide">
+                    If your transit system uses different schedules on different days, you can use the <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L688">transit.dayInTimeZone()</a> function to get the day of the week and then load a corresponding schedule. The function returns a number from 0 to 6, 0 being Sunday and 6 being Saturday. See <a href="https://github.com/pranavrc/chennairailmap/blob/gh-pages/index.html#L49">here</a> for an example of how this is done.
                 </div>
             </div>
             <hr />
@@ -372,8 +376,7 @@
             <div id="final">
                 <h3>Notes.</h3>
                 I might have missed out on a few things, but this page will stay updated, and more documentation is coming up. Meanwhile, you can <a href="mailto:me at onloop.net">mail me</a> for queries or check out <a href="https://github.com/pranavrc/transit/blob/master/transit.js">Transit's</a> and <a href="https://github.com/pranavrc/chennairail">Chennairail's</a> code, to get a better understanding of how Transit works. Bug reports, pull requests, and contributions are very much welcome.<br /><br />
-                The Chennai Rail Map loads a different schedule on Sundays, and uses an increased refresh interval on mobile devices to reduce load. The <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L692">transit.dayInTimezone()</a> and <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L903">transit.isMobileDevice()</a> functions help with this.<br /><br />
-                Also, Transit does not write statuses to the bottom right status box on Mobile devices, because hover events are pretty much non-existent in them. Instead, you can just click on the vehicle markers to know their statuses, just like on non-mobile devices.<br /><br />
+
                 And look out for our Maglev at 11:41 IST tomorrow!
             </div>
         </div><br />
