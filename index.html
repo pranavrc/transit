@@ -18,13 +18,13 @@
         </script>
         <script>
             $(document).ready(function () {
-                $('#clicktoshow').click(function () {
+                $('.clicktoshow').click(function () {
                     if ($('.hide').is(':hidden')) {
                         $('.hide').slideDown('fast');
-                        $('#clicktoshow').html('Hide');
+                        $('.clicktoshow').html('Hide');
                     } else {
                         $('.hide').slideUp('fast');
-                        $('#clicktoshow').html('Show');
+                        $('.clicktoshow').html('Show');
                     }
                 });
             });
@@ -102,8 +102,8 @@
             <div id="json">
                 <h3>The Grand Intercontinental Maglev - Scheduling our vehicles.</h3>
                 Let's create a JSON file and name it <strong>railroad_to_rome_schedule.json</strong>. The schedule file needs to have the following format:<br /><br />
-                <span id="clicktoshow">Show</span><br /><br />
-                <div id="code" class="hide">
+                <span class="clicktoshow">Show</span><br /><br />
+                <div class="code hide">
                     {<br />
                     &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+/-HH:MM:(Optional SS, default 00)", (UTC offset in HH:MM:SS for the timezone you're gonna use)<br />
                     &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "HH:MM:(Optional SS, default 00)", (<strong>Optional</strong>. If one of arrival or departure isn't specified for a stop, it's calculated using this interval. This is useful when you have to write schedules for vehicles that have a consistent stopping time of, say, 00:01:00. This doesn't apply to the first stop and the last one, because the first stop needs a mandatory departure time and the last one needs an arrival time)<br />
@@ -161,7 +161,7 @@
                     }
                 </div>
                 So let's schedule our Grand Intercontinental Maglev.<br /><br />
-                <div id="code">
+                <div class="code">
                     {<br />
                     &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+5:30:00", (Since I'm on UTC+5:30:00, I'll write the schedule in it, for convenience)<br />
                     &nbsp;&nbsp;&nbsp;<strong>"defaultstopinterval"</strong>: "00:00:10", (Let's have the Maglev stop for 10 seconds at intermittent stops so that we won't have to specify both arrival and departure times for Beijing and Moscow)<br />
@@ -207,7 +207,7 @@
                 We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit-min.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
 
                 First, let's get some boilerplate out of the way:<br />
-                <div id="code">
+                <div class="code">
                     &lt;!DOCTYPE html&gt;<br />
 
                     &lt;html&gt;<br />
@@ -220,7 +220,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="transit-min.js"&gt;&lt;/script&gt;<br />
                 </div><br />
                 Transit maps are like other Google maps, they're rendered inside a <strong>&lt;div&gt;</strong>. You can style them and overlay content on them like any other div. Let's make a div that occupies the whole page. Here's the code, along with some boilerplate.<br />
-                <div id="code">
+                <div class="code">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style type="text/css"&gt;<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html, body {<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 100%;<br />
@@ -234,7 +234,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
                 </div><br />
                 The body of the document now occupies the whole page, and our map div now occupies the whole body. Our div has been made. We just need to initialize the transit map inside it. Transit's <strong>initialize()</strong> function takes 5 arguments:
-                <div id="code">
+                <div class="code">
                     transit.initialize(selector, // The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors">selector</a> of the div. <strong>#ourMapDiv</strong> in our case.<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localKmlFile, // The path to your KML file.<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remoteKmlFile, // The same KML file, in a publicly accessible domain, for Maps API's use.<br />
@@ -243,7 +243,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
                 </div><br />
                 The remote KML file is required because the Maps API needs to access it and overlay it on your map. It needs to be in a publicly accessible webpage. Let's write the rest of our code with the initialize() call.
-                <div id="code">
+                <div class="code">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit.initialize("#ourMapDiv",<br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">railroad_to_rome.kml</a>",<br />

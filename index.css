@@ -25,7 +25,7 @@ ul {
     border-radius: 10px;
 }
 
-#code {
+.code {
     font-family: "Lucida Console", "Lucida Sans Typewriter", Monaco, "Bitstream Vera Sans Mono", monospace;
     font-size: 12px;
     border-radius: 10px;
@@ -83,7 +83,7 @@ a:visited {
     padding-bottom: 10px;
 }
 
-#clicktoshow {
+.clicktoshow {
     cursor: pointer;
     background-color: hsl(0,0%,90%);
     border: 1px solid #999;
