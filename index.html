@@ -19,12 +19,13 @@
         <script>
             $(document).ready(function () {
                 $('.clicktoshow').click(function () {
-                    if ($('.hide').is(':hidden')) {
-                        $('.hide').slideDown('fast');
-                        $('.clicktoshow').html('Hide');
+                    var text = $(this).text();
+                    if ($(this).next().is(':hidden')) {
+                        $(this).next().slideDown('fast');
+                        $(this).html(text + " ^ ");
                     } else {
-                        $('.hide').slideUp('fast');
-                        $('.clicktoshow').html('Show');
+                        $(this).next().slideUp('fast');
+                        $(this).html(text.replace(' ^ ', ''));
                     }
                 });
             });
@@ -101,8 +102,8 @@
             <hr />
             <div id="json">
                 <h3>The Grand Intercontinental Maglev - Scheduling our vehicles.</h3>
-                Let's create a JSON file and name it <strong>railroad_to_rome_schedule.json</strong>. The schedule file needs to have the following format:<br /><br />
-                <span class="clicktoshow">Show</span><br /><br />
+                Let's create a JSON file and name it <strong>railroad_to_rome_schedule.json</strong>. The schedule file needs to have the following format:
+                <span class="clicktoshow">Show</span>
                 <div class="code hide">
                     {<br />
                     &nbsp;&nbsp;&nbsp;<strong>"timezone"</strong>: "+/-HH:MM:(Optional SS, default 00)", (UTC offset in HH:MM:SS for the timezone you're gonna use)<br />
@@ -159,7 +160,7 @@
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
                     &nbsp;&nbsp;&nbsp;]<br />
                     }
-                </div>
+                </div><br />
                 So let's schedule our Grand Intercontinental Maglev.<br /><br />
                 <div class="code">
                     {<br />
