@@ -272,6 +272,63 @@
                         &lt;/html&gt;
                     </div><br />
                     We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome">Here's</a> the whole repository of code we just created.
+                </div><br />
+                <span class="clicktoshow">Making a transit map with OpenStreetMap</span>
+                <div class="hide">
+                    First, let's get some boilerplate out of the way:<br />
+                    <div class="code">
+                        &lt;!DOCTYPE html&gt;<br />
+    
+                        &lt;html&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&lt;head&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Grand Intercontinental Maglev on the Railroad to Rome.&lt;/title&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="utf-8" /&gt;<br />
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"&gt;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="transit-osm-min.js"&gt;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" /&gt;<br />
+                    </div><br />
+                    Transit maps are like other OSM maps, they're rendered inside a <strong>&lt;div&gt;</strong>. You can style them and overlay content on them like any other div. Let's make a div that occupies the whole page. Here's the code, along with some boilerplate.<br />
+                    <div class="code">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style type="text/css"&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html, body {<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 100%;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin: 0;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 0;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br />
+    
+                        &nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
+                    </div><br />
+                    The body of the document now occupies the whole page, and our map div now occupies the whole body. Our div has been made. We just need to initialize the transit map inside it. Transit's <strong>initialize()</strong> function takes 7 arguments:
+                    <div class="code">
+                        transit.initialize(selector, // The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors">selector</a> of the div. <strong>#ourMapDiv</strong> in our case.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tileLayer, // The <a href="http://wiki.openstreetmap.org/wiki/Tiles">Tile Layer</a> that you want to render on the map.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kmlFile, // The path to your KML file.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jsonFile, // The path to your JSON file.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showLog, // <strong>Optional</strong> boolean parameter to show or hide the Event logger. <strong>True</strong> by default.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showSearch, // <strong>Optional</strong> boolean parameter to show or hide the Search bar. <strong>True</strong> by default.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refreshInterval // The number of seconds between each update of the vehicles' markers.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Optional</strong>. <strong>1 second</strong> by default.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+                    </div><br />
+                    We'll create a tile layer (we'll use the <a href="http://wiki.openstreetmap.org/wiki/Tiles#Servers">basic OSM tileserver</a>) and write the rest of our code with the initialize() call.
+                    <div class="code">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;var ourTileLayer = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attribution: "&copy; &lt;a href='http://openstreetmap.org'&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href='http://creativecommons.org/licenses/by-sa/2.0/'&gt;CC-BY-SA&lt;/a&gt;"<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});<br /><br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit.initialize("#ourMapDiv",<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ourTileLayer,<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome_osm/railroad_to_rome.kml">railroad_to_rome.kml</a>",<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome_osm/railroad_to_rome_schedule.json">railroad_to_rome_schedule.json</a>");<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+                        &lt;/html&gt;
+                    </div><br />
+                    We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome_osm">Here's</a> the whole repository of code we just created.
                 </div>
             </div>
             <hr />
