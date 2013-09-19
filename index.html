@@ -36,7 +36,7 @@
         <h1>transit.js</h1>
         <div id="exp">Make client-side, schedule-driven transit maps.</div><hr /><br />
         <div id="parent">
-            <strong>Transit</strong> lets you build completely client-side maps of schedule-based transit systems. There's no webserver involved, the browser does all the work. Transit supports both <a href="http://openstreetmap.org/">OpenStreetMap</a> and <a href="http://maps.google.com/">Google Maps</a>. Here's how it looks like in action:<br /><br />
+            <strong>Transit</strong> lets you build completely client-side maps of schedule-based transit systems. There's no webserver involved, the browser does all the work. Transit supports both <a href="http://openstreetmap.org/">OpenStreetMap</a> and <a href="http://maps.google.com/">Google Maps</a>. Here's how it looks like in action (Left - OpenStreetMap, Right - Google Maps):<br /><br />
             <a href="images/shot02.jpg"><img src="images/shot02.jpg" style="height:65%;width:49.5%;" alt="OpenStreetMap screenshot"></a>
             <a href="images/shot01.jpg"><img src="images/shot01.jpg" style="height:65%;width:49.5%;" alt="Google Maps screenshot"></a>
             <hr />
@@ -53,26 +53,26 @@
                     <li><a href="#app">Our Grand Intercontinental Maglev!</a></li>
                     <li><a href="#final">Notes.</a></li>
                 </ul>
-            </div><hr />
-
+            </div>
+            <hr />
             <div id="intro">
                 <h3>What's this?</h3>
                 Transit takes a set of transit routes or paths, and a set of vehicles and their schedules, and simulates their movement on the given routes, based on the schedule. The transit routes are defined in a <strong>KML</strong> (<a href="http://en.wikipedia.org/wiki/Keyhole_Markup_Language">Keyhole Markup Language</a>) file, and the vehicle schedules are written in a <strong>JSON</strong> (<a href="http://en.wikipedia.org/wiki/JSON">JavaScript Object Notation</a>) file.<br /><br />
 
                 To create the KML file, you can use a maps editor tool that can export visual geographic data as one. There are several, but the one I personally use is <a href="https://mapsengine.google.com/map/">Maps Engine Lite</a>, Google's free online Maps editor that lets you work with Google maps. For the JSON, you can use a JSON editor. If you're writing <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">a lot of</a> schedules, though, <a href="http://www.vim.org/">Vim</a> or <a href="http://www.gnu.org/software/emacs/">Emacs</a> might save your sanity.<br /><br />
 
-                Transit comes with an Event log that logs arrival and departure times, a custom Search box that lets you zero in on a stop quickly, and status and info windows for displaying current information about vehicles.
+                Transit comes with an Event logger that logs arrivals and departures, a custom Search bar that lets you zero in on a stop quickly, and a status box for displaying current information about vehicles. All of these can be turned off if you want a basic, no-nonsense map with just the vehicles and their popups.
             </div>
             <hr />
             <div id="demo">
                 <h3>Demo.</h3>
-                The <a href="http://onloop.net/chennairail">Chennai Suburban Rail Map</a> was made with Transit. It uses <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_map.kml">this</a> KML file and <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">this</a> JSON file.
+                The <a href="http://onloop.net/chennairail">Chennai Suburban Rail Map</a> (<a href="http://onloop.net/chennairailmap">OpenStreetMap</a> Version) was made with Transit. It uses <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_map.kml">this</a> KML file and <a href="https://github.com/pranavrc/chennairail/blob/gh-pages/chennai_rail_schedule.json">this</a> JSON file.
             </div>
             <hr />
             <div id="download">
                 <h3>Download and Usage.</h3>
                 You can download Transit in a zipped file from <a href="https://github.com/pranavrc/transit/archive/master.zip">here</a>. Transit requires <a href="http://jquery.com/">jQuery 1.10.1</a>, and the <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps JavaScript API V3</a>, so you'll have to include those too. The following should do:<br />
-                <div id="code">
+                <div class="code">
                     &lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;script&gt;<br />
                     &lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;script&gt;<br />
                     &lt;script src="transit.js"&gt;&lt;/script&gt; &lt;!--You can use transit-min.js (<a href="http://en.wikipedia.org/wiki/Minification_%28programming%29">minified</a> file) here--&gt;<br />
