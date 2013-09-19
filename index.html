@@ -218,57 +218,61 @@
             <hr />
             <div id="initialize">
                 <h3>Initializing our Map.</h3>
-                We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have <strong>transit-min.js</strong> in our project too, so that makes it 3 files. We're gonna need one more, the app itself. So let's make a HTML file.<br /><br />
+                We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have Transit in our project too, so that makes it 3 files. We're gonna need one more, the app itself.<br />
 
-                First, let's get some boilerplate out of the way:<br />
-                <div class="code">
-                    &lt;!DOCTYPE html&gt;<br />
+                <span class="clicktoshow">Making a transit map with Google Maps.</span>
+                <div class="hide">
+                    First, let's get some boilerplate out of the way:<br />
+                    <div class="code">
+                        &lt;!DOCTYPE html&gt;<br />
+    
+                        &lt;html&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&lt;head&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Grand Intercontinental Maglev on the Railroad to Rome.&lt;/title&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="utf-8" /&gt;<br />
 
-                    &lt;html&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&lt;head&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Grand Intercontinental Maglev on the Railroad to Rome.&lt;/title&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;meta charset="utf-8" /&gt;<br />
-
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;/script&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;/script&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="transit-min.js"&gt;&lt;/script&gt;<br />
-                </div><br />
-                Transit maps are like other Google maps, they're rendered inside a <strong>&lt;div&gt;</strong>. You can style them and overlay content on them like any other div. Let's make a div that occupies the whole page. Here's the code, along with some boilerplate.<br />
-                <div class="code">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style type="text/css"&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html, body {<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 100%;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin: 0;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 0;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br />
-
-                    &nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
-                </div><br />
-                The body of the document now occupies the whole page, and our map div now occupies the whole body. Our div has been made. We just need to initialize the transit map inside it. Transit's <strong>initialize()</strong> function takes 5 arguments:
-                <div class="code">
-                    transit.initialize(selector, // The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors">selector</a> of the div. <strong>#ourMapDiv</strong> in our case.<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localKmlFile, // The path to your KML file.<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remoteKmlFile, // The same KML file, in a publicly accessible domain, for Maps API's use.<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jsonFile, // The path to your JSON file.<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refreshInterval // The number of seconds between each update of the vehicles' markers.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 second by default, if not specified.<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
-                </div><br />
-                The remote KML file is required because the Maps API needs to access it and overlay it on your map. It needs to be in a publicly accessible webpage. Let's write the rest of our code with the initialize() call.
-                <div class="code">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit.initialize("#ourMapDiv",<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">railroad_to_rome.kml</a>",<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml</a>",<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome_schedule.json">railroad_to_rome_schedule.json</a>",<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1);<br />
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br />
-                    &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
-                    &lt;/html&gt;
-                </div><br />
-                We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome">Here's</a> the whole repository of code we just created.
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script src="transit-min.js"&gt;&lt;/script&gt;<br />
+                    </div><br />
+                    Transit maps are like other Google maps, they're rendered inside a <strong>&lt;div&gt;</strong>. You can style them and overlay content on them like any other div. Let's make a div that occupies the whole page. Here's the code, along with some boilerplate.<br />
+                    <div class="code">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;style type="text/css"&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;html, body {<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 100%;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin: 0;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 0;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br />
+    
+                        &nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
+                    </div><br />
+                    The body of the document now occupies the whole page, and our map div now occupies the whole body. Our div has been made. We just need to initialize the transit map inside it. Transit's <strong>initialize()</strong> function takes 5 arguments:
+                    <div class="code">
+                        transit.initialize(selector, // The <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Getting_started/Selectors">selector</a> of the div. <strong>#ourMapDiv</strong> in our case.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localKmlFile, // The path to your KML file.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;remoteKmlFile, // The same KML file, in a publicly accessible domain, for Maps API's use.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jsonFile, // The path to your JSON file.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showLog, // <strong>Optional</strong> boolean parameter to show or hide the Event logger. <strong>True</strong> by default.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;showSearch, // <strong>Optional</strong> boolean parameter to show or hide the Search bar. <strong>True</strong> by default.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refreshInterval // The number of seconds between each update of the vehicles' markers.<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Optional</strong>. <strong>1 second</strong> by default.<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);
+                    </div><br />
+                    The remote KML file is required because the Maps API needs to access it and overlay it on your map. It needs to be in a publicly accessible webpage. Let's write the rest of our code with the initialize() call.
+                    <div class="code">
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transit.initialize("#ourMapDiv",<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">railroad_to_rome.kml</a>",<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml">https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome.kml</a>",<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"<a href="https://raw.github.com/pranavrc/transit/gh-pages/railroad_to_rome/railroad_to_rome_schedule.json">railroad_to_rome_schedule.json</a>");<br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/script&gt;<br />
+                        &nbsp;&nbsp;&nbsp;&lt;/body&gt;<br />
+                        &lt;/html&gt;
+                    </div><br />
+                    We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome">Here's</a> the whole repository of code we just created.
+                </div>
             </div>
             <hr />
             <div id="deploy">
