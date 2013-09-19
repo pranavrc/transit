@@ -225,7 +225,7 @@
                     First, let's get some boilerplate out of the way:<br />
                     <div class="code">
                         &lt;!DOCTYPE html&gt;<br />
-    
+
                         &lt;html&gt;<br />
                         &nbsp;&nbsp;&nbsp;&lt;head&gt;<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Grand Intercontinental Maglev on the Railroad to Rome.&lt;/title&gt;<br />
@@ -245,7 +245,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;<br />
                         &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br />
-    
+
                         &nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
                     </div><br />
@@ -278,7 +278,7 @@
                     First, let's get some boilerplate out of the way:<br />
                     <div class="code">
                         &lt;!DOCTYPE html&gt;<br />
-    
+
                         &lt;html&gt;<br />
                         &nbsp;&nbsp;&nbsp;&lt;head&gt;<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Grand Intercontinental Maglev on the Railroad to Rome.&lt;/title&gt;<br />
@@ -299,7 +299,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/style&gt;<br />
                         &nbsp;&nbsp;&nbsp;&lt;/head&gt;<br />
-    
+
                         &nbsp;&nbsp;&nbsp;&lt;body&gt;<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div id="ourMapDiv" style="width:100%;height:100%;"&gt;&lt;/div&gt;<br />
                     </div><br />
@@ -329,6 +329,19 @@
                         &lt;/html&gt;
                     </div><br />
                     We're done. <a href="https://github.com/pranavrc/transit/tree/gh-pages/railroad_to_rome_osm">Here's</a> the whole repository of code we just created.
+                </div><br />
+                <span class="clicktoshow">Rendering on Handheld devices</span>
+                <div class="hide">
+                    If you want to fit transit maps on mobile devices, you can use <a href="https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag">Viewports</a>. Include a Viewport meta tag in your HTML, as follows:<br /><br />
+                    <div class="code">
+                        &lt;meta name="viewport" content="width=device-width, user-scalable=false;"&gt;
+                    </div><br />
+                    You should note, though, that this will cramp the map, and it would be wise to remove the Event logger and maybe even the search bar if you're going to do this, so that a basic map, with just the transit system, will be rendered.<br /><br />
+
+                    The <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L903">transit.isMobileDevice()</a> function returns true if the client is a handheld device, or false if not. This way, you can render the basic map for mobile devices and a normal map for desktops.<br /><br />
+
+                    You should also consider increasing the <strong>refreshInterval</strong> parameter for mobile devices so that the load is reduced. As most handheld devices have lesser processing power, a higher refresh interval would mean higher responsiveness.<br /><br />
+                    See <a href="https://github.com/pranavrc/chennairailmap/blob/gh-pages/index.html#L51">here</a> to get an idea of how it's done.
                 </div>
             </div>
             <hr />
@@ -359,7 +372,7 @@
             <div id="final">
                 <h3>Notes.</h3>
                 I might have missed out on a few things, but this page will stay updated, and more documentation is coming up. Meanwhile, you can <a href="mailto:me at onloop.net">mail me</a> for queries or check out <a href="https://github.com/pranavrc/transit/blob/master/transit.js">Transit's</a> and <a href="https://github.com/pranavrc/chennairail">Chennairail's</a> code, to get a better understanding of how Transit works. Bug reports, pull requests, and contributions are very much welcome.<br /><br />
-                The Chennai Rail Map loads a different schedule on Sundays, and uses an increased refresh interval on mobile devices to reduce load. The <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L692">transit.dayInTimezone()</a> and <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L913">transit.isMobileDevice()</a> functions help with this.<br /><br />
+                The Chennai Rail Map loads a different schedule on Sundays, and uses an increased refresh interval on mobile devices to reduce load. The <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L692">transit.dayInTimezone()</a> and <a href="https://github.com/pranavrc/transit/blob/master/transit.js#L903">transit.isMobileDevice()</a> functions help with this.<br /><br />
                 Also, Transit does not write statuses to the bottom right status box on Mobile devices, because hover events are pretty much non-existent in them. Instead, you can just click on the vehicle markers to know their statuses, just like on non-mobile devices.<br /><br />
                 And look out for our Maglev at 11:41 IST tomorrow!
             </div>
