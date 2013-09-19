@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>Untitled map</name>
+		<description><![CDATA[]]></description>
+		<Folder>
+			<name>Untitled layer</name>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>Tokyo Station</name>
+				<Point>
+					<coordinates>139.76608399999998,35.681382,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>Beijing Railway Station</name>
+				<Point>
+					<coordinates>116.42702400000007,39.902446,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>Komsomolskaya</name>
+				<Point>
+					<coordinates>37.65587000000005,55.776241,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#icon-503-FF8277</styleUrl>
+				<name>Termini</name>
+				<Point>
+					<coordinates>12.50006200000007,41.901,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<styleUrl>#line-000000-4</styleUrl>
+				<name>Railroad to Rome</name>
+				<description><![CDATA[Special route for Grand Intercontinental Maglev!
+]]></description>
+				<LineString>
+					<tessellate>0</tessellate>
+					<coordinates>139.76608399999998,35.681382,0.0 136.669921875,35.02999636902565,0.0 133.505859375,34.66935854524543,0.0 130.60546875,34.52466147177172,0.0 127.880859375,35.60371874069731,0.0 127.265625,37.64903402157866,0.0 126.826171875,40.51379915504413,0.0 125.947265625,42.293564192170095,0.0 123.310546875,42.87596410238254,0.0 119.443359375,41.37680856570233,0.0 116.42702400000007,39.902446,0.0 104.0625,50.958426723359935,0.0 94.21875,55.178867663281984,0.0 87.890625,56.559482483762245,0.0 79.8046875,58.99531118795094,0.0 70.3125,60.06484046010452,0.0 61.5234375,59.5343180010956,0.0 54.84375,58.44773280389084,0.0 48.1640625,57.89149735271031,0.0 41.1328125,56.75272287205736,0.0 37.65587000000005,55.776241,0.0 30.5859375,54.97761367069625,0.0 30.9375,50.51342652633956,0.0 28.125,47.517200697839414,0.0 21.796875,47.040182144806664,0.0 17.2265625,46.31658418182218,0.0 12.65625,46.98025235521883,0.0 9.755859375,45.9511496866914,0.0 10.810546875,44.402391829093915,0.0 12.50006200000007,41.901,0.0</coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+		<Style id='line-000000-4'>
+			<LineStyle>
+				<color>ff000000</color>
+				<width>4</width>
+			</LineStyle>
+		</Style>
+		<Style id='icon-503-FF8277'>
+			<IconStyle>
+				<color>ff7782FF</color>
+				<scale>1.1</scale>
+				<Icon>
+					<href>http://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+	</Document>
+</kml>

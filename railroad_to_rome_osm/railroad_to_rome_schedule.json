@@ -1,0 +1,31 @@
+{
+    "timezone": "+5:30",
+    "defaultstopinterval": "00:00:10",
+    "vehicles":
+    [
+        {
+            "name": "Grand Intercontinental Maglev",
+            "info": "Blazing Fast!",
+            "route": "Railroad to Rome",
+            "stops":
+            [
+                {
+                    "name": "Tokyo Station",
+                    "departure": {"time": "11:41", "day": 1}
+                },
+                {
+                    "name": "Beijing Railway Station",
+                    "departure": {"time": "11:41:35", "day": 1}
+                },
+                {
+                    "name": "Komsomolskaya",
+                    "departure": {"time": "11:42:10", "day": 1}
+                },
+                {
+                    "name": "Termini",
+                    "arrival": {"time": "11:43", "day": 1}
+                }
+            ]
+        }
+    ]
+}
