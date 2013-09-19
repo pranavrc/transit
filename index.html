@@ -25,7 +25,7 @@
                         $(this).html(text + " ^ ");
                     } else {
                         $(this).next().slideUp('fast');
-                        $(this).html(text.replace(' ^ ', ''));
+                        $(this).html(text.slice(0, text.length - 2));
                     }
                 });
             });
@@ -220,7 +220,7 @@
                 <h3>Initializing our Map.</h3>
                 We now have <strong>railroad_to_rome.kml</strong> and <strong>railroad_to_rome_schedule.json</strong>. And we have Transit in our project too, so that makes it 3 files. We're gonna need one more, the app itself.<br />
 
-                <span class="clicktoshow">Making a transit map with Google Maps.</span>
+                <span class="clicktoshow">Making a transit map with Google Maps</span>
                 <div class="hide">
                     First, let's get some boilerplate out of the way:<br />
                     <div class="code">
