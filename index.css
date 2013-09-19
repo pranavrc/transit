@@ -1,3 +1,5 @@
+html, body, p { width: 100%; display: block; margin: 0px; padding: 0px; }
+
 body {
     background-color: hsl(0,0%,95%);
     font-family: "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
