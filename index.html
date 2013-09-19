@@ -71,13 +71,24 @@
             <hr />
             <div id="download">
                 <h3>Download and Usage.</h3>
-                You can download Transit in a zipped file from <a href="https://github.com/pranavrc/transit/archive/master.zip">here</a>. Transit requires <a href="http://jquery.com/">jQuery 1.10.1</a>, and the <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps JavaScript API V3</a>, so you'll have to include those too. The following should do:<br />
+                You can download Transit in a zipped file from <a href="https://github.com/pranavrc/transit/archive/master.zip">here</a>. Transit requires <a href="http://jquery.com/">jQuery 1.10.1</a>, and <a href="https://developers.google.com/maps/documentation/javascript/">Google Maps JavaScript API V3</a> or <a href="http://leafletjs.com">Leaflet OpenStreetMap API</a>, depending on your choice of map, so you'll have to include those too.<br /><br />
+
+                <strong>For Google Maps:</strong><br />
                 <div class="code">
                     &lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;script&gt;<br />
-                    &lt;script src="http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false"&gt;&lt;script&gt;<br />
-                    &lt;script src="transit.js"&gt;&lt;/script&gt; &lt;!--You can use transit-min.js (<a href="http://en.wikipedia.org/wiki/Minification_%28programming%29">minified</a> file) here--&gt;<br />
+                    &lt;script src="<strong>transit.js</strong>"&gt;&lt;/script&gt; &lt;!--You can use transit-min.js (<a href="http://en.wikipedia.org/wiki/Minification_%28programming%29">minified</a> file) here--&gt;<br />
+                    &lt;script src="<strong>http://maps.googleapis.com/maps/api/js?key={API_KEY}&sensor=false</strong>"&gt;&lt;script&gt;<br />
                 </div>
-                The API_KEY for your app is optional, but it helps you with analytics, so if you plan to get one, start <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key">here</a>.<br /><br />
+                The key={API_KEY} for your app is optional, but it helps you with analytics, so if you plan to get one, start <a href="https://developers.google.com/maps/documentation/javascript/tutorial#api_key">here</a>.<br /><br />
+
+                <strong>For OpenStreetMap:</strong><br />
+                <div class="code">
+                    &lt;script src="http://code.jquery.com/jquery-1.10.1.min.js"&gt;&lt;script&gt;<br />
+                    &lt;script src="<strong>transit-osm.js</strong>"&gt;&lt;/script&gt; &lt;!--You can use transit-osm-min.js (<a href="http://en.wikipedia.org/wiki/Minification_%28programming%29">minified</a> file) here--&gt;<br />
+                    &lt;script src="<strong>http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js</strong>"&gt;&lt;script&gt;<br />
+                    &lt;link rel="stylesheet" href="<strong>http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css</strong>" /&gt;<br />
+                </div>
+
                 Transit does not have a CDN yet. Don't use the URL of the raw file from Github. <em>Github ain't no CDN</em>.
             </div>
             <hr />
