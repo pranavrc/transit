@@ -1028,7 +1028,7 @@ var transit = (function () {
 })();
 
 // https://github.com/Leaflet/Leaflet/pull/1927
-// Issue with stationary popups for circle markers. This issue has fixed on leaflet 0.7.0,
+// Issue with stationary popups for circle markers. This issue has been fixed in leaflet 0.7.0,
 // which hasn't been released yet, so this is a temporary fix.
 L.CircleMarker = L.CircleMarker.extend({
     setLatLng: function (latlng) {
